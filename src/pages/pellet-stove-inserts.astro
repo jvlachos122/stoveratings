@@ -1,0 +1,32 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import { inserts } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const groups = inserts(catalog.stoves, "Pellet Stove");
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `${groups.current.length} currently certified pellet-stove model lines, and ${groups.previous.length} previously certified ones, have model text that matches insert or -I.`,
+  "EPA's export has no insert field. The label on each row is name indicates insert.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Pellet stove inserts in EPA model names" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/pellet-stove-inserts/", label: "Pellet inserts" }]} jsonLd={[articleLd("Pellet stove inserts indicated by EPA model names", description, "/pellet-stove-inserts/", date)]}>
+  <div class="wrap">
+    <h1>Pellet stove inserts named in the EPA list</h1>
+    <Answer sentences={sentences} />
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified pellet model lines whose names indicate an insert" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified pellet model lines whose names indicate an insert" },
+    ]} />
+    <p>Wood-stove names are on <a href="/wood-stove-inserts/">wood stove inserts</a>.</p>
+    <DataNote items={["The check is /insert|\\b-I\\b/i. It can miss an insert whose model cell does not use those characters.", "A match is not a statement that the stove fits a particular fireplace."]} />
+  </div>
+</Base>

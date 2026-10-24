@@ -1,0 +1,138 @@
+name: Rebuild EPA snapshot
+
+on:
+  workflow_dispatch:
+    inputs:
+      raw_dir:
+        description: Directory of saved EPA result files. Must stay inside data/raw. The workflow does not download anything.
+        required: false
+        default: data/raw
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: stoveratings-pages
+  cancel-in-progress: false
+
+env:
+  ASTRO_TELEMETRY_DISABLED: "1"
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.guard.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Reject a snapshot path outside data/raw
+        env:
+          RAW_DIR: ${{ inputs.raw_dir }}
+        run: |
+          case "$RAW_DIR" in
+            data/raw|data/raw/*) ;;
+            *) echo "raw_dir must stay inside data/raw" >&2; exit 1 ;;
+          esac
+          case "$RAW_DIR" in
+            *..*) echo "raw_dir must not contain .." >&2; exit 1 ;;
+          esac
+          if [ ! -e "$RAW_DIR" ]; then
+            echo "raw_dir does not exist: $RAW_DIR" >&2
+            exit 1
+          fi
+          echo "Using committed files under $RAW_DIR. Nothing is downloaded."
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Parse committed snapshots
+        id: parse
+        run: |
+          before=$(python3 -c "import json; print(json.load(open('data/meta.json'))['contentHash'])")
+          python3 scripts/build_data.py
+          after=$(python3 -c "import json; print(json.load(open('data/meta.json'))['contentHash'])")
+          echo "before=$before" >> "$GITHUB_OUTPUT"
+          echo "after=$after" >> "$GITHUB_OUTPUT"
+      - name: Change guard
+        id: guard
+        run: |
+          if [ "${{ steps.parse.outputs.before }}" = "${{ steps.parse.outputs.after }}" ]; then
+            git checkout -- data/stoves.json data/brands.json data/stats.json data/changes.json data/meta.json data/firewood.json data/noindex-paths.json
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "stoves.json hash unchanged. Exiting without a commit."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Validate and test
+        if: steps.guard.outputs.changed == 'true'
+        run: |
+          npm run validate:data
+          npm test
+      - name: Commit rebuilt data
+        if: steps.guard.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/stoves.json data/brands.json data/stats.json data/changes.json data/meta.json data/firewood.json data/noindex-paths.json
+          git commit -m "Rebuild stove data from the committed EPA snapshot"
+          git push origin HEAD:main
+      - name: Build site
+        if: steps.guard.outputs.changed == 'true'
+        run: |
+          npm run build
+          npm run check:links
+          npm run check:html
+          npm run check:origins
+      - name: Write IndexNow manifest
+        if: steps.guard.outputs.changed == 'true'
+        run: node scripts/indexnow.mjs --write-manifest .indexnow/manifest.json
+      - uses: actions/upload-artifact@v4
+        if: steps.guard.outputs.changed == 'true'
+        with:
+          name: indexnow-manifest
+          path: .indexnow/manifest.json
+          retention-days: 30
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.guard.outputs.changed == 'true'
+        with:
+          path: dist
+
+  deploy:
+    needs: rebuild
+    if: needs.rebuild.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+  indexnow:
+    needs: [rebuild, deploy]
+    if: always() && needs.rebuild.outputs.changed == 'true' && needs.deploy.result == 'success'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Restore previous IndexNow manifest
+        uses: actions/cache@v4
+        with:
+          path: .indexnow/previous-manifest.json
+          key: indexnow-manifest-${{ github.run_id }}
+          restore-keys: |
+            indexnow-manifest-
+      - uses: actions/download-artifact@v4
+        with:
+          name: indexnow-manifest
+          path: .indexnow
+      - name: Submit changed URLs to IndexNow
+        run: |
+          node scripts/indexnow.mjs --submit \
+            --manifest .indexnow/manifest.json \
+            --previous .indexnow/previous-manifest.json
+          cp .indexnow/manifest.json .indexnow/previous-manifest.json

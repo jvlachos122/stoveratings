@@ -1,0 +1,29 @@
+---
+import Answer from "../components/Answer.astro";
+import Finder from "../components/Finder.astro";
+import Base from "../layouts/Base.astro";
+import { homeSentences } from "../lib/answers.js";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+
+const sentences = homeSentences(catalog.stats);
+const description = metaDescription(sentences);
+---
+
+<Base
+  title="Certified stove finder"
+  description={description}
+  noindex={true}
+  canonicalPath="/"
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/finder/", label: "Finder" },
+  ]}
+>
+  <div class="wrap">
+    <h1>Certified stove finder</h1>
+    <Answer sentences={sentences} />
+    <Finder />
+    <p>The indexed copy of this finder is the <a href="/">home page</a>.</p>
+  </div>
+</Base>

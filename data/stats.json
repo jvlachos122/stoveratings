@@ -1,0 +1,269 @@
+{
+  "snapshotDate": "2026-10-23",
+  "rows": {
+    "roomAll": 1444,
+    "roomCurrent": 265,
+    "centralAll": 192,
+    "centralCurrent": 41
+  },
+  "modelLines": {
+    "room": 1414,
+    "central": 188,
+    "total": 1602,
+    "indexable": 824,
+    "noindex": 778
+  },
+  "roomAllByType": {
+    "Wood Stove": 1156,
+    "Pellet Stove": 288
+  },
+  "roomAllBySubtype": {
+    "Non-Catalytic Stove": 1086,
+    "Catalytic Stove": 316,
+    "Hybrid": 40,
+    "": 2
+  },
+  "roomCurrentByType": {
+    "Wood Stove": 156,
+    "Pellet Stove": 109
+  },
+  "roomCurrentBySubtype": {
+    "Non-Catalytic Stove": 200,
+    "Catalytic Stove": 38,
+    "Hybrid": 27
+  },
+  "roomCurrentWoodBySubtype": {
+    "Non-Catalytic Stove": 93,
+    "Catalytic Stove": 38,
+    "Hybrid": 25
+  },
+  "centralAllByType": {
+    "Hydronic Heater": 165,
+    "Forced Air Furnace": 27
+  },
+  "centralCurrentByType": {
+    "Hydronic Heater": 35,
+    "Forced Air Furnace": 6
+  },
+  "centralAllByFuel": {
+    "Hydronic Heater|Wood Pellets": 86,
+    "Hydronic Heater|Cord Wood": 75,
+    "Forced Air Furnace|Cord Wood": 20,
+    "Forced Air Furnace|Wood Pellets": 5,
+    "Hydronic Heater|Crib Wood": 4,
+    "Forced Air Furnace|Crib Wood": 2
+  },
+  "nsps": {
+    "roomAllYes": 417,
+    "roomCurrentYes": 264,
+    "roomCurrentNo": 1,
+    "centralAllYes": 68,
+    "centralCurrentYes": 41
+  },
+  "insert": {
+    "rows": 112,
+    "currentRows": 26,
+    "modelLines": 109,
+    "currentModelLines": 26,
+    "basis": "Model text matches /insert|\\b-I\\b/i. Labeled name indicates insert. No manual overrides are applied in this snapshot."
+  },
+  "retailNames": {
+    "roomTokens": 3258,
+    "roomDistinct": 2959
+  },
+  "brands": {
+    "primary": 229,
+    "alias": 17
+  },
+  "medians": {
+    "currentWoodCatalytic": {
+      "label": "currently certified catalytic wood-stove rows",
+      "rows": 38,
+      "emissionN": 38,
+      "emissionMedian": 1.1,
+      "efficiencyN": 38,
+      "efficiencyMedian": 78.0
+    },
+    "currentWoodNonCatalytic": {
+      "label": "currently certified non-catalytic wood-stove rows",
+      "rows": 93,
+      "emissionN": 93,
+      "emissionMedian": 1.7,
+      "efficiencyN": 93,
+      "efficiencyMedian": 71.0
+    },
+    "currentWoodHybrid": {
+      "label": "currently certified hybrid wood-stove rows",
+      "rows": 25,
+      "emissionN": 25,
+      "emissionMedian": 0.8,
+      "efficiencyN": 25,
+      "efficiencyMedian": 79.0
+    },
+    "currentPellet": {
+      "label": "currently certified pellet-stove rows",
+      "rows": 109,
+      "emissionN": 109,
+      "emissionMedian": 1.1,
+      "efficiencyN": 109,
+      "efficiencyMedian": 77.0
+    },
+    "currentWood": {
+      "label": "currently certified wood-stove rows",
+      "rows": 156,
+      "emissionN": 156,
+      "emissionMedian": 1.5,
+      "efficiencyN": 156,
+      "efficiencyMedian": 74.0
+    }
+  },
+  "highlights": {
+    "lowestEmissionWood": [
+      {
+        "id": "room--hearth-and-home-technologies--vermont-castings-intrepid-flexburn-2115-cat",
+        "model": "Vermont Castings Intrepid FlexBurn 2115-CAT",
+        "manufacturer": "Hearth and Home Technologies",
+        "emission": 0.3,
+        "emissionUnit": "g/hr",
+        "efficiency": 77.0,
+        "url": "/stoves/hearth-and-home-technologies/vermont-castings-intrepid-flexburn-2115-cat/"
+      },
+      {
+        "id": "room--woodstock-soapstone-company-inc--progress-hybrid-209b",
+        "model": "Progress Hybrid 209b",
+        "manufacturer": "Woodstock Soapstone Company, Inc.",
+        "emission": 0.46,
+        "emissionUnit": "g/hr",
+        "efficiency": 80.0,
+        "url": "/stoves/woodstock-soapstone-company-inc/progress-hybrid-209b/"
+      },
+      {
+        "id": "room--jotul-north-america-jotul-u-s-a-inc--f445",
+        "model": "F445",
+        "manufacturer": "Jotul North America (Jotul U.S.A., Inc.)",
+        "emission": 0.49,
+        "emissionUnit": "g/hr",
+        "efficiency": 72.0,
+        "url": "/stoves/jotul-north-america-jotul-u-s-a-inc/f445/"
+      },
+      {
+        "id": "room--woodstock-soapstone-company-inc--absolute-steel-hybrid-211",
+        "model": "Absolute Steel Hybrid 211",
+        "manufacturer": "Woodstock Soapstone Company, Inc.",
+        "emission": 0.5,
+        "emissionUnit": "g/hr",
+        "efficiency": 77.0,
+        "url": "/stoves/woodstock-soapstone-company-inc/absolute-steel-hybrid-211/"
+      },
+      {
+        "id": "room--jotul-north-america-jotul-u-s-a-inc--f-500-v3",
+        "model": "F 500 V3",
+        "manufacturer": "Jotul North America (Jotul U.S.A., Inc.)",
+        "emission": 0.5,
+        "emissionUnit": "g/hr",
+        "efficiency": 78.0,
+        "url": "/stoves/jotul-north-america-jotul-u-s-a-inc/f-500-v3/"
+      }
+    ],
+    "highestEfficiencyWood": [
+      {
+        "id": "room--blaze-king-industries-inc--30-2-series-sirocco-30-2-sc30-2-ashford-30-2-af30-2-and-chinook-30-2-ck30-2",
+        "model": "30.2 Series: Sirocco 30.2 (SC30.2), Ashford 30.2 (AF30.2), and Chinook 30.2 (CK30.2)",
+        "manufacturer": "Blaze King Industries, Inc.",
+        "emission": 0.81,
+        "emissionUnit": "g/hr",
+        "efficiency": 83.0,
+        "url": "/stoves/blaze-king-industries-inc/30-2-series-sirocco-30-2-sc30-2-ashford-30-2-af30-2-and-chinook-30-2-ck30-2/"
+      },
+      {
+        "id": "room--blaze-king-industries-inc--princess-pe32",
+        "model": "Princess PE32",
+        "manufacturer": "Blaze King Industries, Inc.",
+        "emission": 0.55,
+        "emissionUnit": "g/hr",
+        "efficiency": 82.0,
+        "url": "/stoves/blaze-king-industries-inc/princess-pe32/"
+      },
+      {
+        "id": "room--hearthstone-quality-home-heating-products-inc--green-mountain-60-1-model-8661-shelburne-3-model-8373-hipster-20-1-model-8261",
+        "model": "Green Mountain 60-1 (Model 8661), Shelburne 3 (Model 8373), Hipster 20-1 (Model 8261)",
+        "manufacturer": "Hearthstone Quality Home Heating Products Inc.",
+        "emission": 0.51,
+        "emissionUnit": "g/hr",
+        "efficiency": 81.0,
+        "url": "/stoves/hearthstone-quality-home-heating-products-inc/green-mountain-60-1-model-8661-shelburne-3-model-8373-hipster-20-1-model-8261/"
+      },
+      {
+        "id": "room--hearthstone-quality-home-heating-products-inc--green-mountain-80-8680",
+        "model": "Green Mountain 80 8680",
+        "manufacturer": "Hearthstone Quality Home Heating Products Inc.",
+        "emission": 0.67,
+        "emissionUnit": "g/hr",
+        "efficiency": 81.0,
+        "url": "/stoves/hearthstone-quality-home-heating-products-inc/green-mountain-80-8680/"
+      },
+      {
+        "id": "room--blaze-king-industries-inc--king-ke40",
+        "model": "King KE40",
+        "manufacturer": "Blaze King Industries, Inc.",
+        "emission": 1.0,
+        "emissionUnit": "g/hr",
+        "efficiency": 81.0,
+        "url": "/stoves/blaze-king-industries-inc/king-ke40/"
+      }
+    ],
+    "highestEfficiencyPellet": [
+      {
+        "id": "room--smg-hearth-and-home-llc--hp42-alpine",
+        "model": "HP42-Alpine",
+        "manufacturer": "SMG Hearth and Home, LLC",
+        "emission": 1.1,
+        "emissionUnit": "g/hr",
+        "efficiency": 86.0,
+        "url": "/stoves/smg-hearth-and-home-llc/hp42-alpine/"
+      },
+      {
+        "id": "room--enerco-group-inc--ps20w-model-line-ps20w-ps20wts-c30xl-h30xl-j30xl-n30xl-c20w-h20w-j20w-n20w-c20wt",
+        "model": "PS20W Model Line: PS20W, PS20WTS, C30XL, H30XL, J30XL, N30XL, C20W, H20W, J20W, N20W, C20WTS, H20WTS, J20WTS, and N20WTS",
+        "manufacturer": "Enerco Group, Inc.",
+        "emission": 1.2,
+        "emissionUnit": "g/hr",
+        "efficiency": 85.0,
+        "url": "/stoves/enerco-group-inc/ps20w-model-line-ps20w-ps20wts-c30xl-h30xl-j30xl-n30xl-c20w-h20w-j20w-n20w-c20wt/"
+      },
+      {
+        "id": "room--enerco-group-inc--ps60w-model-line-c60w-n60wts-h80xl-c80xl-j80xl-n80xl-j60w-n60w-h60w-c60wts-h60wt",
+        "model": "PS60W Model Line: C60W, N60WTS, H80XL, C80XL, J80XL, N80XL, J60W, N60W, H60W, C60WTS, H60WTS, J60WTS, and PS60WTS",
+        "manufacturer": "Enerco Group, Inc.",
+        "emission": 1.3,
+        "emissionUnit": "g/hr",
+        "efficiency": 84.0,
+        "url": "/stoves/enerco-group-inc/ps60w-model-line-c60w-n60wts-h80xl-c80xl-j80xl-n80xl-j60w-n60w-h60w-c60wts-h60wt/"
+      },
+      {
+        "id": "room--laminox--giulia-air-valentina-air-n",
+        "model": "Giulia Air, Valentina Air N",
+        "manufacturer": "Laminox",
+        "emission": 1.6,
+        "emissionUnit": "g/hr",
+        "efficiency": 84.0,
+        "url": "/stoves/laminox/giulia-air-valentina-air-n/"
+      },
+      {
+        "id": "room--flampoint-energ--europa-75a-rafael-55a",
+        "model": "Europa 75a, Rafael 55a",
+        "manufacturer": "FlamPoint EnerG",
+        "emission": 0.08,
+        "emissionUnit": "g/hr",
+        "efficiency": 83.0,
+        "url": "/stoves/flampoint-energ/europa-75a-rafael-55a/"
+      }
+    ]
+  },
+  "efficiencyAtLeast75": {
+    "currentRoomRows": 151,
+    "currentRoomRowsWithEfficiency": 265,
+    "currentCentralRows": 30,
+    "currentCentralRowsWithEfficiency": 41
+  }
+}

@@ -1,0 +1,51 @@
+---
+import Base from "../../layouts/Base.astro";
+import { catalog, stovesForBrand } from "../../lib/catalog.js";
+import { countNoun, metaDescription } from "../../lib/format.js";
+
+const aliases = catalog.brands.filter((brand) => brand.role === "alias");
+const primary = catalog.brands.filter((brand) => brand.role === "primary");
+const description = metaDescription([
+  `StoveRatings lists ${countNoun(catalog.brands.length, "brand hub")} from the EPA snapshot dated ${catalog.meta.snapshotDate}.`,
+  `${countNoun(aliases.length, "hub")} uses a retail name that appears in the EPA model text or manufacturer string, and the other hubs use the EPA manufacturer name.`,
+]);
+
+function blurb(brand) {
+  const lines = stovesForBrand(brand.slug);
+  const current = lines.filter((stove) => stove.current).length;
+  return `${current} currently certified, ${lines.length - current} previously certified`;
+}
+---
+
+<Base
+  title="Brands in the EPA stove list"
+  description={description}
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/brands/", label: "Brands" },
+  ]}
+>
+  <div class="wrap">
+    <h1>Brands in the EPA stove list</h1>
+    <p>{description}</p>
+    <h2>Retail names EPA filed under another manufacturer</h2>
+    <p>These hubs include a model line only when the EPA text contains the brand. Other rows stay on the manufacturer hub.</p>
+    <div class="cards">
+      {aliases.map((brand) => (
+        <a class="card" href={brand.url}>
+          <strong>{brand.name}</strong>
+          <span class="small">{blurb(brand)}</span>
+        </a>
+      ))}
+    </div>
+    <h2>EPA manufacturer names</h2>
+    <div class="cards">
+      {primary.map((brand) => (
+        <a class="card" href={brand.url}>
+          <strong>{brand.name}</strong>
+          <span class="small">{blurb(brand)}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</Base>

@@ -1,0 +1,42 @@
+# StoveRatings
+
+> EPA test numbers for certified wood and pellet stoves. StoveRatings does not score stoves.
+
+StoveRatings is an independent site operated by Three Pines Company LLC. It is not affiliated with the U.S. Environmental Protection Agency and does not use EPA logos. The certification figures are a U.S. government work, public domain, from a snapshot of the EPA Certified Wood Heater Database saved on 2026-10-23.
+
+The build does not fetch cfpub.epa.gov. That host asks automated clients not to crawl it. Refreshes are manual saves of the result pages.
+
+## Datasets
+
+- Room heaters, all rows including previously certified: 1,444
+- Room heaters, currently certified: 265
+- Central heaters, all rows: 192
+- Central heaters, currently certified: 41
+- Currently certified means the row was in EPA's in-production result on the snapshot date. The export has no certification date.
+- Blank cells are missing, not zero.
+
+## URLs
+
+- Finder: https://stoveratings.com/
+- Name lookup: https://stoveratings.com/lookup/
+- Brands: https://stoveratings.com/brands/
+- Model lines: https://stoveratings.com/stoves/{manufacturer}/{model}/
+- Catalytic wood stoves: https://stoveratings.com/catalytic-wood-stoves/
+- Non-catalytic wood stoves: https://stoveratings.com/non-catalytic-wood-stoves/
+- Hybrid wood stoves: https://stoveratings.com/hybrid-wood-stoves/
+- Pellet stoves: https://stoveratings.com/pellet-stoves/
+- Highest HHV efficiency, wood: https://stoveratings.com/most-efficient-wood-stoves/
+- Highest HHV efficiency, pellet: https://stoveratings.com/most-efficient-pellet-stoves/
+- Lowest wood-stove emission rates: https://stoveratings.com/cleanest-burning-wood-stoves/
+- Catalytic and non-catalytic: https://stoveratings.com/catalytic-vs-non-catalytic/
+- Inserts named in the model text: https://stoveratings.com/wood-stove-inserts/ and https://stoveratings.com/pellet-stove-inserts/
+- Hydronic heaters: https://stoveratings.com/outdoor-wood-boilers/
+- Forced-air furnaces: https://stoveratings.com/wood-furnaces/
+- Pellet hydronic heaters: https://stoveratings.com/pellet-boilers/
+- Firewood heat values (extension table, not EPA): https://stoveratings.com/firewood-btu-chart/
+- Size calculator (our formula, shown on the page): https://stoveratings.com/tools/stove-size-calculator/
+- Pellet and wood figures: https://stoveratings.com/pellet-stove-vs-wood-stove/
+- Tax credit status: https://stoveratings.com/wood-stove-tax-credit/
+- Methodology: https://stoveratings.com/methodology/
+
+Historical model lines that list none of efficiency, firebox, or CO are not indexed. Comparison pages are not indexed.

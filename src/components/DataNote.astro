@@ -1,0 +1,10 @@
+---
+const { items = [] } = Astro.props;
+---
+
+<aside class="data-note" id="about-this-data">
+  <p class="chip">About this data</p>
+  <ul>
+    {items.map((item) => <li>{item}</li>)}
+  </ul>
+</aside>

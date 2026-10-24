@@ -1,0 +1,15 @@
+---
+import Base from "../layouts/Base.astro";
+import { contactEmail, site } from "../lib/site.js";
+
+const email = contactEmail();
+const description = `Contact ${site.name} by email. The site is operated by ${site.legalName}.`;
+---
+
+<Base title="Contact" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/contact/", label: "Contact" }]}>
+  <div class="wrap prose">
+    <h1>Contact</h1>
+    <p>Email is the only contact method. Write to <a href={`mailto:${email}`}>{email}</a>.</p>
+    <p>{site.legalName} operates StoveRatings. For a certification question about a particular stove, the listing to check is the <a href={site.epaDatabaseUrl}>EPA Certified Wood Heater Database</a>. This site cannot certify a stove.</p>
+  </div>
+</Base>

@@ -1,0 +1,200 @@
+---
+import Answer from "../../../components/Answer.astro";
+import DataNote from "../../../components/DataNote.astro";
+import Base from "../../../layouts/Base.astro";
+import { modelSentences } from "../../../lib/answers.js";
+import { catalog, stoveById } from "../../../lib/catalog.js";
+import {
+  emissionText,
+  efficiencyText,
+  fireboxText,
+  formatBtu,
+  formatNumber,
+  heatText,
+  metaDescription,
+  pageTitle,
+  statusLabel,
+} from "../../../lib/format.js";
+
+export function getStaticPaths() {
+  return catalog.stoves.map((stove) => ({
+    params: { manufacturer: stove.manufacturerSlug, model: stove.modelSlug },
+    props: { stove },
+  }));
+}
+
+const { stove } = Astro.props;
+const brand = catalog.brandBySlug.get(stove.primarySlug);
+const sentences = modelSentences(stove, catalog.meta.snapshotDate);
+const description = metaDescription(sentences);
+const siblings = stove.siblingIds.slice(0, 40).map((id) => stoveById.get(id)).filter(Boolean);
+
+function linked(ids) {
+  return ids.map((id) => stoveById.get(id)).filter(Boolean);
+}
+const nearestEmission = linked(stove.nearest.emission);
+const nearestEfficiency = linked(stove.nearest.efficiency);
+const nearestBtu = linked(stove.nearest.btu);
+const notes = [
+  "Each row below is one EPA result row for this model line. Figures are copied from that row.",
+  stove.fireboxStatus === "not_applicable"
+    ? "EPA lists firebox volume as not applicable on the primary row."
+    : "A blank firebox, efficiency, CO, or fuel cell is shown as Not listed, not as zero.",
+  stove.insertFlag
+    ? "Name indicates insert: the model text matches insert or -I. EPA has no insert field in this export."
+    : "The model text does not match the insert name check (insert or -I). That is not a statement that the stove is or is not an insert.",
+  "Currently certified means the row was in EPA's in-production result on the snapshot date. No certification date was in the export.",
+];
+---
+
+<Base
+  title={pageTitle(stove.model)}
+  description={description}
+  noindex={!stove.indexable}
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/brands/", label: "Brands" },
+    brand ? { href: brand.url, label: brand.name } : { href: "/brands/", label: "Manufacturer" },
+    { href: stove.url, label: pageTitle(stove.model, 48) },
+  ]}
+>
+  <div class="wrap">
+    <h1>{stove.model}</h1>
+    <p>
+      <span class:list={["pill", stove.current ? "pill-current" : "pill-previous"]}>{statusLabel(stove.current)}</span>
+      {stove.isNew ? <span class="pill pill-previous">EPA marked New</span> : null}
+    </p>
+    <Answer sentences={sentences} />
+    <h2 id="specs">EPA rows</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>EPA result rows for this model line</caption>
+        <thead>
+          <tr>
+            <th scope="col">Field</th>
+            {stove.tests.map((test, index) => <th scope="col">Row {index + 1}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Status</th>
+            {stove.tests.map((test) => <td>{statusLabel(test.current)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">Type</th>
+            {stove.tests.map((test) => <td>{test.type || "Not listed"}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">Subtype</th>
+            {stove.tests.map((test) => <td>{test.subtype || "Not listed"}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">Emission</th>
+            {stove.tests.map((test) => <td class="num">{emissionText(test.emission, test.emissionUnit) || "Not listed"}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">HHV efficiency</th>
+            {stove.tests.map((test) => <td class="num">{test.efficiency == null ? "Not listed" : efficiencyText(test.efficiency)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">Heat output</th>
+            {stove.tests.map((test) => <td class="num">{heatText(test)}</td>)}
+          </tr>
+          {stove.category === "central" ? (
+            <tr>
+              <th scope="row">Heat output maximum</th>
+              {stove.tests.map((test) => <td class="num">{test.btuMax == null ? "Not listed" : `${formatBtu(test.btuMax)} BTU/hr`}</td>)}
+            </tr>
+          ) : null}
+          <tr>
+            <th scope="row">Firebox</th>
+            {stove.tests.map((test) => <td class="num">{fireboxText(test)}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">CO</th>
+            {stove.tests.map((test) => <td class="num">{test.co == null ? "Not listed" : `${formatNumber(test.co, 3)} g/min`}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">Certified fuel</th>
+            {stove.tests.map((test) => <td>{test.fuel || "Not listed"}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">Test method</th>
+            {stove.tests.map((test) => <td>{test.testMethod || "Not listed"}</td>)}
+          </tr>
+          <tr>
+            <th scope="row">2020 NSPS</th>
+            {stove.tests.map((test) => <td>{test.nsps2020 || "Not listed"}</td>)}
+          </tr>
+          {stove.category === "central" ? (
+            <tr>
+              <th scope="row">Thermal storage</th>
+              {stove.tests.map((test) => <td>{test.thermalStorage || "Not listed"}</td>)}
+            </tr>
+          ) : null}
+        </tbody>
+      </table>
+    </div>
+    <h2 id="retail-names">Retail names in the model line</h2>
+    <p>These are the names split from EPA's model cell. They are aliases for this line, not separate listings.</p>
+    <ul>
+      {stove.retailNames.map((name) => <li>{name}</li>)}
+    </ul>
+    <h2 id="siblings">Other model lines from this manufacturer</h2>
+    {
+      siblings.length ? (
+        <ul>
+          {siblings.map((other) => (
+            <li>
+              <a href={other.url}>{other.model}</a>
+              {" "}
+              <span class="small">{statusLabel(other.current)}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No other model line in this snapshot uses this manufacturer string.</p>
+      )
+    }
+    {
+      stove.siblingIds.length > siblings.length && brand ? (
+        <p>
+          <a href={brand.url}>All model lines on the {brand.name} hub</a>.
+          This page lists {siblings.length} of the other {stove.siblingIds.length} lines.
+        </p>
+      ) : null
+    }
+    <h2 id="similar">Nearest model lines by EPA figures</h2>
+    <p>Nearest means the smallest absolute difference on that EPA figure, among other {stove.type || "heater"} model lines that list it. Ties are ordered by model name.</p>
+    <h3>Emission</h3>
+    {nearestEmission.length ? (
+      <ul>
+        {nearestEmission.map((other) => (
+          <li><a href={other.url}>{other.model}</a> — {emissionText(other.emission, other.emissionUnit)}</li>
+        ))}
+      </ul>
+    ) : <p>EPA does not list an emission rate to compare, or no other line lists one.</p>}
+    <h3>HHV efficiency</h3>
+    {nearestEfficiency.length ? (
+      <ul>
+        {nearestEfficiency.map((other) => (
+          <li><a href={other.url}>{other.model}</a> — {efficiencyText(other.efficiency)}</li>
+        ))}
+      </ul>
+    ) : <p>EPA does not list an HHV efficiency to compare, or no other line lists one.</p>}
+    <h3>Heat output</h3>
+    {nearestBtu.length ? (
+      <ul>
+        {nearestBtu.map((other) => (
+          <li><a href={other.url}>{other.model}</a> — {heatText(other)}</li>
+        ))}
+      </ul>
+    ) : <p>EPA does not list a heat-output figure to compare, or no other line lists one.</p>}
+    <DataNote items={notes} />
+    <p>
+      {brand ? <a href={brand.url}>{brand.name} hub</a> : null}
+      {" · "}
+      <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>
+    </p>
+  </div>
+</Base>

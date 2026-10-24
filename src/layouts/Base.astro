@@ -1,0 +1,79 @@
+---
+import "../styles/global.css";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Breadcrumbs from "../components/Breadcrumbs.astro";
+import { site } from "../lib/site.js";
+
+const {
+  title,
+  description,
+  home = false,
+  noindex = false,
+  canonicalPath = "",
+  breadcrumbs = [],
+  jsonLd = [],
+} = Astro.props;
+
+const fullTitle = home ? title : `${title} · ${site.name}`;
+const canonical = new URL(canonicalPath || Astro.url.pathname, site.url).href;
+const graph = [];
+if (breadcrumbs.length) {
+  graph.push({
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.label,
+      item: new URL(item.href, site.url).href,
+    })),
+  });
+}
+for (const entry of jsonLd) graph.push(entry);
+const structured = graph.length
+  ? JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c")
+  : "";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{fullTitle}</title>
+    <meta name="description" content={description}>
+    <link rel="canonical" href={canonical}>
+    {noindex ? <meta name="robots" content="noindex"> : null}
+    <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/roboto-slab-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+    <meta name="theme-color" content="#F5F1EA">
+    <meta property="og:title" content={fullTitle}>
+    <meta property="og:description" content={description}>
+    <meta property="og:url" content={canonical}>
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content={site.name}>
+    <meta property="og:locale" content={site.locale}>
+    <meta property="og:image" content={`${site.url}/og-image.png`}>
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="StoveRatings, EPA test numbers for certified wood and pellet stoves.">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={fullTitle}>
+    <meta name="twitter:description" content={description}>
+    <meta name="twitter:image" content={`${site.url}/og-image.png`}>
+    <link rel="icon" href="/favicon.ico" sizes="48x48">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/site.webmanifest">
+    {structured ? <script type="application/ld+json" set:html={structured} /> : null}
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <Header />
+    <Breadcrumbs items={breadcrumbs} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

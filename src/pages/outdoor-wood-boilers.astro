@@ -1,0 +1,40 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import { centralKind, splitCurrent } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const fuel = catalog.stats.centralAllByFuel;
+const cord = fuel["Hydronic Heater|Cord Wood"] || 0;
+const pellets = fuel["Hydronic Heater|Wood Pellets"] || 0;
+const crib = fuel["Hydronic Heater|Crib Wood"] || 0;
+const currentRows = catalog.stats.centralCurrentByType["Hydronic Heater"] || 0;
+const groups = splitCurrent(centralKind(catalog.stoves, (stove) => stove.type === "Hydronic Heater" && stove.fuel !== "Wood Pellets").current.concat(
+  centralKind(catalog.stoves, (stove) => stove.type === "Hydronic Heater" && stove.fuel !== "Wood Pellets").previous,
+));
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `EPA lists ${catalog.stats.centralAllByType["Hydronic Heater"]} hydronic-heater rows, and ${currentRows} of those rows are currently certified.`,
+  `Of all hydronic rows, ${cord} list cord wood, ${pellets} list wood pellets, and ${crib} list crib wood.`,
+  "The EPA category is Hydronic Heater. The export does not say outdoor or indoor.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Hydronic heaters in the EPA list" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/outdoor-wood-boilers/", label: "Hydronic heaters" }]} jsonLd={[articleLd("EPA hydronic heaters", description, "/outdoor-wood-boilers/", date)]}>
+  <div class="wrap">
+    <h1>Hydronic heaters (the EPA list shoppers call outdoor wood boilers)</h1>
+    <Answer sentences={sentences} />
+    <p>This page lists hydronic heaters whose certified fuel is not wood pellets. Pellet hydronic rows are on <a href="/pellet-boilers/">pellet boilers</a>. Forced-air rows are on <a href="/wood-furnaces/">wood furnaces</a>.</p>
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified hydronic heaters that do not list wood pellets" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified hydronic heaters that do not list wood pellets" },
+    ]} />
+    <DataNote items={["Emission rates for central heaters are annual averages in pounds per million BTU, not the grams-per-hour unit used for room heaters.", "Do not compare a lb/mmBTU figure with a g/hr figure as if they were the same measurement."]} />
+  </div>
+</Base>

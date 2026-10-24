@@ -1,0 +1,19 @@
+---
+import StoveTable from "./StoveTable.astro";
+
+const { sections = [] } = Astro.props;
+---
+
+{
+  sections.map((section) => (
+    <section>
+      {section.heading ? <h2>{section.heading}</h2> : null}
+      {section.intro ? <p>{section.intro}</p> : null}
+      {section.stoves.length ? (
+        <StoveTable stoves={section.stoves} caption={section.caption} showManufacturer={section.showManufacturer !== false} />
+      ) : (
+        <p>EPA lists no model lines in this group for the snapshot.</p>
+      )}
+    </section>
+  ))
+}

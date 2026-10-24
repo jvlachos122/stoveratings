@@ -1,0 +1,73 @@
+---
+import Answer from "../../components/Answer.astro";
+import DataNote from "../../components/DataNote.astro";
+import Base from "../../layouts/Base.astro";
+import { catalog } from "../../lib/catalog.js";
+import { metaDescription } from "../../lib/format.js";
+import { webAppLd } from "../../lib/schema.js";
+
+const sentences = [
+  "StoveRatings' planning range is heated square feet times a BTU-per-hour factor that depends on the band you pick.",
+  "For 2,000 square feet in the moderate band, 2,000 times 30 is 60,000 BTU/hr and 2,000 times 45 is 90,000 BTU/hr.",
+  "Those factors are ours, for an 8-foot ceiling, and they are not EPA figures or a room-by-room heat-loss calculation.",
+];
+const description = metaDescription(sentences);
+const factors = [
+  ["Mild", "Winters usually stay above about 20°F", "20", "30"],
+  ["Moderate", "Winters often fall between 0°F and 20°F", "30", "45"],
+  ["Cold", "Winters often fall below 0°F", "45", "60"],
+  ["Severe", "Long stretches well below 0°F, or a drafty building", "60", "75"],
+];
+---
+
+<Base title="Stove size calculator" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/tools/stove-size-calculator/", label: "Stove size calculator" }]} jsonLd={[webAppLd("Stove size calculator", description, "/tools/stove-size-calculator/")]}>
+  <div class="wrap">
+    <h1>Stove size calculator</h1>
+    <Answer sentences={sentences} />
+    <form id="size-form">
+      <div class="filters">
+        <label>Heated floor area (square feet)
+          <input id="sqft" name="sqft" type="number" min="1" max="20000" value="2000" inputmode="numeric" required>
+        </label>
+        <label>Planning band
+          <select id="climate" name="climate">
+            <option value="mild">Mild, 20–30 BTU/hr per sq ft</option>
+            <option value="moderate" selected>Moderate, 30–45 BTU/hr per sq ft</option>
+            <option value="cold">Cold, 45–60 BTU/hr per sq ft</option>
+            <option value="severe">Severe, 60–75 BTU/hr per sq ft</option>
+          </select>
+        </label>
+      </div>
+      <button type="submit">Calculate</button>
+    </form>
+    <p id="size-result" class="result" aria-live="polite">2,000 sq ft × 30 = 60,000 BTU/hr, and 2,000 sq ft × 45 = 90,000 BTU/hr. That is StoveRatings' planning range for this band, not an EPA figure.</p>
+    <h2>The factors</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>StoveRatings planning factors, BTU per hour per square foot of heated floor</caption>
+        <thead>
+          <tr>
+            <th scope="col">Band</th>
+            <th scope="col">When we mean it</th>
+            <th scope="col" class="num">Low factor</th>
+            <th scope="col" class="num">High factor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {factors.map((row) => (
+            <tr>
+              <th scope="row">{row[0]}</th>
+              <td>{row[1]}</td>
+              <td class="num">{row[2]}</td>
+              <td class="num">{row[3]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>Formula: low BTU/hr = square feet × low factor. High BTU/hr = square feet × high factor. Compare a result with the heat-output range EPA listed for a model, which is a lab range, not the heat that will arrive in the room. The EPA snapshot date is {catalog.meta.snapshotDate}.</p>
+    <p>Use the <a href="/">finder</a> to see those EPA heat-output ranges.</p>
+    <DataNote items={["This sketch assumes the stove heats the whole floor area and the ceiling is about 8 feet.", "Insulation, layout, and a tall room change the result. A heat-loss calculation is the right tool for a purchase.", "StoveRatings does not sell stoves and does not set these factors from EPA data."]} />
+  </div>
+</Base>
+<script src="/scripts/calculator.js" defer></script>

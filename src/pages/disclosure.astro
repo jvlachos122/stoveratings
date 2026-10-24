@@ -1,0 +1,15 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../lib/site.js";
+
+const description = `StoveRatings has no affiliate links and no ads. ${site.legalName} operates the site.`;
+---
+
+<Base title="Disclosure" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/disclosure/", label: "Disclosure" }]}>
+  <div class="wrap prose">
+    <h1>Disclosure</h1>
+    <p>StoveRatings is operated by {site.legalName}.</p>
+    <p>There are no affiliate links and no advertisements on this site. Nothing has been applied for. If that changes, this page will say so on the pages that carry a paid link, and those links will be marked.</p>
+    <p>Lists are ordered by an EPA number when they are ordered at all. A future paid link would not change that order.</p>
+  </div>
+</Base>

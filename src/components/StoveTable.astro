@@ -1,0 +1,45 @@
+---
+import { emissionUnitShort, fireboxText, formatNumber, heatText, statusLabel } from "../lib/format.js";
+
+const { stoves = [], caption, showManufacturer = true } = Astro.props;
+const unit = stoves[0]?.emissionUnit || "g/hr";
+---
+
+<div class="table-wrap">
+  <table>
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Model line</th>
+        {showManufacturer ? <th scope="col">EPA manufacturer</th> : null}
+        <th scope="col">Status</th>
+        <th scope="col" class="num">Emission ({emissionUnitShort(unit)})</th>
+        <th scope="col" class="num">HHV efficiency</th>
+        <th scope="col" class="num">Heat output</th>
+        <th scope="col" class="num">Firebox</th>
+        <th scope="col">Fuel</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        stoves.map((stove) => (
+          <tr>
+            <th scope="row">
+              <a href={stove.url}>{stove.model}</a>
+              {stove.insertFlag ? <div class="small">Name indicates insert</div> : null}
+            </th>
+            {showManufacturer ? <td>{stove.manufacturer || "Not listed"}</td> : null}
+            <td>
+              <span class:list={["pill", stove.current ? "pill-current" : "pill-previous"]}>{statusLabel(stove.current)}</span>
+            </td>
+            <td class="num">{stove.emission == null ? "Not listed" : formatNumber(stove.emission, 3)}</td>
+            <td class="num">{stove.efficiency == null ? "Not listed" : `${formatNumber(stove.efficiency, 2)}%`}</td>
+            <td class="num">{heatText(stove)}</td>
+            <td class="num">{fireboxText(stove)}</td>
+            <td>{stove.fuel || "Not listed"}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

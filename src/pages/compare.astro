@@ -1,0 +1,54 @@
+---
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { webAppLd } from "../lib/schema.js";
+
+const description = `Compare two EPA model lines from the ${catalog.meta.snapshotDate} snapshot. Emission rates and HHV efficiencies are EPA's figures, shown side by side.`;
+---
+
+<Base
+  title="Compare two model lines"
+  description={description}
+  noindex={true}
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/compare/", label: "Compare" },
+  ]}
+  jsonLd={[webAppLd("Compare two EPA model lines", description, "/compare/")]}
+>
+  <div class="wrap">
+    <h1>Compare two model lines</h1>
+    <p>
+      Pick two model lines from this snapshot. The table shows the primary EPA row for each one.
+      When a model line has more than one EPA row, the model page lists every row.
+    </p>
+    <form id="compare-form">
+      <div class="filters">
+        <div>
+          <label>First model line
+            <input id="compare-a" type="text" autocomplete="off">
+          </label>
+          <ul id="compare-a-list" class="suggestions"></ul>
+        </div>
+        <div>
+          <label>Second model line
+            <input id="compare-b" type="text" autocomplete="off">
+          </label>
+          <ul id="compare-b-list" class="suggestions"></ul>
+        </div>
+      </div>
+      <button type="submit">Compare</button>
+    </form>
+    <p id="compare-status" class="small" aria-live="polite">Loading model lines…</p>
+    <div id="compare-result" class="table-wrap"></div>
+    <DataNote
+      items={[
+        "This page is not indexed. It does not rank the two stoves.",
+        "Blank figures stay Not listed. They are not zeros.",
+        `Snapshot date: ${catalog.meta.snapshotDate}.`,
+      ]}
+    />
+  </div>
+</Base>
+<script src="/scripts/compare.js" defer></script>

@@ -1,0 +1,110 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Finder from "../components/Finder.astro";
+import Base from "../layouts/Base.astro";
+import { homeSentences } from "../lib/answers.js";
+import { catalog } from "../lib/catalog.js";
+import { emissionUnitShort, formatNumber, metaDescription } from "../lib/format.js";
+import { datasetLd, webAppLd } from "../lib/schema.js";
+
+const sentences = homeSentences(catalog.stats);
+const crumbs = [{ href: "/", label: "Home" }];
+const description = metaDescription(sentences);
+const low = catalog.stats.highlights.lowestEmissionWood;
+const changes = catalog.changes;
+const added = changes.addedToCurrent || [];
+const dropped = changes.droppedFromCurrent || [];
+
+---
+
+<Base
+  home
+  title="StoveRatings: EPA test numbers for certified wood and pellet stoves"
+  description={description}
+  breadcrumbs={crumbs}
+  jsonLd={[
+    datasetLd(catalog.meta),
+    webAppLd(
+      "Certified stove finder",
+      "Filter EPA-certified wood and pellet stove model lines by type, emission rate, and HHV efficiency.",
+      "/",
+    ),
+  ]}
+>
+  <div class="wrap">
+    <h1>EPA test numbers for certified wood and pellet stoves</h1>
+    <p class="muted">Every figure on this page is from the EPA Certified Wood Heater Database. StoveRatings does not score stoves.</p>
+    <Answer sentences={sentences} />
+    <Finder />
+    <h2>Recently added or no longer current</h2>
+    {
+      added.length || dropped.length ? (
+        <>
+          <p>{changes.note}</p>
+          {added.length ? (
+            <>
+              <h3>Newly listed as currently certified</h3>
+              <ul>
+                {added.slice(0, 20).map((item) => (
+                  <li><a href={item.url}>{item.model}</a> — {item.manufacturer || "manufacturer not listed"}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+          {dropped.length ? (
+            <>
+              <h3>No longer listed as currently certified</h3>
+              <ul>
+                {dropped.slice(0, 20).map((item) => (
+                  <li><a href={item.url}>{item.model}</a> — {item.manufacturer || "manufacturer not listed"}</li>
+                ))}
+              </ul>
+            </>
+          ) : null}
+        </>
+      ) : (
+        <p>
+          This is the first snapshot published here ({catalog.meta.snapshotDate}). No model line is listed as added or dropped, because there is no earlier snapshot to compare.
+        </p>
+      )
+    }
+    <h2>Lowest listed emission rates</h2>
+    <p>These are the five currently certified wood-stove model lines with the lowest EPA emission rates in this snapshot. A lower grams-per-hour figure is the test result EPA listed. It is not a StoveRatings score.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Five currently certified wood stoves with the lowest listed emission rates</caption>
+        <thead>
+          <tr>
+            <th scope="col">Model line</th>
+            <th scope="col">EPA manufacturer</th>
+            <th scope="col" class="num">Emission (g/hr)</th>
+            <th scope="col" class="num">HHV efficiency</th>
+          </tr>
+        </thead>
+        <tbody>
+          {low.map((item) => (
+            <tr>
+              <th scope="row"><a href={item.url}>{item.model}</a></th>
+              <td>{item.manufacturer}</td>
+              <td class="num">{formatNumber(item.emission, 3)} {emissionUnitShort(item.emissionUnit)}</td>
+              <td class="num">{item.efficiency == null ? "Not listed" : `${formatNumber(item.efficiency, 2)}%`}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="actions">
+      <a class="button" href="/cleanest-burning-wood-stoves/">Full lowest-emission list</a>
+      <a class="button button-ghost" href="/most-efficient-wood-stoves/">Highest HHV efficiency</a>
+      <a class="button button-ghost" href="/lookup/">Look up a stove name</a>
+    </div>
+    <DataNote
+      items={[
+        "Currently certified means the row was in EPA's in-production result on the snapshot date. This export has no certification date.",
+        "Blank cells are not shown as zero. The finder says Not listed.",
+        "Retail names inside a model line are aliases EPA wrote in that cell. They are not separate certifications.",
+      ]}
+    />
+  </div>
+</Base>

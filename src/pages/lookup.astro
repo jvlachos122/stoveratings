@@ -1,0 +1,49 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { formatCount, metaDescription } from "../lib/format.js";
+import { webAppLd } from "../lib/schema.js";
+
+const names = catalog.stats.retailNames.roomDistinct;
+const sentences = [
+  `This lookup searches ${formatCount(catalog.stats.retailNames.roomTokens)} retail names split from ${formatCount(catalog.stats.modelLines.room)} room-heater model lines, ${formatCount(names)} of them distinct, plus central-heater names.`,
+  "EPA publishes a model line, often with several retail names in one cell. A name that is not in that cell will not match, even if a dealer sells it.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${catalog.meta.snapshotDate}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base
+  title="Is my stove EPA certified?"
+  description={description}
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/lookup/", label: "Lookup" },
+  ]}
+  jsonLd={[webAppLd("Stove certification lookup", description, "/lookup/")]}
+>
+  <div class="wrap">
+    <h1>Is my stove EPA certified?</h1>
+    <Answer sentences={sentences} />
+    <label>Stove name
+      <input id="lookup-q" type="search" placeholder="Escape 1500, HP22, Ashford">
+    </label>
+    <p id="lookup-status" class="small" aria-live="polite">Loading names…</p>
+    <ul id="lookup-results" class="stack"></ul>
+    <h2>If the name is not found</h2>
+    <p>
+      EPA's field is a model line, not a catalog number from a store. Search a shorter token, then open the model line and read the retail names.
+      You can also use the <a href="/">finder</a> or the <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>.
+    </p>
+    <DataNote
+      items={[
+        "A match means the name appears in an EPA model-line cell in this snapshot. It does not mean StoveRatings inspected the stove.",
+        "Currently certified means that model line was in EPA's in-production result on the snapshot date.",
+        "Names are split on a colon, then on commas and semicolons. Parentheses are removed. Text EPA joined with a slash may stay one name.",
+      ]}
+    />
+  </div>
+</Base>
+<script src="/scripts/lookup.js" defer></script>

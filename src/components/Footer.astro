@@ -1,0 +1,63 @@
+---
+import { site } from "../lib/site.js";
+import { catalog } from "../lib/catalog.js";
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h2>About the data</h2>
+        <p class="small">
+          Emission rates and efficiencies are the figures EPA published. StoveRatings does not score stoves.
+          Snapshot {catalog.meta.snapshotDate}.
+        </p>
+      </div>
+      <div>
+        <h2>Look up</h2>
+        <ul>
+          <li><a href="/">Certified stove finder</a></li>
+          <li><a href="/lookup/">Is my stove listed?</a></li>
+          <li><a href="/brands/">Brands</a></li>
+          <li><a href="/compare/">Compare two model lines</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Lists</h2>
+        <ul>
+          <li><a href="/catalytic-wood-stoves/">Catalytic wood stoves</a></li>
+          <li><a href="/non-catalytic-wood-stoves/">Non-catalytic wood stoves</a></li>
+          <li><a href="/hybrid-wood-stoves/">Hybrid wood stoves</a></li>
+          <li><a href="/pellet-stoves/">Pellet stoves</a></li>
+          <li><a href="/most-efficient-wood-stoves/">Highest HHV efficiency</a></li>
+          <li><a href="/cleanest-burning-wood-stoves/">Lowest emission rates</a></li>
+          <li><a href="/wood-stove-inserts/">Wood inserts by name</a></li>
+          <li><a href="/outdoor-wood-boilers/">Hydronic heaters</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Reference</h2>
+        <ul>
+          <li><a href="/firewood-btu-chart/">Firewood heat values</a></li>
+          <li><a href="/tools/stove-size-calculator/">Stove size calculator</a></li>
+          <li><a href="/pellet-stove-vs-wood-stove/">Pellet and wood</a></li>
+          <li><a href="/catalytic-vs-non-catalytic/">Catalytic and non-catalytic</a></li>
+          <li><a href="/wood-stove-tax-credit/">Tax credit status</a></li>
+          <li><a href="/methodology/">Methodology</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Site</h2>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/privacy/">Privacy</a></li>
+          <li><a href="/disclosure/">Disclosure</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="small operator">
+      Operated by <a href="/about/#who-runs-this-site">{site.legalName}</a> · Data: US EPA · Not affiliated with EPA.
+    </p>
+  </div>
+</footer>

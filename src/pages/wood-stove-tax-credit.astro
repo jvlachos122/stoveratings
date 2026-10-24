@@ -1,0 +1,53 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import { articleLd, faqLd } from "../lib/schema.js";
+
+const date = catalog.meta.snapshotDate;
+const room = catalog.stats.efficiencyAtLeast75;
+const faqs = [
+  {
+    question: "Is there a federal tax credit for a wood stove in 2026?",
+    answer: "The IRS says the section 25C energy efficient home improvement credit is not allowed for property placed in service after December 31, 2025. Section 25D, the residential clean energy credit, is not allowed for expenditures made after that date. This is not tax advice.",
+  },
+  {
+    question: "What efficiency did the biomass credit require?",
+    answer: "26 U.S.C. § 25C defined a qualifying biomass stove or boiler as one that burns biomass to heat a dwelling or water and has a thermal efficiency of at least 75 percent measured by the higher heating value of the fuel. Other rules also applied, including a qualified manufacturer identification number for property placed in service in 2025.",
+  },
+  {
+    question: "Does an EPA HHV efficiency of 75 percent mean a stove qualified?",
+    answer: `No. In this snapshot, ${room.currentRoomRows} of ${room.currentRoomRowsWithEfficiency} currently certified room-heater rows list HHV efficiency of at least 75 percent, and ${room.currentCentralRows} of ${room.currentCentralRowsWithEfficiency} currently certified central-heater rows do. That count is not a determination that any stove qualified.`,
+  },
+];
+const sentences = [
+  "The IRS says the section 25C credit is not allowed for property placed in service after December 31, 2025.",
+  "While it applied, a biomass stove or boiler needed thermal efficiency of at least 75 percent measured by higher heating value, along with other IRS rules.",
+  `${room.currentRoomRows} of ${room.currentRoomRowsWithEfficiency} currently certified room-heater rows in the ${date} EPA snapshot list HHV efficiency of at least 75 percent. That is not a statement that any stove qualified for a credit.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Wood stove tax credit status" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/wood-stove-tax-credit/", label: "Tax credit" }]} jsonLd={[articleLd("Wood stove tax credit status after 2025", description, "/wood-stove-tax-credit/", date), faqLd(faqs)]}>
+  <div class="wrap prose">
+    <h1>Wood stove tax credit status</h1>
+    <Answer sentences={sentences} />
+    <p>This page is a dated reading of public IRS and statute pages as of {date}. It is not tax advice, and StoveRatings does not decide whether a purchase qualified.</p>
+    {faqs.map((faq) => (
+      <section>
+        <h2>{faq.question}</h2>
+        <p>{faq.answer}</p>
+      </section>
+    ))}
+    <h2>Sources</h2>
+    <ul>
+      <li><a href="https://www.irs.gov/credits-deductions/energy-efficient-home-improvement-credit">IRS: Energy Efficient Home Improvement Credit</a></li>
+      <li><a href="https://www.irs.gov/newsroom/faqs-for-modification-of-sections-25c-25d-25e-30c-30d-45l-45w-and-179d-under-public-law-119-21-139-stat-72-july-4-2025-commonly-known-as-the-one-big-beautiful-bill-obbb">IRS: frequently asked questions on Public Law 119-21</a></li>
+      <li><a href="https://www.irs.gov/pub/irs-pdf/i5695.pdf">IRS: 2025 Instructions for Form 5695 (PDF)</a></li>
+      <li><a href="https://uscode.house.gov/view.xhtml?req=granuleid:USC-prelim-title26-section25C&num=0&edition=prelim">26 U.S.C. § 25C</a></li>
+    </ul>
+    <DataNote items={["The 75 percent count uses the HHV efficiency cell in the EPA snapshot. It is not the IRS qualified-manufacturer list.", "Section 25D is a different credit. The IRS FAQ says it is not allowed for expenditures made after December 31, 2025."]} />
+  </div>
+</Base>

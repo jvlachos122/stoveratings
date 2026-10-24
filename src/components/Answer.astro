@@ -1,0 +1,7 @@
+---
+const { sentences = [] } = Astro.props;
+---
+
+<div class="answer">
+  {sentences.map((sentence) => <p>{sentence}</p>)}
+</div>

@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../lib/site.js";
+import { catalog } from "../lib/catalog.js";
+
+const description = `StoveRatings publishes EPA certification figures for wood and pellet heaters. It is operated by ${site.legalName} and is not affiliated with the EPA.`;
+---
+
+<Base title="About" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/about/", label: "About" }]}>
+  <div class="wrap prose">
+    <h1>About StoveRatings</h1>
+    <p>StoveRatings shows the emission rates, HHV efficiencies, and heat outputs EPA published for certified wood and pellet heaters. The word ratings in the name means those EPA test numbers. This site does not score stoves, collect reviews, or rank by anything except the EPA figure a page says it uses.</p>
+    <p id="who-runs-this-site">StoveRatings is operated by {site.legalName}. It is an independent site. It is not affiliated with the U.S. Environmental Protection Agency, and EPA does not endorse it. EPA's name and data are used because the database is a U.S. government work in the public domain. This site does not use EPA logos.</p>
+    <p>The figures come from a snapshot of the EPA Certified Wood Heater Database saved on {catalog.meta.snapshotDate}. Read the <a href="/methodology/">methodology</a> for what the export contains and what it leaves out. The public database page is <a href={site.epaDatabaseUrl}>epa.gov's Certified Wood Heater Database</a>.</p>
+    <p>Questions: <a href="/contact/">contact</a>. Advertising and affiliate links: <a href="/disclosure/">disclosure</a>.</p>
+  </div>
+</Base>
