@@ -1,0 +1,32 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import { inserts } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const groups = inserts(catalog.stoves, "Wood Stove");
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `The model text matches insert or -I on ${catalog.stats.insert.modelLines} room-heater model lines, and ${groups.current.length} of the wood-stove lines are currently certified.`,
+  "EPA's export has no insert field, so this list is only that name check. Each row is labeled name indicates insert.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Wood stove inserts in EPA model names" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/wood-stove-inserts/", label: "Wood inserts" }]} jsonLd={[articleLd("Wood stove inserts indicated by EPA model names", description, "/wood-stove-inserts/", date)]}>
+  <div class="wrap">
+    <h1>Wood stove inserts named in the EPA list</h1>
+    <Answer sentences={sentences} />
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified wood-stove model lines whose names indicate an insert" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified wood-stove model lines whose names indicate an insert" },
+    ]} />
+    <p>Pellet names are on <a href="/pellet-stove-inserts/">pellet stove inserts</a>. The name check found {catalog.stats.insert.currentRows} currently certified room-heater rows and {catalog.stats.insert.rows} rows in the full room-heater file.</p>
+    <DataNote items={["The check is the regular expression /insert|\\b-I\\b/i on the model cell. A standalone letter I, as in some Quadra-Fire names, is not included.", "No manual overrides are applied in this snapshot. A name match is not EPA calling the stove an insert."]} />
+  </div>
+</Base>

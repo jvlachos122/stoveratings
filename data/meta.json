@@ -1,0 +1,15 @@
+{
+  "snapshotDate": "2026-10-23",
+  "source": "EPA Certified Wood Heater Database",
+  "sourceUrl": "https://www.epa.gov/compliance/epa-certified-wood-heater-database",
+  "license": "Public domain (U.S. government work)",
+  "operator": "Three Pines Company LLC",
+  "rows": {
+    "roomAll": 1444,
+    "roomCurrent": 265,
+    "centralAll": 192,
+    "centralCurrent": 41
+  },
+  "contentHash": "ec4a43f589b9d5bf8922c6c347f73cbc3fa51330ae8760cc1f6124a37d2cf2c0",
+  "note": "Parsed from files committed in data/raw. This build did not contact cfpub.epa.gov."
+}

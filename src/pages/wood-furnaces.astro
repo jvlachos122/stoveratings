@@ -1,0 +1,32 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import { centralKind } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const groups = centralKind(catalog.stoves, (stove) => stove.type === "Forced Air Furnace");
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `EPA lists ${catalog.stats.centralAllByType["Forced Air Furnace"]} forced-air furnace rows, and ${catalog.stats.centralCurrentByType["Forced Air Furnace"]} of those rows are currently certified.`,
+  "The EPA type is Forced Air Furnace. The table shows the certified fuel on each model line, including cord wood and wood pellets.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Forced-air wood furnaces" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/wood-furnaces/", label: "Wood furnaces" }]} jsonLd={[articleLd("EPA forced-air furnaces", description, "/wood-furnaces/", date)]}>
+  <div class="wrap">
+    <h1>Forced-air furnaces in the EPA list</h1>
+    <Answer sentences={sentences} />
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified forced-air furnace model lines" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified forced-air furnace model lines" },
+    ]} />
+    <p>Hydronic heaters are on <a href="/outdoor-wood-boilers/">the hydronic list</a>.</p>
+    <DataNote items={["Central emission rates are pounds per million BTU, annual average.", "The export does not label a furnace indoor or outdoor."]} />
+  </div>
+</Base>

@@ -1,0 +1,35 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { formatNumber, metaDescription } from "../lib/format.js";
+import { pelletStoves } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const groups = pelletStoves(catalog.stoves);
+const block = catalog.stats.medians.currentPellet;
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `EPA lists ${block.rows} currently certified pellet-stove rows in the snapshot dated ${date}.`,
+  `The median emission rate of those ${block.emissionN} rows is ${formatNumber(block.emissionMedian, 2)} grams per hour.`,
+  `The median HHV efficiency of those ${block.efficiencyN} rows is ${formatNumber(block.efficiencyMedian, 2)} percent.`,
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Pellet stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/pellet-stoves/", label: "Pellet stoves" }]} jsonLd={[articleLd("Pellet stoves in the EPA list", description, "/pellet-stoves/", date)]}>
+  <div class="wrap">
+    <h1>Pellet stoves</h1>
+    <Answer sentences={sentences} />
+    <p>The full snapshot has {catalog.stats.roomAllByType["Pellet Stove"]} pellet-stove rows, including previously certified models. Central heaters that burn pellets are listed under <a href="/pellet-boilers/">pellet boilers</a> and <a href="/wood-furnaces/">forced-air furnaces</a>.</p>
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified pellet-stove model lines" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified pellet-stove model lines" },
+    ]} />
+    <p><a href="/most-efficient-pellet-stoves/">Highest HHV efficiency among current pellet stoves</a> · <a href="/pellet-stove-vs-wood-stove/">Pellet and wood figures</a></p>
+    <DataNote items={["Pellet stove is the EPA type. Emission rates here are grams per hour, the room-heater unit.", "A firebox cell that says Not applicable is EPA's text, not a blank we filled in."]} />
+  </div>
+</Base>

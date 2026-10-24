@@ -1,0 +1,59 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { formatNumber, metaDescription } from "../lib/format.js";
+import { articleLd } from "../lib/schema.js";
+
+const wood = catalog.stats.medians.currentWood;
+const pellet = catalog.stats.medians.currentPellet;
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `EPA lists ${wood.rows} currently certified wood-stove rows and ${pellet.rows} currently certified pellet-stove rows in the snapshot dated ${date}.`,
+  `The median emission rate is ${formatNumber(wood.emissionMedian, 2)} grams per hour for the wood-stove rows and ${formatNumber(pellet.emissionMedian, 2)} grams per hour for the pellet-stove rows.`,
+  `The median HHV efficiency is ${formatNumber(wood.efficiencyMedian, 2)} percent for the wood-stove rows and ${formatNumber(pellet.efficiencyMedian, 2)} percent for the pellet-stove rows.`,
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Pellet stove and wood stove EPA figures" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/pellet-stove-vs-wood-stove/", label: "Pellet and wood" }]} jsonLd={[articleLd("Pellet and wood stove EPA figures", description, "/pellet-stove-vs-wood-stove/", date)]}>
+  <div class="wrap prose">
+    <h1>Pellet stove and wood stove figures</h1>
+    <Answer sentences={sentences} />
+    <div class="table-wrap">
+      <table>
+        <caption>Currently certified room-heater rows, wood stoves and pellet stoves</caption>
+        <thead>
+          <tr>
+            <th scope="col">EPA type</th>
+            <th scope="col" class="num">Current rows</th>
+            <th scope="col" class="num">All rows in the snapshot</th>
+            <th scope="col" class="num">Median g/hr</th>
+            <th scope="col" class="num">Median HHV %</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Wood stove</th>
+            <td class="num">{wood.rows}</td>
+            <td class="num">{catalog.stats.roomAllByType["Wood Stove"]}</td>
+            <td class="num">{formatNumber(wood.emissionMedian, 2)}</td>
+            <td class="num">{formatNumber(wood.efficiencyMedian, 2)}</td>
+          </tr>
+          <tr>
+            <th scope="row">Pellet stove</th>
+            <td class="num">{pellet.rows}</td>
+            <td class="num">{catalog.stats.roomAllByType["Pellet Stove"]}</td>
+            <td class="num">{formatNumber(pellet.emissionMedian, 2)}</td>
+            <td class="num">{formatNumber(pellet.efficiencyMedian, 2)}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Both medians use grams per hour and HHV percent, the units EPA printed for room heaters. Central heaters use a different emission unit and are not in this table.</p>
+    <p>This page does not compare fuel cost. A cost-per-season calculator is not in this launch. Lists: <a href="/pellet-stoves/">pellet stoves</a> and the wood-stove subtype pages linked from the footer.</p>
+    <DataNote items={["A median is the middle EPA row, not a typical house result.", "Previously certified rows are in the all-rows column and are not in the medians."]} />
+  </div>
+</Base>

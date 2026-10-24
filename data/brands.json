@@ -1,0 +1,2682 @@
+[
+  {
+    "name": "509 Fabrications, Inc.",
+    "slug": "509-fabrications-inc",
+    "role": "primary",
+    "manufacturers": [
+      "509 Fabrications, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/509-fabrications-inc/"
+  },
+  {
+    "name": "A. J. Wells and Sons LTD",
+    "slug": "a-j-wells-and-sons-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "A. J. Wells and Sons LTD"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/a-j-wells-and-sons-ltd/"
+  },
+  {
+    "name": "AC Component Specialists",
+    "slug": "ac-component-specialists",
+    "role": "primary",
+    "manufacturers": [
+      "AC Component Specialists"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ac-component-specialists/"
+  },
+  {
+    "name": "Aduro AS",
+    "slug": "aduro-as",
+    "role": "primary",
+    "manufacturers": [
+      "Aduro AS"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/aduro-as/"
+  },
+  {
+    "name": "Advanced Climate Technologies, LLC",
+    "slug": "advanced-climate-technologies-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Advanced Climate Technologies, LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/advanced-climate-technologies-llc/"
+  },
+  {
+    "name": "Alladin Hearth Products",
+    "slug": "alladin-hearth-products",
+    "role": "primary",
+    "manufacturers": [
+      "Alladin Hearth Products"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/alladin-hearth-products/"
+  },
+  {
+    "name": "Alternate Heating Systems",
+    "slug": "alternate-heating-systems",
+    "role": "primary",
+    "manufacturers": [
+      "Alternate Heating Systems"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/alternate-heating-systems/"
+  },
+  {
+    "name": "American Energy Systems, Inc. (AES)",
+    "slug": "american-energy-systems-inc-aes",
+    "role": "primary",
+    "manufacturers": [
+      "American Energy Systems, Inc. (AES)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/american-energy-systems-inc-aes/"
+  },
+  {
+    "name": "American Road Equipment Company",
+    "slug": "american-road-equipment-company",
+    "role": "primary",
+    "manufacturers": [
+      "American Road Equipment Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/american-road-equipment-company/"
+  },
+  {
+    "name": "Amesti LTDA",
+    "slug": "amesti-ltda",
+    "role": "primary",
+    "manufacturers": [
+      "Amesti LTDA"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/amesti-ltda/"
+  },
+  {
+    "name": "Appalachian Stove and Fabricators, Inc.",
+    "slug": "appalachian-stove-and-fabricators-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Appalachian Stove and Fabricators, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/appalachian-stove-and-fabricators-inc/"
+  },
+  {
+    "name": "APR Industries Ltd.",
+    "slug": "apr-industries-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "APR Industries Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/apr-industries-ltd/"
+  },
+  {
+    "name": "ARADA STOVES Ltd.",
+    "slug": "arada-stoves-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "ARADA STOVES Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/arada-stoves-ltd/"
+  },
+  {
+    "name": "Archgard Industries, Ltd.",
+    "slug": "archgard-industries-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "Archgard Industries, Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/archgard-industries-ltd/"
+  },
+  {
+    "name": "ARDISAM, Inc.",
+    "slug": "ardisam-inc",
+    "role": "primary",
+    "manufacturers": [
+      "ARDISAM, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ardisam-inc/"
+  },
+  {
+    "name": "Ashley",
+    "slug": "ashley",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Ashley is not an EPA manufacturer string in this snapshot. Included only where the model text contains Ashley.",
+    "evidence": "Model text contains Ashley under United States Stove Company, Stove Builder International, Inc., and Martin Industries, Inc.",
+    "url": "/brands/ashley/"
+  },
+  {
+    "name": "Austroflamm Industries Inc.",
+    "slug": "austroflamm-industries-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Austroflamm Industries Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/austroflamm-industries-inc/"
+  },
+  {
+    "name": "Avalon",
+    "slug": "avalon",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "EPA lists these lines under Travis Industries, Inc. Included only where the model text contains Avalon.",
+    "evidence": "Model text under Travis Industries, Inc contains Avalon.",
+    "url": "/brands/avalon/"
+  },
+  {
+    "name": "Barbeques Galore/Pricotech",
+    "slug": "barbeques-galore-pricotech",
+    "role": "primary",
+    "manufacturers": [
+      "Barbeques Galore/Pricotech"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/barbeques-galore-pricotech/"
+  },
+  {
+    "name": "Blaze King",
+    "slug": "blaze-king",
+    "role": "primary",
+    "manufacturers": [
+      "Blaze King Industries, Inc.",
+      "Blaze King of Montana"
+    ],
+    "note": "Both EPA manufacturer strings contain Blaze King. Model lines under any other manufacturer are included only when the model text contains Blaze King.",
+    "evidence": "EPA manufacturer strings: Blaze King Industries, Inc. and Blaze King of Montana.",
+    "url": "/brands/blaze-king/"
+  },
+  {
+    "name": "Boru Stove Company",
+    "slug": "boru-stove-company",
+    "role": "primary",
+    "manufacturers": [
+      "Boru Stove Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/boru-stove-company/"
+  },
+  {
+    "name": "Bosca Chile S.A. (Ingeniera De Combustion)",
+    "slug": "bosca-chile-s-a-ingeniera-de-combustion",
+    "role": "primary",
+    "manufacturers": [
+      "Bosca Chile S.A. (Ingeniera De Combustion)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/bosca-chile-s-a-ingeniera-de-combustion/"
+  },
+  {
+    "name": "Breckwell",
+    "slug": "breckwell",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Breckwell is not an EPA manufacturer string in this snapshot. Included only where the model text contains Breckwell.",
+    "evidence": "Model text under United States Stove Company contains Breckwell.",
+    "url": "/brands/breckwell/"
+  },
+  {
+    "name": "Castle",
+    "slug": "castle",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "The word Castle in the model text is required. Castleton and Newcastle do not match. In this snapshot the matches are ARDISAM Castle Serenity lines.",
+    "evidence": "ARDISAM, Inc. model text: Castle Serenity 12327 and Castle Serenity 41278.",
+    "url": "/brands/castle/"
+  },
+  {
+    "name": "Central Boiler Inc.- WoodMaster Inc.",
+    "slug": "central-boiler-inc-woodmaster-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Central Boiler Inc.- WoodMaster Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/central-boiler-inc-woodmaster-inc/"
+  },
+  {
+    "name": "Ceramiche Savio di Elio and C. s.n.c.",
+    "slug": "ceramiche-savio-di-elio-and-c-s-n-c",
+    "role": "primary",
+    "manufacturers": [
+      "Ceramiche Savio di Elio and C. s.n.c."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ceramiche-savio-di-elio-and-c-s-n-c/"
+  },
+  {
+    "name": "CFM Corporation (Jacuzzi Leisure Products, Inc.)",
+    "slug": "cfm-corporation-jacuzzi-leisure-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "CFM Corporation (Jacuzzi Leisure Products, Inc.)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/cfm-corporation-jacuzzi-leisure-products-inc/"
+  },
+  {
+    "name": "Comfortbilt",
+    "slug": "comfortbilt",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "EPA lists these lines under SMG Hearth and Home, LLC and Ningbo Hongsheng Fireplace Company (SMG Hearth and Home, LLC). Included only where the model text contains ComfortBilt.",
+    "evidence": "Model text contains ComfortBilt, including ComfortBilt HP22 and HP22i.",
+    "url": "/brands/comfortbilt/"
+  },
+  {
+    "name": "Consuming Fire, Inc.",
+    "slug": "consuming-fire-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Consuming Fire, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/consuming-fire-inc/"
+  },
+  {
+    "name": "Country Flame Technologies, Inc.",
+    "slug": "country-flame-technologies-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Country Flame Technologies, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/country-flame-technologies-inc/"
+  },
+  {
+    "name": "Country Stoves, Inc. (Innovative Hearth Products)",
+    "slug": "country-stoves-inc-innovative-hearth-products",
+    "role": "primary",
+    "manufacturers": [
+      "Country Stoves, Inc. (Innovative Hearth Products)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/country-stoves-inc-innovative-hearth-products/"
+  },
+  {
+    "name": "CRD Precision Fabricators Inc. (Chippewa)",
+    "slug": "crd-precision-fabricators-inc-chippewa",
+    "role": "primary",
+    "manufacturers": [
+      "CRD Precision Fabricators Inc. (Chippewa)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/crd-precision-fabricators-inc-chippewa/"
+  },
+  {
+    "name": "Dansons, Inc",
+    "slug": "dansons-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Dansons, Inc"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/dansons-inc/"
+  },
+  {
+    "name": "DECTRA (GARN)",
+    "slug": "dectra-garn",
+    "role": "primary",
+    "manufacturers": [
+      "DECTRA (GARN)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/dectra-garn/"
+  },
+  {
+    "name": "Dell Point Technologies",
+    "slug": "dell-point-technologies",
+    "role": "primary",
+    "manufacturers": [
+      "Dell Point Technologies"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/dell-point-technologies/"
+  },
+  {
+    "name": "Derco, Inc./Grizzly Stoves",
+    "slug": "derco-inc-grizzly-stoves",
+    "role": "primary",
+    "manufacturers": [
+      "Derco, Inc./Grizzly Stoves"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/derco-inc-grizzly-stoves/"
+  },
+  {
+    "name": "Deville",
+    "slug": "deville",
+    "role": "primary",
+    "manufacturers": [
+      "Deville"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/deville/"
+  },
+  {
+    "name": "Dielle SpA",
+    "slug": "dielle-spa",
+    "role": "primary",
+    "manufacturers": [
+      "Dielle SpA"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/dielle-spa/"
+  },
+  {
+    "name": "Dovre Incorporated",
+    "slug": "dovre-incorporated",
+    "role": "primary",
+    "manufacturers": [
+      "Dovre Incorporated"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/dovre-incorporated/"
+  },
+  {
+    "name": "Drolet",
+    "slug": "drolet",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "EPA does not use Drolet as the manufacturer. This hub lists only model lines whose text contains Drolet. Other Stove Builder International lines are not labeled Drolet in this snapshot.",
+    "evidence": "The model text DC Series Osburn Volta and Drolet Edison contains Drolet. Manufacturer: Stove Builder International, Inc.",
+    "url": "/brands/drolet/"
+  },
+  {
+    "name": "DS Machine LLC",
+    "slug": "ds-machine-llc",
+    "role": "primary",
+    "manufacturers": [
+      "DS Machine LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ds-machine-llc/"
+  },
+  {
+    "name": "Earth Manufacturing, LLC",
+    "slug": "earth-manufacturing-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Earth Manufacturing, LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/earth-manufacturing-llc/"
+  },
+  {
+    "name": "Econoburn Boilers",
+    "slug": "econoburn-boilers",
+    "role": "primary",
+    "manufacturers": [
+      "Econoburn Boilers"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/econoburn-boilers/"
+  },
+  {
+    "name": "EcoVision Ltd.",
+    "slug": "ecovision-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "EcoVision Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ecovision-ltd/"
+  },
+  {
+    "name": "Effecta Energy Solutions",
+    "slug": "effecta-energy-solutions",
+    "role": "primary",
+    "manufacturers": [
+      "Effecta Energy Solutions"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/effecta-energy-solutions/"
+  },
+  {
+    "name": "Enerco Group, Inc.",
+    "slug": "enerco-group-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Enerco Group, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/enerco-group-inc/"
+  },
+  {
+    "name": "Energy Distribution",
+    "slug": "energy-distribution",
+    "role": "primary",
+    "manufacturers": [
+      "Energy Distribution"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/energy-distribution/"
+  },
+  {
+    "name": "Englander",
+    "slug": "englander",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "EPA's manufacturer string is Englands Stove Works, Inc. This hub lists only model lines whose text contains Englander. Other Englands Stove Works lines stay on that manufacturer hub.",
+    "evidence": "Model text under Englands Stove Works, Inc. contains Englander, including Englander 25-PDV and Englander 13-NC.",
+    "url": "/brands/englander/"
+  },
+  {
+    "name": "Englands Stove Works, Inc.",
+    "slug": "englands-stove-works-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Englands Stove Works, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/englands-stove-works-inc/"
+  },
+  {
+    "name": "Enviro",
+    "slug": "enviro",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Included only where the model text contains Enviro as a whole word. Envirofire and Environmentalist do not match.",
+    "evidence": "Model text under Sherwood Industries, Ltd. and Fireplace Products International Limited contains Enviro.",
+    "url": "/brands/enviro/"
+  },
+  {
+    "name": "ESIM",
+    "slug": "esim",
+    "role": "primary",
+    "manufacturers": [
+      "ESIM"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/esim/"
+  },
+  {
+    "name": "Esse Engineering Ltd.",
+    "slug": "esse-engineering-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "Esse Engineering Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/esse-engineering-ltd/"
+  },
+  {
+    "name": "Eureka Heating PTY Limited",
+    "slug": "eureka-heating-pty-limited",
+    "role": "primary",
+    "manufacturers": [
+      "Eureka Heating PTY Limited"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/eureka-heating-pty-limited/"
+  },
+  {
+    "name": "Evergreen Marketing, Inc.",
+    "slug": "evergreen-marketing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Evergreen Marketing, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/evergreen-marketing-inc/"
+  },
+  {
+    "name": "Evergreen Metal Products Inc.",
+    "slug": "evergreen-metal-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Evergreen Metal Products Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/evergreen-metal-products-inc/"
+  },
+  {
+    "name": "Evoworld, Inc.",
+    "slug": "evoworld-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Evoworld, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/evoworld-inc/"
+  },
+  {
+    "name": "Extraflame S. P. A.",
+    "slug": "extraflame-s-p-a",
+    "role": "primary",
+    "manufacturers": [
+      "Extraflame S. P. A."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/extraflame-s-p-a/"
+  },
+  {
+    "name": "F. Huemer Ges. M.B.H.",
+    "slug": "f-huemer-ges-m-b-h",
+    "role": "primary",
+    "manufacturers": [
+      "F. Huemer Ges. M.B.H."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/f-huemer-ges-m-b-h/"
+  },
+  {
+    "name": "Fire Chief Industries/Shelter Furnace/HY-C Company",
+    "slug": "fire-chief-industries-shelter-furnace-hy-c-company",
+    "role": "primary",
+    "manufacturers": [
+      "Fire Chief Industries/Shelter Furnace/HY-C Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/fire-chief-industries-shelter-furnace-hy-c-company/"
+  },
+  {
+    "name": "Fireplace Products International Limited",
+    "slug": "fireplace-products-international-limited",
+    "role": "primary",
+    "manufacturers": [
+      "Fireplace Products International Limited"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/fireplace-products-international-limited/"
+  },
+  {
+    "name": "FlamPoint EnerG",
+    "slug": "flampoint-energ",
+    "role": "primary",
+    "manufacturers": [
+      "FlamPoint EnerG"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/flampoint-energ/"
+  },
+  {
+    "name": "Foundries du Lion S.A.",
+    "slug": "foundries-du-lion-s-a",
+    "role": "primary",
+    "manufacturers": [
+      "Foundries du Lion S.A."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/foundries-du-lion-s-a/"
+  },
+  {
+    "name": "Foyers Supreme, Inc",
+    "slug": "foyers-supreme-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Foyers Supreme, Inc"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/foyers-supreme-inc/"
+  },
+  {
+    "name": "FPI/Regency Fireplace Products",
+    "slug": "fpi-regency-fireplace-products",
+    "role": "primary",
+    "manufacturers": [
+      "FPI/Regency Fireplace Products"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/fpi-regency-fireplace-products/"
+  },
+  {
+    "name": "Frantech, Inc.",
+    "slug": "frantech-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Frantech, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/frantech-inc/"
+  },
+  {
+    "name": "Freedom Stoves, LLC",
+    "slug": "freedom-stoves-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Freedom Stoves, LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/freedom-stoves-llc/"
+  },
+  {
+    "name": "Fröling Heizkessel und Behälterbau Ges.m.b.H",
+    "slug": "froling-heizkessel-und-behalterbau-ges-m-b-h",
+    "role": "primary",
+    "manufacturers": [
+      "Fröling Heizkessel und Behälterbau Ges.m.b.H"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/froling-heizkessel-und-behalterbau-ges-m-b-h/"
+  },
+  {
+    "name": "GHP Group",
+    "slug": "ghp-group",
+    "role": "primary",
+    "manufacturers": [
+      "GHP Group"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ghp-group/"
+  },
+  {
+    "name": "Gibraltar Stoves, Inc.",
+    "slug": "gibraltar-stoves-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Gibraltar Stoves, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/gibraltar-stoves-inc/"
+  },
+  {
+    "name": "Glen Dimplex New Zealand",
+    "slug": "glen-dimplex-new-zealand",
+    "role": "primary",
+    "manufacturers": [
+      "Glen Dimplex New Zealand"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/glen-dimplex-new-zealand/"
+  },
+  {
+    "name": "GLG Australia",
+    "slug": "glg-australia",
+    "role": "primary",
+    "manufacturers": [
+      "GLG Australia"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/glg-australia/"
+  },
+  {
+    "name": "Glo King/Pierce Engineered Products Inc.",
+    "slug": "glo-king-pierce-engineered-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Glo King/Pierce Engineered Products Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/glo-king-pierce-engineered-products-inc/"
+  },
+  {
+    "name": "Glow Boy",
+    "slug": "glow-boy",
+    "role": "primary",
+    "manufacturers": [
+      "Glow Boy"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/glow-boy/"
+  },
+  {
+    "name": "Godin Imports, Inc.",
+    "slug": "godin-imports-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Godin Imports, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/godin-imports-inc/"
+  },
+  {
+    "name": "Greentech Manufacturing Inc.",
+    "slug": "greentech-manufacturing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Greentech Manufacturing Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/greentech-manufacturing-inc/"
+  },
+  {
+    "name": "Gruppo Piazzetta S.P.A.",
+    "slug": "gruppo-piazzetta-s-p-a",
+    "role": "primary",
+    "manufacturers": [
+      "Gruppo Piazzetta S.P.A."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/gruppo-piazzetta-s-p-a/"
+  },
+  {
+    "name": "H.M.F. Forlong and Maisey Ltd.",
+    "slug": "h-m-f-forlong-and-maisey-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "H.M.F. Forlong and Maisey Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/h-m-f-forlong-and-maisey-ltd/"
+  },
+  {
+    "name": "Hajduk",
+    "slug": "hajduk",
+    "role": "primary",
+    "manufacturers": [
+      "Hajduk"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hajduk/"
+  },
+  {
+    "name": "Hampton",
+    "slug": "hampton",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Hampton is not an EPA manufacturer string. Included only where the model text contains Hampton.",
+    "evidence": "Model text contains Hampton under Fireplace Products International Limited and Sherwood Industries, Ltd.",
+    "url": "/brands/hampton/"
+  },
+  {
+    "name": "Hardy Manufacturing Co., Inc.",
+    "slug": "hardy-manufacturing-co-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Hardy Manufacturing Co., Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hardy-manufacturing-co-inc/"
+  },
+  {
+    "name": "Hargassner GmbH",
+    "slug": "hargassner-gmbh",
+    "role": "primary",
+    "manufacturers": [
+      "Hargassner GmbH"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hargassner-gmbh/"
+  },
+  {
+    "name": "Harman",
+    "slug": "harman",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "EPA lists these lines under Hearth and Home Technologies. Included only where the model text contains Harman.",
+    "evidence": "Model text under Hearth and Home Technologies contains Harman, including Harman Absolute 43 and Harman P68.",
+    "url": "/brands/harman/"
+  },
+  {
+    "name": "Hase Kaminofenbau (Hearthstone Quality Home Products Inc.)",
+    "slug": "hase-kaminofenbau-hearthstone-quality-home-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Hase Kaminofenbau (Hearthstone Quality Home Products Inc.)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hase-kaminofenbau-hearthstone-quality-home-products-inc/"
+  },
+  {
+    "name": "Hawke Manufacturing Company, Inc.",
+    "slug": "hawke-manufacturing-company-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Hawke Manufacturing Company, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hawke-manufacturing-company-inc/"
+  },
+  {
+    "name": "Hawken Energy",
+    "slug": "hawken-energy",
+    "role": "primary",
+    "manufacturers": [
+      "Hawken Energy"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hawken-energy/"
+  },
+  {
+    "name": "Hearth and Home Technologies",
+    "slug": "hearth-and-home-technologies",
+    "role": "primary",
+    "manufacturers": [
+      "Hearth and Home Technologies"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hearth-and-home-technologies/"
+  },
+  {
+    "name": "Hearthstone",
+    "slug": "hearthstone",
+    "role": "primary",
+    "manufacturers": [
+      "Hearthstone Quality Home Heating Products Inc."
+    ],
+    "note": "The hub title is the brand token inside the EPA manufacturer string. Hase rows stay on the Hase hub; they are not folded in, because that string leads with Hase.",
+    "evidence": "EPA manufacturer string: Hearthstone Quality Home Heating Products Inc.",
+    "url": "/brands/hearthstone/"
+  },
+  {
+    "name": "Heat Tech Industries, LLC.",
+    "slug": "heat-tech-industries-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Heat Tech Industries, LLC."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heat-tech-industries-llc/"
+  },
+  {
+    "name": "Heat-N-Glo Fireplace Products, Inc.",
+    "slug": "heat-n-glo-fireplace-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Heat-N-Glo Fireplace Products, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heat-n-glo-fireplace-products-inc/"
+  },
+  {
+    "name": "Heatilator, Inc.",
+    "slug": "heatilator-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Heatilator, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heatilator-inc/"
+  },
+  {
+    "name": "Heating Energy Systems, Inc.",
+    "slug": "heating-energy-systems-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Heating Energy Systems, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heating-energy-systems-inc/"
+  },
+  {
+    "name": "HeatMaster",
+    "slug": "heatmaster",
+    "role": "primary",
+    "manufacturers": [
+      "HeatMaster Furnaces, Inc.",
+      "Heatmaster Furnaces Inc. (SteelTech Inc.)"
+    ],
+    "note": "Both EPA manufacturer strings contain HeatMaster or Heatmaster. The original spelling is kept on each model page.",
+    "evidence": "EPA manufacturer strings contain HeatMaster or Heatmaster.",
+    "url": "/brands/heatmaster/"
+  },
+  {
+    "name": "Heatmor Manufacturing",
+    "slug": "heatmor-manufacturing",
+    "role": "primary",
+    "manufacturers": [
+      "Heatmor Manufacturing"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heatmor-manufacturing/"
+  },
+  {
+    "name": "HeatWorx LLC (United States Stove Company)",
+    "slug": "heatworx-llc-united-states-stove-company",
+    "role": "primary",
+    "manufacturers": [
+      "HeatWorx LLC (United States Stove Company)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heatworx-llc-united-states-stove-company/"
+  },
+  {
+    "name": "Heizomat Canada, Inc.",
+    "slug": "heizomat-canada-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Heizomat Canada, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heizomat-canada-inc/"
+  },
+  {
+    "name": "Henan Hi-Flame",
+    "slug": "henan-hi-flame",
+    "role": "primary",
+    "manufacturers": [
+      "Henan Hi-Flame"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/henan-hi-flame/"
+  },
+  {
+    "name": "Heritage Stoves Inc.",
+    "slug": "heritage-stoves-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Heritage Stoves Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/heritage-stoves-inc/"
+  },
+  {
+    "name": "Hestia Heating Products",
+    "slug": "hestia-heating-products",
+    "role": "primary",
+    "manufacturers": [
+      "Hestia Heating Products"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hestia-heating-products/"
+  },
+  {
+    "name": "Hi-Teck Stoves",
+    "slug": "hi-teck-stoves",
+    "role": "primary",
+    "manufacturers": [
+      "Hi-Teck Stoves"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hi-teck-stoves/"
+  },
+  {
+    "name": "HIDU GmbH",
+    "slug": "hidu-gmbh",
+    "role": "primary",
+    "manufacturers": [
+      "HIDU GmbH"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hidu-gmbh/"
+  },
+  {
+    "name": "High Energy Manufacturing, Limited",
+    "slug": "high-energy-manufacturing-limited",
+    "role": "primary",
+    "manufacturers": [
+      "High Energy Manufacturing, Limited"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/high-energy-manufacturing-limited/"
+  },
+  {
+    "name": "High Sierra Stoves, Ltd. (Sierra Products, Inc.)",
+    "slug": "high-sierra-stoves-ltd-sierra-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "High Sierra Stoves, Ltd. (Sierra Products, Inc.)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/high-sierra-stoves-ltd-sierra-products-inc/"
+  },
+  {
+    "name": "High Valley Construction and Maintenance Corp.",
+    "slug": "high-valley-construction-and-maintenance-corp",
+    "role": "primary",
+    "manufacturers": [
+      "High Valley Construction and Maintenance Corp."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/high-valley-construction-and-maintenance-corp/"
+  },
+  {
+    "name": "High Valley Stoves by Stoll (Suppertime Stoves)",
+    "slug": "high-valley-stoves-by-stoll-suppertime-stoves",
+    "role": "primary",
+    "manufacturers": [
+      "High Valley Stoves by Stoll (Suppertime Stoves)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/high-valley-stoves-by-stoll-suppertime-stoves/"
+  },
+  {
+    "name": "Hijos de Bartolome Fajardo S.L.",
+    "slug": "hijos-de-bartolome-fajardo-s-l",
+    "role": "primary",
+    "manufacturers": [
+      "Hijos de Bartolome Fajardo S.L."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hijos-de-bartolome-fajardo-s-l/"
+  },
+  {
+    "name": "Hitzer, Inc.",
+    "slug": "hitzer-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Hitzer, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hitzer-inc/"
+  },
+  {
+    "name": "Horizon Research Inc.",
+    "slug": "horizon-research-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Horizon Research Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/horizon-research-inc/"
+  },
+  {
+    "name": "Horse Flame Metal USA, Inc.",
+    "slug": "horse-flame-metal-usa-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Horse Flame Metal USA, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/horse-flame-metal-usa-inc/"
+  },
+  {
+    "name": "Hudson River Stove Works",
+    "slug": "hudson-river-stove-works",
+    "role": "primary",
+    "manufacturers": [
+      "Hudson River Stove Works"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hudson-river-stove-works/"
+  },
+  {
+    "name": "Hussong Manufacturing Company, Inc.",
+    "slug": "hussong-manufacturing-company-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Hussong Manufacturing Company, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hussong-manufacturing-company-inc/"
+  },
+  {
+    "name": "Hussong Manufacturing Company, Inc.(Kozy Heat)",
+    "slug": "hussong-manufacturing-company-inc-kozy-heat",
+    "role": "primary",
+    "manufacturers": [
+      "Hussong Manufacturing Company, Inc.(Kozy Heat)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hussong-manufacturing-company-inc-kozy-heat/"
+  },
+  {
+    "name": "Hutch Manufacturing Company",
+    "slug": "hutch-manufacturing-company",
+    "role": "primary",
+    "manufacturers": [
+      "Hutch Manufacturing Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hutch-manufacturing-company/"
+  },
+  {
+    "name": "HWAM Heat Design A/S",
+    "slug": "hwam-heat-design-a-s",
+    "role": "primary",
+    "manufacturers": [
+      "HWAM Heat Design A/S"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hwam-heat-design-a-s/"
+  },
+  {
+    "name": "HY-C Company, LLC",
+    "slug": "hy-c-company-llc",
+    "role": "primary",
+    "manufacturers": [
+      "HY-C Company, LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hy-c-company-llc/"
+  },
+  {
+    "name": "Hydronic Specialty Supply, Inc.",
+    "slug": "hydronic-specialty-supply-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Hydronic Specialty Supply, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/hydronic-specialty-supply-inc/"
+  },
+  {
+    "name": "Independent Stove LLC",
+    "slug": "independent-stove-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Independent Stove LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/independent-stove-llc/"
+  },
+  {
+    "name": "Innovative Hearth Products",
+    "slug": "innovative-hearth-products",
+    "role": "primary",
+    "manufacturers": [
+      "Innovative Hearth Products"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/innovative-hearth-products/"
+  },
+  {
+    "name": "J. A. Roby Inc.",
+    "slug": "j-a-roby-inc",
+    "role": "primary",
+    "manufacturers": [
+      "J. A. Roby Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/j-a-roby-inc/"
+  },
+  {
+    "name": "Jacuzzi Leisure Products, Inc.",
+    "slug": "jacuzzi-leisure-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Jacuzzi Leisure Products, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/jacuzzi-leisure-products-inc/"
+  },
+  {
+    "name": "Jayline Heating Ltd.",
+    "slug": "jayline-heating-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "Jayline Heating Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/jayline-heating-ltd/"
+  },
+  {
+    "name": "Jotul",
+    "slug": "jotul",
+    "role": "primary",
+    "manufacturers": [
+      "Jotul North America (Jotul U.S.A., Inc.)"
+    ],
+    "note": "The hub title is the brand token inside the EPA manufacturer string. The full string is shown on the page and on every model.",
+    "evidence": "EPA manufacturer string: Jotul North America (Jotul U.S.A., Inc.)",
+    "url": "/brands/jotul/"
+  },
+  {
+    "name": "JR Home Heating Products",
+    "slug": "jr-home-heating-products",
+    "role": "primary",
+    "manufacturers": [
+      "JR Home Heating Products"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/jr-home-heating-products/"
+  },
+  {
+    "name": "Jydepejsan A/S",
+    "slug": "jydepejsan-a-s",
+    "role": "primary",
+    "manufacturers": [
+      "Jydepejsan A/S"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/jydepejsan-a-s/"
+  },
+  {
+    "name": "Kalvin International and Company (HK)",
+    "slug": "kalvin-international-and-company-hk",
+    "role": "primary",
+    "manufacturers": [
+      "Kalvin International and Company (HK)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/kalvin-international-and-company-hk/"
+  },
+  {
+    "name": "Kent Heating Limited",
+    "slug": "kent-heating-limited",
+    "role": "primary",
+    "manufacturers": [
+      "Kent Heating Limited"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/kent-heating-limited/"
+  },
+  {
+    "name": "Krog Iversen and Co. A/S",
+    "slug": "krog-iversen-and-co-a-s",
+    "role": "primary",
+    "manufacturers": [
+      "Krog Iversen and Co. A/S"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/krog-iversen-and-co-a-s/"
+  },
+  {
+    "name": "Kuma Stove And Iron Works",
+    "slug": "kuma-stove-and-iron-works",
+    "role": "primary",
+    "manufacturers": [
+      "Kuma Stove And Iron Works"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/kuma-stove-and-iron-works/"
+  },
+  {
+    "name": "La Castellamonte di R. Perino e . Neri Snc",
+    "slug": "la-castellamonte-di-r-perino-e-neri-snc",
+    "role": "primary",
+    "manufacturers": [
+      "La Castellamonte di R. Perino e . Neri Snc"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/la-castellamonte-di-r-perino-e-neri-snc/"
+  },
+  {
+    "name": "Laminox",
+    "slug": "laminox",
+    "role": "primary",
+    "manufacturers": [
+      "Laminox"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/laminox/"
+  },
+  {
+    "name": "Lamppa Manufacturing, Inc.",
+    "slug": "lamppa-manufacturing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Lamppa Manufacturing, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/lamppa-manufacturing-inc/"
+  },
+  {
+    "name": "Lennox Hearth Products (Innovative Hearth Products)",
+    "slug": "lennox-hearth-products-innovative-hearth-products",
+    "role": "primary",
+    "manufacturers": [
+      "Lennox Hearth Products (Innovative Hearth Products)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/lennox-hearth-products-innovative-hearth-products/"
+  },
+  {
+    "name": "Lexington Forge",
+    "slug": "lexington-forge",
+    "role": "primary",
+    "manufacturers": [
+      "Lexington Forge"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/lexington-forge/"
+  },
+  {
+    "name": "Liberator Rocket Heaters",
+    "slug": "liberator-rocket-heaters",
+    "role": "primary",
+    "manufacturers": [
+      "Liberator Rocket Heaters"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/liberator-rocket-heaters/"
+  },
+  {
+    "name": "LMF Manufacturing Ltd.",
+    "slug": "lmf-manufacturing-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "LMF Manufacturing Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/lmf-manufacturing-ltd/"
+  },
+  {
+    "name": "Long Agribusiness",
+    "slug": "long-agribusiness",
+    "role": "primary",
+    "manufacturers": [
+      "Long Agribusiness"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/long-agribusiness/"
+  },
+  {
+    "name": "Lopi",
+    "slug": "lopi",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "EPA lists these lines under Travis Industries, Inc. Included here only where the model text contains Lopi.",
+    "evidence": "Model text under Travis Industries, Inc contains Lopi, including Lopi Patriot and Lopi 520/96.",
+    "url": "/brands/lopi/"
+  },
+  {
+    "name": "LS Bilodeau Inc.",
+    "slug": "ls-bilodeau-inc",
+    "role": "primary",
+    "manufacturers": [
+      "LS Bilodeau Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ls-bilodeau-inc/"
+  },
+  {
+    "name": "Luap Associates, Inc.",
+    "slug": "luap-associates-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Luap Associates, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/luap-associates-inc/"
+  },
+  {
+    "name": "Lucky Distributing",
+    "slug": "lucky-distributing",
+    "role": "primary",
+    "manufacturers": [
+      "Lucky Distributing"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/lucky-distributing/"
+  },
+  {
+    "name": "M. Texeira International, Incorporated",
+    "slug": "m-texeira-international-incorporated",
+    "role": "primary",
+    "manufacturers": [
+      "M. Texeira International, Incorporated"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/m-texeira-international-incorporated/"
+  },
+  {
+    "name": "Mahoning Outdoor Furnace",
+    "slug": "mahoning-outdoor-furnace",
+    "role": "primary",
+    "manufacturers": [
+      "Mahoning Outdoor Furnace"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/mahoning-outdoor-furnace/"
+  },
+  {
+    "name": "Maine Energy Systems, LLC",
+    "slug": "maine-energy-systems-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Maine Energy Systems, LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/maine-energy-systems-llc/"
+  },
+  {
+    "name": "Manufacturer not listed by EPA",
+    "slug": "not-listed",
+    "role": "primary",
+    "manufacturers": [
+      ""
+    ],
+    "note": "EPA left the manufacturer cell blank on this row. It is also listed on any retail hub whose name appears in the model text.",
+    "evidence": "One room-heater row has an empty manufacturer cell. The model text is preserved as EPA published it.",
+    "url": "/brands/not-listed/"
+  },
+  {
+    "name": "Martin Industries, Inc.",
+    "slug": "martin-industries-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Martin Industries, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/martin-industries-inc/"
+  },
+  {
+    "name": "Marway Welding",
+    "slug": "marway-welding",
+    "role": "primary",
+    "manufacturers": [
+      "Marway Welding"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/marway-welding/"
+  },
+  {
+    "name": "Max Blank GmbH",
+    "slug": "max-blank-gmbh",
+    "role": "primary",
+    "manufacturers": [
+      "Max Blank GmbH"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/max-blank-gmbh/"
+  },
+  {
+    "name": "MCZ S.p.a.",
+    "slug": "mcz-s-p-a",
+    "role": "primary",
+    "manufacturers": [
+      "MCZ S.p.a."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/mcz-s-p-a/"
+  },
+  {
+    "name": "Metal M.D.R. Inc.",
+    "slug": "metal-m-d-r-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Metal M.D.R. Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/metal-m-d-r-inc/"
+  },
+  {
+    "name": "MF Fire",
+    "slug": "mf-fire",
+    "role": "primary",
+    "manufacturers": [
+      "MF Fire"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/mf-fire/"
+  },
+  {
+    "name": "Morso",
+    "slug": "morso",
+    "role": "primary",
+    "manufacturers": [
+      "Morso Jernstoberi A/S"
+    ],
+    "note": "The hub title is the brand token EPA spelled Morso in the manufacturer string.",
+    "evidence": "EPA manufacturer string: Morso Jernstoberi A/S",
+    "url": "/brands/morso/"
+  },
+  {
+    "name": "Napoleon",
+    "slug": "napoleon",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Napoleon is not an EPA manufacturer string. Included only where the model text contains Napoleon, including the one row whose manufacturer cell is blank.",
+    "evidence": "Model text under Wolf Steel Ltd. contains Napoleon, and the blank-manufacturer row is 1900 series (Napoleon 1900), S9.",
+    "url": "/brands/napoleon/"
+  },
+  {
+    "name": "National Steelcrafters of Oregon",
+    "slug": "national-steelcrafters-of-oregon",
+    "role": "primary",
+    "manufacturers": [
+      "National Steelcrafters of Oregon"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/national-steelcrafters-of-oregon/"
+  },
+  {
+    "name": "Nature's Comfort LLC",
+    "slug": "nature-s-comfort-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Nature's Comfort LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/nature-s-comfort-llc/"
+  },
+  {
+    "name": "Navigator Stove Works, Inc.",
+    "slug": "navigator-stove-works-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Navigator Stove Works, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/navigator-stove-works-inc/"
+  },
+  {
+    "name": "NBE Production",
+    "slug": "nbe-production",
+    "role": "primary",
+    "manufacturers": [
+      "NBE Production"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/nbe-production/"
+  },
+  {
+    "name": "New Buck Corporation (Buck Stove Corp.)",
+    "slug": "new-buck-corporation-buck-stove-corp",
+    "role": "primary",
+    "manufacturers": [
+      "New Buck Corporation (Buck Stove Corp.)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/new-buck-corporation-buck-stove-corp/"
+  },
+  {
+    "name": "Newmac Manufacturing Incorporated (US Stove Company)",
+    "slug": "newmac-manufacturing-incorporated-us-stove-company",
+    "role": "primary",
+    "manufacturers": [
+      "Newmac Manufacturing Incorporated (US Stove Company)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/newmac-manufacturing-incorporated-us-stove-company/"
+  },
+  {
+    "name": "NHC Inc.",
+    "slug": "nhc-inc",
+    "role": "primary",
+    "manufacturers": [
+      "NHC Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/nhc-inc/"
+  },
+  {
+    "name": "Ningbo Hongsheng Fireplace Company (SMG Hearth and Home, LLC)",
+    "slug": "ningbo-hongsheng-fireplace-company-smg-hearth-and-home-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Ningbo Hongsheng Fireplace Company (SMG Hearth and Home, LLC)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ningbo-hongsheng-fireplace-company-smg-hearth-and-home-llc/"
+  },
+  {
+    "name": "Nordpeis A/S",
+    "slug": "nordpeis-a-s",
+    "role": "primary",
+    "manufacturers": [
+      "Nordpeis A/S"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/nordpeis-a-s/"
+  },
+  {
+    "name": "Northwest Manufacturing Inc",
+    "slug": "northwest-manufacturing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Northwest Manufacturing Inc"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/northwest-manufacturing-inc/"
+  },
+  {
+    "name": "NU-TEC/Upland Distributors, Inc.",
+    "slug": "nu-tec-upland-distributors-inc",
+    "role": "primary",
+    "manufacturers": [
+      "NU-TEC/Upland Distributors, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/nu-tec-upland-distributors-inc/"
+  },
+  {
+    "name": "OK Doke, Ltd.",
+    "slug": "ok-doke-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "OK Doke, Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ok-doke-ltd/"
+  },
+  {
+    "name": "Olsberg Hermann Everken, Gmbh",
+    "slug": "olsberg-hermann-everken-gmbh",
+    "role": "primary",
+    "manufacturers": [
+      "Olsberg Hermann Everken, Gmbh"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/olsberg-hermann-everken-gmbh/"
+  },
+  {
+    "name": "Oregon Woodstoves, Inc.",
+    "slug": "oregon-woodstoves-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Oregon Woodstoves, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/oregon-woodstoves-inc/"
+  },
+  {
+    "name": "Orley's Manufacturing Company, Inc.",
+    "slug": "orley-s-manufacturing-company-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Orley's Manufacturing Company, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/orley-s-manufacturing-company-inc/"
+  },
+  {
+    "name": "Orrville Products, Inc.",
+    "slug": "orrville-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Orrville Products, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/orrville-products-inc/"
+  },
+  {
+    "name": "Osburn",
+    "slug": "osburn",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Included when the model text contains Osburn, and when the EPA manufacturer string contains Osburn (Osburn Manufacturing, Inc.). Stove Builder International lines that do not say Osburn stay on that manufacturer hub.",
+    "evidence": "Model text under Stove Builder International, Inc. contains Osburn. The manufacturer string Osburn Manufacturing, Inc. contains Osburn.",
+    "url": "/brands/osburn/"
+  },
+  {
+    "name": "Osburn Manufacturing, Inc.",
+    "slug": "osburn-manufacturing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Osburn Manufacturing, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/osburn-manufacturing-inc/"
+  },
+  {
+    "name": "OVO LLC",
+    "slug": "ovo-llc",
+    "role": "primary",
+    "manufacturers": [
+      "OVO LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/ovo-llc/"
+  },
+  {
+    "name": "Pacific Energy",
+    "slug": "pacific-energy",
+    "role": "primary",
+    "manufacturers": [
+      "Pacific Energy Fireplace Products Limited"
+    ],
+    "note": "The hub title is the brand token inside the EPA manufacturer string.",
+    "evidence": "EPA manufacturer string: Pacific Energy Fireplace Products Limited",
+    "url": "/brands/pacific-energy/"
+  },
+  {
+    "name": "Paromax International LLC",
+    "slug": "paromax-international-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Paromax International LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/paromax-international-llc/"
+  },
+  {
+    "name": "Pellefier Inc.",
+    "slug": "pellefier-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Pellefier Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/pellefier-inc/"
+  },
+  {
+    "name": "Pellergy, LLC/ Windhager Zentralheizung Technik GmbH",
+    "slug": "pellergy-llc-windhager-zentralheizung-technik-gmbh",
+    "role": "primary",
+    "manufacturers": [
+      "Pellergy, LLC/ Windhager Zentralheizung Technik GmbH"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/pellergy-llc-windhager-zentralheizung-technik-gmbh/"
+  },
+  {
+    "name": "PelPro",
+    "slug": "pelpro",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "PelPro is not an EPA manufacturer string. Included only where the model text contains PelPro or Pel-Pro.",
+    "evidence": "Model text under Hearth and Home Technologies contains PelPro and Pel-Pro.",
+    "url": "/brands/pelpro/"
+  },
+  {
+    "name": "Piney Manufacturing",
+    "slug": "piney-manufacturing",
+    "role": "primary",
+    "manufacturers": [
+      "Piney Manufacturing"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/piney-manufacturing/"
+  },
+  {
+    "name": "Pleasant Hearth",
+    "slug": "pleasant-hearth",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Pleasant Hearth is not an EPA manufacturer string. Included only where the model text contains Pleasant Hearth.",
+    "evidence": "Model text contains Pleasant Hearth under GHP Group and Hearth and Home Technologies.",
+    "url": "/brands/pleasant-hearth/"
+  },
+  {
+    "name": "Polar Fireplaces",
+    "slug": "polar-fireplaces",
+    "role": "primary",
+    "manufacturers": [
+      "Polar Fireplaces"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/polar-fireplaces/"
+  },
+  {
+    "name": "Polar Furnace Manufacturing Inc.",
+    "slug": "polar-furnace-manufacturing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Polar Furnace Manufacturing Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/polar-furnace-manufacturing-inc/"
+  },
+  {
+    "name": "Precision Gas Technologies",
+    "slug": "precision-gas-technologies",
+    "role": "primary",
+    "manufacturers": [
+      "Precision Gas Technologies"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/precision-gas-technologies/"
+  },
+  {
+    "name": "Profab Industries",
+    "slug": "profab-industries",
+    "role": "primary",
+    "manufacturers": [
+      "Profab Industries"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/profab-industries/"
+  },
+  {
+    "name": "PSG Distribution Inc.",
+    "slug": "psg-distribution-inc",
+    "role": "primary",
+    "manufacturers": [
+      "PSG Distribution Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/psg-distribution-inc/"
+  },
+  {
+    "name": "Qingdao Hichanse Group",
+    "slug": "qingdao-hichanse-group",
+    "role": "primary",
+    "manufacturers": [
+      "Qingdao Hichanse Group"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/qingdao-hichanse-group/"
+  },
+  {
+    "name": "Quadra-Fire",
+    "slug": "quadra-fire",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "EPA lists these lines under Hearth and Home Technologies. Included only where the model text contains Quadra-Fire, Quadra Fire, or Quadrafire.",
+    "evidence": "Model text under Hearth and Home Technologies contains those spellings.",
+    "url": "/brands/quadra-fire/"
+  },
+  {
+    "name": "Quality Craft",
+    "slug": "quality-craft",
+    "role": "primary",
+    "manufacturers": [
+      "Quality Craft"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/quality-craft/"
+  },
+  {
+    "name": "Rais A/S",
+    "slug": "rais-a-s",
+    "role": "primary",
+    "manufacturers": [
+      "Rais A/S"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/rais-a-s/"
+  },
+  {
+    "name": "Ravelli",
+    "slug": "ravelli",
+    "role": "primary",
+    "manufacturers": [
+      "Ravelli SRL",
+      "Ravelli /EcoTeck"
+    ],
+    "note": "Both EPA manufacturer strings contain Ravelli.",
+    "evidence": "EPA manufacturer strings contain Ravelli.",
+    "url": "/brands/ravelli/"
+  },
+  {
+    "name": "Regency",
+    "slug": "regency",
+    "role": "alias",
+    "manufacturers": [],
+    "note": "Included when the model text contains Regency, and when the EPA manufacturer string contains Regency (FPI/Regency Fireplace Products). Fireplace Products International Limited rows that do not say Regency stay on that manufacturer hub.",
+    "evidence": "The manufacturer string FPI/Regency Fireplace Products contains Regency. Model text under Fireplace Products International Limited and Sherwood Industries, Ltd. also contains Regency.",
+    "url": "/brands/regency/"
+  },
+  {
+    "name": "Renfyre Stove Co./Maco Enterprises, Inc.",
+    "slug": "renfyre-stove-co-maco-enterprises-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Renfyre Stove Co./Maco Enterprises, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/renfyre-stove-co-maco-enterprises-inc/"
+  },
+  {
+    "name": "Reverso Manufacturing, Ltd.",
+    "slug": "reverso-manufacturing-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "Reverso Manufacturing, Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/reverso-manufacturing-ltd/"
+  },
+  {
+    "name": "RJM Manufacturing, Inc.",
+    "slug": "rjm-manufacturing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "RJM Manufacturing, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/rjm-manufacturing-inc/"
+  },
+  {
+    "name": "RSF / Industrial Chimney Company, Incorporated",
+    "slug": "rsf-industrial-chimney-company-incorporated",
+    "role": "primary",
+    "manufacturers": [
+      "RSF / Industrial Chimney Company, Incorporated"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/rsf-industrial-chimney-company-incorporated/"
+  },
+  {
+    "name": "Russo Products, Inc.",
+    "slug": "russo-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Russo Products, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/russo-products-inc/"
+  },
+  {
+    "name": "Salvo Machinery, Inc.",
+    "slug": "salvo-machinery-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Salvo Machinery, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/salvo-machinery-inc/"
+  },
+  {
+    "name": "Sarratt Agencies Limited",
+    "slug": "sarratt-agencies-limited",
+    "role": "primary",
+    "manufacturers": [
+      "Sarratt Agencies Limited"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/sarratt-agencies-limited/"
+  },
+  {
+    "name": "Saxon Wood Heaters Pty, Ltd.",
+    "slug": "saxon-wood-heaters-pty-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "Saxon Wood Heaters Pty, Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/saxon-wood-heaters-pty-ltd/"
+  },
+  {
+    "name": "Security Chimneys International Ltd. (Innovative Hearth Products)",
+    "slug": "security-chimneys-international-ltd-innovative-hearth-products",
+    "role": "primary",
+    "manufacturers": [
+      "Security Chimneys International Ltd. (Innovative Hearth Products)"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/security-chimneys-international-ltd-innovative-hearth-products/"
+  },
+  {
+    "name": "Selkirk Canada Corporation",
+    "slug": "selkirk-canada-corporation",
+    "role": "primary",
+    "manufacturers": [
+      "Selkirk Canada Corporation"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/selkirk-canada-corporation/"
+  },
+  {
+    "name": "Seraph Industries",
+    "slug": "seraph-industries",
+    "role": "primary",
+    "manufacturers": [
+      "Seraph Industries"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/seraph-industries/"
+  },
+  {
+    "name": "Sherwood Industries, Ltd.",
+    "slug": "sherwood-industries-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "Sherwood Industries, Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/sherwood-industries-ltd/"
+  },
+  {
+    "name": "Sierra Products, Inc.",
+    "slug": "sierra-products-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Sierra Products, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/sierra-products-inc/"
+  },
+  {
+    "name": "SMG Hearth and Home, LLC",
+    "slug": "smg-hearth-and-home-llc",
+    "role": "primary",
+    "manufacturers": [
+      "SMG Hearth and Home, LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/smg-hearth-and-home-llc/"
+  },
+  {
+    "name": "Spartherm",
+    "slug": "spartherm",
+    "role": "primary",
+    "manufacturers": [
+      "Spartherm"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/spartherm/"
+  },
+  {
+    "name": "St. Croix",
+    "slug": "st-croix",
+    "role": "primary",
+    "manufacturers": [
+      "St. Croix Stoves (Johnson Gas Appliance Company)",
+      "Even Temp, Inc. - St Croix Product Development"
+    ],
+    "note": "EPA uses both St. Croix and St Croix in the manufacturer field for these two strings. They are grouped here. The original string is shown on each model page.",
+    "evidence": "One string contains St. Croix and the other contains St Croix.",
+    "url": "/brands/st-croix/"
+  },
+  {
+    "name": "Steel Tech, Inc.",
+    "slug": "steel-tech-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Steel Tech, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/steel-tech-inc/"
+  },
+  {
+    "name": "Stove Builder International, Inc.",
+    "slug": "stove-builder-international-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Stove Builder International, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/stove-builder-international-inc/"
+  },
+  {
+    "name": "STUV AMERICA Inc.",
+    "slug": "stuv-america-inc",
+    "role": "primary",
+    "manufacturers": [
+      "STUV AMERICA Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/stuv-america-inc/"
+  },
+  {
+    "name": "Suburban Manufacturing Company",
+    "slug": "suburban-manufacturing-company",
+    "role": "primary",
+    "manufacturers": [
+      "Suburban Manufacturing Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/suburban-manufacturing-company/"
+  },
+  {
+    "name": "Sun Mountain Stove Works Inc.",
+    "slug": "sun-mountain-stove-works-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Sun Mountain Stove Works Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/sun-mountain-stove-works-inc/"
+  },
+  {
+    "name": "Tarm USA, Inc./ Fröling Heizkessel- und Behälterbau Ges.m.b.H",
+    "slug": "tarm-usa-inc-froling-heizkessel-und-behalterbau-ges-m-b-h",
+    "role": "primary",
+    "manufacturers": [
+      "Tarm USA, Inc./ Fröling Heizkessel- und Behälterbau Ges.m.b.H"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/tarm-usa-inc-froling-heizkessel-und-behalterbau-ges-m-b-h/"
+  },
+  {
+    "name": "Thelin Company Inc.",
+    "slug": "thelin-company-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Thelin Company Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/thelin-company-inc/"
+  },
+  {
+    "name": "Thermic Distribution Europe",
+    "slug": "thermic-distribution-europe",
+    "role": "primary",
+    "manufacturers": [
+      "Thermic Distribution Europe"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/thermic-distribution-europe/"
+  },
+  {
+    "name": "Thermic, Inc.",
+    "slug": "thermic-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Thermic, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/thermic-inc/"
+  },
+  {
+    "name": "Thermorossi s.p.a",
+    "slug": "thermorossi-s-p-a",
+    "role": "primary",
+    "manufacturers": [
+      "Thermorossi s.p.a"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/thermorossi-s-p-a/"
+  },
+  {
+    "name": "Tianjin Berkeley Furniture Corporation",
+    "slug": "tianjin-berkeley-furniture-corporation",
+    "role": "primary",
+    "manufacturers": [
+      "Tianjin Berkeley Furniture Corporation"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/tianjin-berkeley-furniture-corporation/"
+  },
+  {
+    "name": "Travis Industries, Inc",
+    "slug": "travis-industries-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Travis Industries, Inc"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/travis-industries-inc/"
+  },
+  {
+    "name": "Tri-Fab, Inc.",
+    "slug": "tri-fab-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Tri-Fab, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/tri-fab-inc/"
+  },
+  {
+    "name": "Tulikivi Oyj",
+    "slug": "tulikivi-oyj",
+    "role": "primary",
+    "manufacturers": [
+      "Tulikivi Oyj"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/tulikivi-oyj/"
+  },
+  {
+    "name": "Unforgettable Fire LLC",
+    "slug": "unforgettable-fire-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Unforgettable Fire LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/unforgettable-fire-llc/"
+  },
+  {
+    "name": "United States Stove Company",
+    "slug": "united-states-stove-company",
+    "role": "primary",
+    "manufacturers": [
+      "United States Stove Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/united-states-stove-company/"
+  },
+  {
+    "name": "Varmebaronen AB",
+    "slug": "varmebaronen-ab",
+    "role": "primary",
+    "manufacturers": [
+      "Varmebaronen AB"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/varmebaronen-ab/"
+  },
+  {
+    "name": "Vermont Castings",
+    "slug": "vermont-castings",
+    "role": "primary",
+    "manufacturers": [
+      "Vermont Castings",
+      "CFM Corporation (Vermont Castings, Inc.)",
+      "Monessan Hearth Systems (Vermont Castings Group)"
+    ],
+    "note": "Three EPA manufacturer strings contain the words Vermont Castings. Each model page still shows the original string. Model lines filed under a different manufacturer are included only when the model text contains Vermont Castings.",
+    "evidence": "The EPA manufacturer strings contain Vermont Castings. Some Hearth and Home Technologies model lines also contain those words.",
+    "url": "/brands/vermont-castings/"
+  },
+  {
+    "name": "Vestal Manufacturing",
+    "slug": "vestal-manufacturing",
+    "role": "primary",
+    "manufacturers": [
+      "Vestal Manufacturing"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/vestal-manufacturing/"
+  },
+  {
+    "name": "Viessmann Holzheiztechnik GmbH",
+    "slug": "viessmann-holzheiztechnik-gmbh",
+    "role": "primary",
+    "manufacturers": [
+      "Viessmann Holzheiztechnik GmbH"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/viessmann-holzheiztechnik-gmbh/"
+  },
+  {
+    "name": "Vogelzang",
+    "slug": "vogelzang",
+    "role": "primary",
+    "manufacturers": [
+      "Vogelzang International Corporation (United States Stove Company)"
+    ],
+    "note": "The manufacturer string starts with Vogelzang and names United States Stove Company in parentheses. Other rows are included only when the model text contains Vogelzang.",
+    "evidence": "EPA manufacturer string: Vogelzang International Corporation (United States Stove Company)",
+    "url": "/brands/vogelzang/"
+  },
+  {
+    "name": "Värmebaronen AB/Smokeless Heat, LLC",
+    "slug": "varmebaronen-ab-smokeless-heat-llc",
+    "role": "primary",
+    "manufacturers": [
+      "Värmebaronen AB/Smokeless Heat, LLC"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/varmebaronen-ab-smokeless-heat-llc/"
+  },
+  {
+    "name": "Waterford Stanley Limited",
+    "slug": "waterford-stanley-limited",
+    "role": "primary",
+    "manufacturers": [
+      "Waterford Stanley Limited"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/waterford-stanley-limited/"
+  },
+  {
+    "name": "Webco Industries",
+    "slug": "webco-industries",
+    "role": "primary",
+    "manufacturers": [
+      "Webco Industries"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/webco-industries/"
+  },
+  {
+    "name": "WEbiomass, Inc.",
+    "slug": "webiomass-inc",
+    "role": "primary",
+    "manufacturers": [
+      "WEbiomass, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/webiomass-inc/"
+  },
+  {
+    "name": "Weitz and Co., Inc.",
+    "slug": "weitz-and-co-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Weitz and Co., Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/weitz-and-co-inc/"
+  },
+  {
+    "name": "Welenco Manufacturing, Inc.",
+    "slug": "welenco-manufacturing-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Welenco Manufacturing, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/welenco-manufacturing-inc/"
+  },
+  {
+    "name": "Weso-Aurorahautte GmbH",
+    "slug": "weso-aurorahautte-gmbh",
+    "role": "primary",
+    "manufacturers": [
+      "Weso-Aurorahautte GmbH"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/weso-aurorahautte-gmbh/"
+  },
+  {
+    "name": "Windhager",
+    "slug": "windhager",
+    "role": "primary",
+    "manufacturers": [
+      "Windhager Zentralheizung Technik GmbH",
+      "Windhager, North America, LLC/ Windhager Zentralheizung Technik GmbH"
+    ],
+    "note": "These two EPA strings name Windhager. Pellergy's string also mentions Windhager and stays on its own hub, because Pellergy is the name EPA put first.",
+    "evidence": "Both grouped strings contain Windhager as the company name.",
+    "url": "/brands/windhager/"
+  },
+  {
+    "name": "Winrich International",
+    "slug": "winrich-international",
+    "role": "primary",
+    "manufacturers": [
+      "Winrich International"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/winrich-international/"
+  },
+  {
+    "name": "Winston Stove Company",
+    "slug": "winston-stove-company",
+    "role": "primary",
+    "manufacturers": [
+      "Winston Stove Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/winston-stove-company/"
+  },
+  {
+    "name": "Wiseway Pellet Stoves - United States Stove Company",
+    "slug": "wiseway-pellet-stoves-united-states-stove-company",
+    "role": "primary",
+    "manufacturers": [
+      "Wiseway Pellet Stoves - United States Stove Company"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/wiseway-pellet-stoves-united-states-stove-company/"
+  },
+  {
+    "name": "Wittus",
+    "slug": "wittus",
+    "role": "primary",
+    "manufacturers": [
+      "Wittus (Fire By Design)",
+      "Wittus Inc."
+    ],
+    "note": "Both EPA manufacturer strings contain Wittus.",
+    "evidence": "EPA manufacturer strings contain Wittus.",
+    "url": "/brands/wittus/"
+  },
+  {
+    "name": "Wolf Steel Ltd.",
+    "slug": "wolf-steel-ltd",
+    "role": "primary",
+    "manufacturers": [
+      "Wolf Steel Ltd."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/wolf-steel-ltd/"
+  },
+  {
+    "name": "Wolf's Casual Living",
+    "slug": "wolf-s-casual-living",
+    "role": "primary",
+    "manufacturers": [
+      "Wolf's Casual Living"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/wolf-s-casual-living/"
+  },
+  {
+    "name": "Wolf's Stoves",
+    "slug": "wolf-s-stoves",
+    "role": "primary",
+    "manufacturers": [
+      "Wolf's Stoves"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/wolf-s-stoves/"
+  },
+  {
+    "name": "Wood Boiler USA",
+    "slug": "wood-boiler-usa",
+    "role": "primary",
+    "manufacturers": [
+      "Wood Boiler USA"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/wood-boiler-usa/"
+  },
+  {
+    "name": "Woodkiln Inc.",
+    "slug": "woodkiln-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Woodkiln Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/woodkiln-inc/"
+  },
+  {
+    "name": "WoodMaster Inc.",
+    "slug": "woodmaster-inc",
+    "role": "primary",
+    "manufacturers": [
+      "WoodMaster Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/woodmaster-inc/"
+  },
+  {
+    "name": "Woodstock",
+    "slug": "woodstock",
+    "role": "primary",
+    "manufacturers": [
+      "Woodstock Soapstone Company, Inc."
+    ],
+    "note": "The hub title is the brand token inside the EPA manufacturer string.",
+    "evidence": "EPA manufacturer string: Woodstock Soapstone Company, Inc.",
+    "url": "/brands/woodstock/"
+  },
+  {
+    "name": "Yunca Heating",
+    "slug": "yunca-heating",
+    "role": "primary",
+    "manufacturers": [
+      "Yunca Heating"
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/yunca-heating/"
+  },
+  {
+    "name": "Zephyr Stoves, Inc.",
+    "slug": "zephyr-stoves-inc",
+    "role": "primary",
+    "manufacturers": [
+      "Zephyr Stoves, Inc."
+    ],
+    "note": "Models are grouped under the manufacturer name EPA published.",
+    "evidence": "No retail-brand mapping is recorded. The hub title is the EPA manufacturer string.",
+    "url": "/brands/zephyr-stoves-inc/"
+  }
+]

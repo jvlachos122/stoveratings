@@ -1,0 +1,73 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { firewoodSentences } from "../lib/answers.js";
+import { catalog } from "../lib/catalog.js";
+import { formatNumber, metaDescription } from "../lib/format.js";
+import { articleLd, webAppLd } from "../lib/schema.js";
+
+const rows = [...catalog.firewood].sort((a, b) => b.btuHigh - a.btuHigh || b.btuLow - a.btuLow || a.species.localeCompare(b.species));
+const sentences = firewoodSentences(catalog.firewood);
+const description = metaDescription(sentences);
+const source = rows[0].sourceUrl;
+const payload = JSON.stringify(rows).replace(/</g, "\\u003c");
+---
+
+<Base title="Firewood heat values" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/firewood-btu-chart/", label: "Firewood heat values" }]} jsonLd={[articleLd("Firewood heat values from a cited extension table", description, "/firewood-btu-chart/", catalog.meta.snapshotDate), webAppLd("Firewood heat comparison", "Compare two species from the cited firewood table.", "/firewood-btu-chart/")]}>
+  <div class="wrap">
+    <h1>Firewood heat values</h1>
+    <Answer sentences={sentences} />
+    <p>These are not stove ratings and they are not EPA certification numbers. A cord here is the cord the extension table uses. Heat per cord is not heat per hour.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Fuel values of wood from the University of Arkansas extension table, highest listed top of range first</caption>
+        <thead>
+          <tr>
+            <th scope="col">Species</th>
+            <th scope="col" class="num">Million BTU per cord</th>
+            <th scope="col">Splitting</th>
+            <th scope="col">Sparks</th>
+            <th scope="col">Smoke</th>
+            <th scope="col">Coaling</th>
+            <th scope="col">Extension rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row) => (
+            <tr>
+              <th scope="row">{row.species}</th>
+              <td class="num">{row.btuLow === row.btuHigh ? formatNumber(row.btuHigh, 1) : `${formatNumber(row.btuLow, 1)} to ${formatNumber(row.btuHigh, 1)}`}</td>
+              <td>{row.splitting}</td>
+              <td>{row.sparks}</td>
+              <td>{row.smoke}</td>
+              <td>{row.coaling}</td>
+              <td>{row.overallRating}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>Source for every row: <a href={source}>University of Arkansas Division of Agriculture Cooperative Extension Service</a>. The page says the heat values were compiled from USDA Forest Service Leaflet No. 559. Retrieved 2026-10-23.</p>
+    <h2>Compare two species</h2>
+    <form id="wood-form">
+      <div class="filters">
+        <label>First species
+          <select id="wood-a">
+            {rows.map((row) => <option value={row.species}>{row.species}</option>)}
+          </select>
+        </label>
+        <label>Second species
+          <select id="wood-b">
+            {rows.map((row) => <option value={row.species}>{row.species}</option>)}
+          </select>
+        </label>
+      </div>
+      <button type="submit">Compare heat values</button>
+    </form>
+    <p id="wood-result" class="result" aria-live="polite"></p>
+    <script id="firewood-data" type="application/json" set:html={payload} />
+    <DataNote items={["The extension rating column is the source table's overall rating. StoveRatings did not rate the wood.", "Ranges overlap, so sorting by the top of the range does not make the first row the hottest species in every comparison.", "Moisture changes delivered heat. These figures are the published cord values, not a measurement of a particular stack."]} />
+  </div>
+</Base>
+<script src="/scripts/firewood.js" defer></script>

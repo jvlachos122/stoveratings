@@ -1,0 +1,33 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import StoveTable from "../components/StoveTable.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { emissionText, metaDescription, shortModel } from "../lib/format.js";
+import { excludedEmission, rankByEmission } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const ranked = rankByEmission(catalog.stoves, "Wood Stove");
+const excluded = excludedEmission(catalog.stoves, "Wood Stove");
+const top = ranked[0];
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `The lowest emission rate EPA lists on a currently certified wood-stove model line is ${emissionText(top.emission, top.emissionUnit)}, on ${shortModel(top.model)}.`,
+  excluded === 0
+    ? `All ${ranked.length} currently certified wood-stove model lines list an emission rate, so none were left out.`
+    : `${excluded} currently certified wood-stove model lines have no emission rate listed, so they are left out.`,
+  "The table orders that grams-per-hour figure from lowest to highest. A lower test result is not a StoveRatings score.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Lowest emission wood stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/cleanest-burning-wood-stoves/", label: "Lowest emission rates" }]} jsonLd={[articleLd("Wood stoves ordered by EPA emission rate", description, "/cleanest-burning-wood-stoves/", date)]}>
+  <div class="wrap">
+    <h1>Wood stoves with the lowest EPA emission rates</h1>
+    <Answer sentences={sentences} />
+    <StoveTable stoves={ranked} caption="Currently certified wood stoves ordered by emission rate, lowest first" />
+    <DataNote items={["People search this topic as cleanest-burning wood stoves. The order is EPA's grams-per-hour result only.", "Pellet stoves use the same grams-per-hour unit and are listed on the pellet pages, not in this table."]} />
+  </div>
+</Base>

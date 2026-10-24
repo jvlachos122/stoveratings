@@ -1,0 +1,30 @@
+{
+  "name": "stoveratings",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "data": "python3 scripts/build_data.py && node scripts/prepare-public-data.mjs",
+    "prebuild": "python3 scripts/build_data.py && node scripts/prepare-public-data.mjs",
+    "dev": "python3 scripts/build_data.py && node scripts/prepare-public-data.mjs && astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "validate:data": "node scripts/validate-data.mjs",
+    "test": "node --test",
+    "check:links": "node scripts/check-links.mjs",
+    "check:html": "node scripts/check-html.mjs",
+    "check:origins": "node scripts/check-origins.mjs",
+    "log:pages": "node scripts/log-pages.mjs",
+    "check": "npm run validate:data && npm test && npm run build && npm run check:links && npm run check:html && npm run check:origins && npm run log:pages"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "^5.18.2"
+  },
+  "devDependencies": {
+    "html-validate": "^11.17.0"
+  }
+}

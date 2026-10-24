@@ -1,0 +1,37 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import { centralKind } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const groups = centralKind(catalog.stoves, (stove) => stove.type === "Hydronic Heater" && stove.fuel === "Wood Pellets");
+const allRows = catalog.stats.centralAllByFuel["Hydronic Heater|Wood Pellets"] || 0;
+const currentRows = catalog.stoves
+  .filter((stove) => stove.type === "Hydronic Heater")
+  .flatMap((stove) => stove.tests)
+  .filter((test) => test.current && test.fuel === "Wood Pellets").length;
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `EPA lists ${allRows} hydronic-heater rows with certified fuel Wood Pellets, and ${currentRows} of those rows are currently certified.`,
+  "This page uses that fuel field. It does not guess which hydronic heaters can burn pellets.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Pellet boilers in the EPA list" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/pellet-boilers/", label: "Pellet boilers" }]} jsonLd={[articleLd("EPA pellet hydronic heaters", description, "/pellet-boilers/", date)]}>
+  <div class="wrap">
+    <h1>Pellet hydronic heaters</h1>
+    <Answer sentences={sentences} />
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified hydronic heaters certified for wood pellets" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified hydronic heaters certified for wood pellets" },
+    ]} />
+    <p>Cordwood hydronic heaters are on <a href="/outdoor-wood-boilers/">the hydronic list</a>. Room pellet stoves are on <a href="/pellet-stoves/">pellet stoves</a>.</p>
+    <DataNote items={["A model line is included when its primary row lists Hydronic Heater and Wood Pellets.", "Emission rates are pounds per million BTU, annual average."]} />
+  </div>
+</Base>

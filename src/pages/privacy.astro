@@ -1,0 +1,15 @@
+---
+import Base from "../layouts/Base.astro";
+import { site } from "../lib/site.js";
+
+const description = "StoveRatings does not set cookies, does not run analytics, and does not load third-party scripts.";
+---
+
+<Base title="Privacy" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/privacy/", label: "Privacy" }]}>
+  <div class="wrap prose">
+    <h1>Privacy</h1>
+    <p>StoveRatings is a static site. Pages do not set cookies, do not run analytics, and do not load scripts, fonts, or images from another domain. The finder, lookup, comparison, and calculators run in your browser on files this site hosts.</p>
+    <p>There is no account and no form that stores a message. The contact page shows an email address only.</p>
+    <p>The site is hosted on GitHub Pages. GitHub receives ordinary connection data, such as an IP address and browser type, when it delivers a page. That hosting log is GitHub's. {site.legalName} does not add a tracker to collect it. GitHub's privacy statement is at <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">docs.github.com</a>.</p>
+  </div>
+</Base>

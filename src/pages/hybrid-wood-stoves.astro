@@ -1,0 +1,35 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { formatNumber, metaDescription } from "../lib/format.js";
+import { woodSubtype } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const groups = woodSubtype(catalog.stoves, "Hybrid");
+const block = catalog.stats.medians.currentWoodHybrid;
+const pelletHybrid = catalog.stoves.filter((stove) => stove.current && stove.type === "Pellet Stove" && stove.subtype === "Hybrid");
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `EPA lists ${block.rows} currently certified hybrid wood-stove rows in the snapshot dated ${date}.`,
+  `The median emission rate of those ${block.emissionN} rows is ${formatNumber(block.emissionMedian, 2)} grams per hour.`,
+  `The median HHV efficiency of those ${block.efficiencyN} rows is ${formatNumber(block.efficiencyMedian, 2)} percent.`,
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Hybrid wood stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/hybrid-wood-stoves/", label: "Hybrid wood stoves" }]} jsonLd={[articleLd("Hybrid wood stoves in the EPA list", description, "/hybrid-wood-stoves/", date)]}>
+  <div class="wrap">
+    <h1>Hybrid wood stoves</h1>
+    <Answer sentences={sentences} />
+    <p>EPA's current room-heater rows also include {pelletHybrid.length} hybrid pellet model lines. Those are listed with <a href="/pellet-stoves/">pellet stoves</a>.</p>
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified hybrid wood-stove model lines" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified hybrid wood-stove model lines" },
+    ]} />
+    <DataNote items={["Hybrid is the EPA subtype on the row. This page does not reclassify stoves.", "Medians are for wood-stove rows only."]} />
+  </div>
+</Base>

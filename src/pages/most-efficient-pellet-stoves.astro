@@ -1,0 +1,33 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import StoveTable from "../components/StoveTable.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { formatNumber, metaDescription, shortModel } from "../lib/format.js";
+import { excludedEfficiency, rankByEfficiency } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const ranked = rankByEfficiency(catalog.stoves, "Pellet Stove");
+const excluded = excludedEfficiency(catalog.stoves, "Pellet Stove");
+const top = ranked[0];
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `The highest HHV efficiency EPA lists on a currently certified pellet-stove model line is ${formatNumber(top.efficiency, 2)} percent, on ${shortModel(top.model)}.`,
+  excluded === 0
+    ? `All ${ranked.length} currently certified pellet-stove model lines list an HHV efficiency, so none were left out of this order.`
+    : `${excluded} currently certified pellet-stove model lines have no HHV efficiency listed, so they are left out of this order.`,
+  "Ties are ordered by a lower emission rate, then by model name. This is not a StoveRatings score.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Highest HHV efficiency pellet stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/most-efficient-pellet-stoves/", label: "Highest pellet HHV efficiency" }]} jsonLd={[articleLd("Pellet stoves ordered by EPA HHV efficiency", description, "/most-efficient-pellet-stoves/", date)]}>
+  <div class="wrap">
+    <h1>Pellet stoves with the highest EPA HHV efficiency</h1>
+    <Answer sentences={sentences} />
+    <StoveTable stoves={ranked} caption="Currently certified pellet stoves ordered by HHV efficiency, highest first" />
+    <DataNote items={["HHV is the efficiency basis EPA printed. This page does not convert it to another basis.", "Previously certified pellet model lines are not in this table."]} />
+  </div>
+</Base>

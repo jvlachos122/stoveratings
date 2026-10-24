@@ -1,0 +1,52 @@
+---
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { datasetLd, faqLd } from "../lib/schema.js";
+import { site } from "../lib/site.js";
+
+const date = catalog.meta.snapshotDate;
+const faqs = [
+  {
+    question: "What does currently certified mean here?",
+    answer: `It means the row was in EPA's result with previously certified models excluded, saved on ${date}. The export does not include a certification date, so this site does not say certified on a particular day.`,
+  },
+  {
+    question: "Why are some numbers missing?",
+    answer: "EPA left the cell blank. Older room-heater rows often have no HHV efficiency, firebox volume, or CO. This site shows Not listed. It does not fill the blank with zero.",
+  },
+  {
+    question: "Does StoveRatings score stoves?",
+    answer: "No. Lists that look sorted are ordered by one EPA number, and the page says which number. Ties stay ties. There is no star rating and no review score.",
+  },
+];
+const description = `How StoveRatings uses the EPA Certified Wood Heater Database snapshot of ${date}: model lines, blanks, brand names, and the manual refresh.`;
+---
+
+<Base title="Methodology" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/methodology/", label: "Methodology" }]} jsonLd={[datasetLd(catalog.meta), faqLd(faqs)]}>
+  <div class="wrap prose">
+    <h1>Methodology</h1>
+    <p>StoveRatings is a readable copy of one public database, plus a few tools whose math is labeled as ours. The snapshot date is {date}. Row counts in that snapshot: {catalog.stats.rows.roomAll.toLocaleString("en-US")} room-heater rows, {catalog.stats.rows.roomCurrent.toLocaleString("en-US")} of them currently certified, {catalog.stats.rows.centralAll.toLocaleString("en-US")} central-heater rows, and {catalog.stats.rows.centralCurrent.toLocaleString("en-US")} of them currently certified.</p>
+    <h2>Where the files came from</h2>
+    <p>There is no bulk download. The numbers were saved from EPA's Certified Wood Heater Database result tables and parsed locally. The database application lives on cfpub.epa.gov. That host's robots.txt disallows automated access, so this site never fetches it in the build or on a schedule. A refresh means a person saves the result pages and starts the manual rebuild workflow. The landing page EPA publishes is <a href={site.epaDatabaseUrl}>the Certified Wood Heater Database</a>.</p>
+    <p>EPA content is a U.S. government work and is in the public domain. {catalog.meta.operator} operates this site and is not EPA.</p>
+    <h2>Model lines, not store models</h2>
+    <p>Each EPA row is a model line. The cell often names several retail models, separated by a colon and then commas. This site keeps one page per manufacturer-and-model-line pair. When the same line has two different test rows, both rows are on that page. Retail names are split for the lookup. The room-heater split produced {catalog.stats.retailNames.roomTokens.toLocaleString("en-US")} names, {catalog.stats.retailNames.roomDistinct.toLocaleString("en-US")} distinct.</p>
+    <h2>Brands</h2>
+    <p>The manufacturer cell and the brand a shopper types are often different. A retail hub exists only when the brand name appears in the EPA manufacturer string or in the model text. The hub page quotes that evidence. Rows that do not contain the brand stay under the EPA manufacturer name. The mapping file is <code>data/brand-crosswalk.csv</code>.</p>
+    <h2>Inserts</h2>
+    <p>{catalog.stats.insert.basis} The full room-heater file has {catalog.stats.insert.rows} matching rows, {catalog.stats.insert.currentRows} of them currently certified. That is narrower than every name a person might call an insert.</p>
+    <h2>What the export does not have</h2>
+    <p>No certification number, no certification date, and no separate insert column. The New flag appears on only a few rows. 2020 NSPS compliance is a Yes or No cell: {catalog.stats.nsps.roomAllYes} room-heater rows say Yes, including previously certified models, and {catalog.stats.nsps.roomCurrentYes} of the currently certified room-heater rows say Yes. {catalog.stats.nsps.roomCurrentNo} currently certified room-heater {catalog.stats.nsps.roomCurrentNo === 1 ? "row says" : "rows say"} No.</p>
+    <p>EPA's Burn Wise material has described the program's published history as running through 2025, while the database landing page was updated after that. If the database is retired, this site will keep the last snapshot and will keep the date on it.</p>
+    <h2>Sorted lists and the size calculator</h2>
+    <p>A highest-efficiency page sorts by the HHV percent EPA printed, blanks excluded, ties ordered by lower emission rate and then name. A lowest-emission page sorts by grams per hour the same way. The stove size calculator multiplies square feet by planning factors printed on that page. Those factors are not from EPA.</p>
+    <h2>Firewood</h2>
+    <p>The firewood table is not EPA data. Every row cites the University of Arkansas extension page that compiles USDA Forest Service Leaflet No. 559. The build refuses a firewood row with no source URL.</p>
+    {faqs.map((faq) => (
+      <section>
+        <h2>{faq.question}</h2>
+        <p>{faq.answer}</p>
+      </section>
+    ))}
+  </div>
+</Base>

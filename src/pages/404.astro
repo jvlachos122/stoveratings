@@ -1,0 +1,17 @@
+---
+import Base from "../layouts/Base.astro";
+
+const description = "That page is not on StoveRatings. Use the finder or the stove-name lookup to search the EPA snapshot.";
+---
+
+<Base title="Page not found" description={description} noindex={true} canonicalPath="/404.html">
+  <div class="wrap prose">
+    <h1>Page not found</h1>
+    <p>That address is not on this site. Model pages use the EPA model line, so a store name may not be its own URL.</p>
+    <div class="actions">
+      <a class="button" href="/">Finder</a>
+      <a class="button button-ghost" href="/lookup/">Name lookup</a>
+      <a class="button button-ghost" href="/brands/">Brands</a>
+    </div>
+  </div>
+</Base>

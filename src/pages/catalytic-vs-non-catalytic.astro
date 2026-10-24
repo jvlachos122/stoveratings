@@ -1,0 +1,63 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { formatNumber, metaDescription } from "../lib/format.js";
+import { articleLd } from "../lib/schema.js";
+
+const date = catalog.meta.snapshotDate;
+const cat = catalog.stats.medians.currentWoodCatalytic;
+const non = catalog.stats.medians.currentWoodNonCatalytic;
+const hybrid = catalog.stats.medians.currentWoodHybrid;
+const sentences = [
+  `EPA lists ${cat.rows} currently certified catalytic wood-stove rows, ${non.rows} non-catalytic wood-stove rows, and ${hybrid.rows} hybrid wood-stove rows.`,
+  `The median emission rate is ${formatNumber(cat.emissionMedian, 2)} grams per hour for the catalytic rows, ${formatNumber(non.emissionMedian, 2)} grams per hour for the non-catalytic rows, and ${formatNumber(hybrid.emissionMedian, 2)} grams per hour for the hybrid rows.`,
+  `The median HHV efficiency is ${formatNumber(cat.efficiencyMedian, 2)} percent for catalytic rows, ${formatNumber(non.efficiencyMedian, 2)} percent for non-catalytic rows, and ${formatNumber(hybrid.efficiencyMedian, 2)} percent for hybrid rows.`,
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+const rows = [
+  ["Catalytic", cat],
+  ["Non-catalytic", non],
+  ["Hybrid", hybrid],
+];
+---
+
+<Base title="Catalytic, non-catalytic, and hybrid" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/catalytic-vs-non-catalytic/", label: "Catalytic and non-catalytic" }]} jsonLd={[articleLd("Catalytic and non-catalytic EPA figures", description, "/catalytic-vs-non-catalytic/", date)]}>
+  <div class="wrap prose">
+    <h1>Catalytic, non-catalytic, and hybrid wood stoves</h1>
+    <Answer sentences={sentences} />
+    <div class="table-wrap">
+      <table>
+        <caption>Medians for currently certified wood-stove rows, by EPA subtype</caption>
+        <thead>
+          <tr>
+            <th scope="col">EPA subtype</th>
+            <th scope="col" class="num">Rows</th>
+            <th scope="col" class="num">Median g/hr</th>
+            <th scope="col" class="num">Median HHV %</th>
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(([label, block]) => (
+            <tr>
+              <th scope="row">{label}</th>
+              <td class="num">{block.rows}</td>
+              <td class="num">{formatNumber(block.emissionMedian, 2)}</td>
+              <td class="num">{formatNumber(block.efficiencyMedian, 2)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>These medians are the middle value of the EPA rows in each subtype. They are not a score, and they do not say which subtype a house should use.</p>
+    <p>Current room-heater rows of every type, including pellet stoves, are {catalog.stats.roomCurrentBySubtype["Catalytic Stove"]} catalytic, {catalog.stats.roomCurrentBySubtype["Non-Catalytic Stove"]} non-catalytic, and {catalog.stats.roomCurrentBySubtype["Hybrid"]} hybrid. The table above keeps pellet rows out so the wood-stove comparison is not mixed with them.</p>
+    <p>
+      <a href="/catalytic-wood-stoves/">Catalytic list</a> ·
+      <a href="/non-catalytic-wood-stoves/">Non-catalytic list</a> ·
+      <a href="/hybrid-wood-stoves/">Hybrid list</a>
+    </p>
+    <DataNote items={["A median with an even number of rows is the average of the two middle values.", "Every current wood-stove row in this snapshot lists both an emission rate and an HHV efficiency, so neither median dropped a blank."]} />
+  </div>
+</Base>

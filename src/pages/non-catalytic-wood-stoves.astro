@@ -1,0 +1,34 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Sections from "../components/Sections.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { formatNumber, metaDescription } from "../lib/format.js";
+import { woodSubtype } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const groups = woodSubtype(catalog.stoves, "Non-Catalytic Stove");
+const block = catalog.stats.medians.currentWoodNonCatalytic;
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `EPA lists ${block.rows} currently certified non-catalytic wood-stove rows in the snapshot dated ${date}.`,
+  `The median emission rate of those ${block.emissionN} rows is ${formatNumber(block.emissionMedian, 2)} grams per hour.`,
+  `The median HHV efficiency of those ${block.efficiencyN} rows is ${formatNumber(block.efficiencyMedian, 2)} percent.`,
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Non-catalytic wood stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/non-catalytic-wood-stoves/", label: "Non-catalytic wood stoves" }]} jsonLd={[articleLd("Non-catalytic wood stoves in the EPA list", description, "/non-catalytic-wood-stoves/", date)]}>
+  <div class="wrap">
+    <h1>Non-catalytic wood stoves</h1>
+    <Answer sentences={sentences} />
+    <p>The current table has {groups.current.length} model lines. Pellet stoves with a non-catalytic subtype are on the <a href="/pellet-stoves/">pellet stove list</a>, not here.</p>
+    <Sections sections={[
+      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified non-catalytic wood-stove model lines" },
+      { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified non-catalytic wood-stove model lines" },
+    ]} />
+    <DataNote items={["Medians use currently certified wood-stove rows whose subtype is Non-Catalytic Stove.", "A blank cell is Not listed, not zero."]} />
+  </div>
+</Base>
