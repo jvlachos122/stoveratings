@@ -4,6 +4,7 @@ import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 import { modelSentences } from "../src/lib/answers.js";
+import { datasetIssues } from "../scripts/check-dataset.mjs";
 import { faqLd } from "../src/lib/schema.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -77,6 +78,42 @@ test("the 1.4 Series Osburn answer uses EPA numbers and the snapshot date", () =
   assert.match(text, /Stove Builder International, Inc\./);
   assert.match(text, /snapshot 2026-10-23/);
   assert.doesNotMatch(text, /\bstar\b|best stove|our score/i);
+});
+
+test("Dataset creator and publisher types must be Organization or Person", () => {
+  function page(creatorType, publisherType) {
+    const data = {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Dataset",
+          name: "EPA Certified Wood Heater Database snapshot",
+          description: "x".repeat(80),
+          url: "https://stoveratings.com/methodology/",
+          license: "https://www.usa.gov/government-works",
+          isAccessibleForFree: true,
+          creator: {
+            "@type": creatorType,
+            name: "U.S. Environmental Protection Agency",
+            url: "https://www.epa.gov/",
+          },
+          publisher: { "@type": publisherType, name: "StoveRatings", url: "https://stoveratings.com" },
+        },
+        { "@type": "Article", publisher: { "@type": "GovernmentOrganization", name: "Ignored outside Dataset" } },
+      ],
+    };
+    return `<script type="application/ld+json">${JSON.stringify(data)}</script>`;
+  }
+
+  const good = datasetIssues(page("Organization", "Person"), "/index.html");
+  assert.equal(good.datasets, 1);
+  assert.deepEqual(good.issues, []);
+
+  const badCreator = datasetIssues(page("GovernmentOrganization", "Organization"), "/index.html");
+  assert.ok(badCreator.issues.some((issue) => issue.includes("creator") && issue.includes("GovernmentOrganization")));
+
+  const badPublisher = datasetIssues(page("Organization", "GovernmentOrganization"), "/methodology/index.html");
+  assert.ok(badPublisher.issues.some((issue) => issue.includes("publisher") && issue.includes("GovernmentOrganization")));
 });
 
 test("schema helpers do not emit review or product types", () => {
