@@ -80,10 +80,11 @@ FOLDS = [
         "manufacturers": [
             "HeatMaster Furnaces, Inc.",
             "Heatmaster Furnaces Inc. (SteelTech Inc.)",
+            "Steel Tech, Inc.",
         ],
         "model_regex": "",
-        "note": "Both EPA manufacturer strings contain HeatMaster or Heatmaster. The original spelling is kept on each model page.",
-        "evidence": "EPA manufacturer strings contain HeatMaster or Heatmaster.",
+        "note": "EPA spells this HeatMaster and Heatmaster. One string adds (SteelTech Inc.). Steel Tech, Inc. is that same name with a space. Model text on these strings uses the G Series. The original manufacturer string is kept on each model page.",
+        "evidence": "HeatMaster Furnaces, Inc. and Heatmaster Furnaces Inc. (SteelTech Inc.) share the model text G Series G10000, G Series G4000, G Series G7000, and P7000. Steel Tech, Inc. lists G Series G100/G100s, G Series G200-2/G200s, and G Series G400G400s.",
     },
     {
         "brand": "Windhager",
@@ -95,6 +96,94 @@ FOLDS = [
         "model_regex": "",
         "note": "These two EPA strings name Windhager. Pellergy's string also mentions Windhager and stays on its own hub, because Pellergy is the name EPA put first.",
         "evidence": "Both grouped strings contain Windhager as the company name.",
+    },
+    {
+        "brand": "Hussong Manufacturing Company, Inc.",
+        "slug": "hussong-manufacturing-company-inc",
+        "manufacturers": [
+            "Hussong Manufacturing Company, Inc.",
+            "Hussong Manufacturing Company, Inc.(Kozy Heat)",
+        ],
+        "model_regex": "",
+        "note": "EPA published this manufacturer name twice. The second string adds (Kozy Heat) and no other words. Each model page still shows the original string.",
+        "evidence": "Both strings are Hussong Manufacturing Company, Inc. The model lines are Kozy Heat Z42, Kozy Heat Albany and Olivia OVL-PC.",
+    },
+    {
+        "brand": "High Valley",
+        "slug": "high-valley",
+        "manufacturers": [
+            "High Valley Construction and Maintenance Corp.",
+            "High Valley Stoves by Stoll (Suppertime Stoves)",
+        ],
+        "model_regex": "",
+        "note": "Both EPA manufacturer strings contain High Valley. The model lines High Valley 1500 and High Valley 1600 are listed under both strings. Each model page still shows the original string.",
+        "evidence": "Shared model text: High Valley 1500 and High Valley 1600. The other lines are High Valley 2000, Craft Stove 2000, High Valley Bay 2500, and High Valley 2500.",
+    },
+    {
+        "brand": "Sierra Products, Inc.",
+        "slug": "sierra-products-inc",
+        "manufacturers": [
+            "Sierra Products, Inc.",
+            "High Sierra Stoves, Ltd. (Sierra Products, Inc.)",
+        ],
+        "model_regex": "",
+        "note": "The second EPA string puts Sierra Products, Inc. in parentheses after High Sierra Stoves, Ltd. Sierra Classic 1500B is the same Sierra Classic line as Sierra Classic 1500T. Each model page still shows the original string.",
+        "evidence": "High Sierra Stoves, Ltd. (Sierra Products, Inc.) contains the manufacturer string Sierra Products, Inc. Model text: Sierra Classic 1500B and Sierra Classic 1500T.",
+    },
+    {
+        "brand": "SMG Hearth and Home, LLC",
+        "slug": "smg-hearth-and-home-llc",
+        "manufacturers": [
+            "SMG Hearth and Home, LLC",
+            "Ningbo Hongsheng Fireplace Company (SMG Hearth and Home, LLC)",
+        ],
+        "model_regex": "",
+        "note": "The Ningbo string names SMG Hearth and Home, LLC in parentheses. EPA lists the model text HP 21, HP 61, and HP22 ComfortBilt under both strings. Each model page still shows the original string.",
+        "evidence": "Exact shared model text: HP 21, HP 61, and HP22 ComfortBilt.",
+    },
+    {
+        "brand": "Jacuzzi Leisure Products, Inc.",
+        "slug": "jacuzzi-leisure-products-inc",
+        "manufacturers": [
+            "Jacuzzi Leisure Products, Inc.",
+            "CFM Corporation (Jacuzzi Leisure Products, Inc.)",
+        ],
+        "model_regex": "",
+        "note": "Both EPA strings contain Jacuzzi Leisure Products, Inc. CFM Corporation (Vermont Castings, Inc.) stays on the Vermont Castings hub. Each model page still shows the original string.",
+        "evidence": "CFM Corporation (Jacuzzi Leisure Products, Inc.) contains Jacuzzi Leisure Products, Inc. Model text under that string includes Campbell/Jacuzzi. Model text under Jacuzzi Leisure Products, Inc. includes Campbell Elite and Campbell II Elite.",
+    },
+    {
+        "brand": "Varmebaronen AB",
+        "slug": "varmebaronen-ab",
+        "manufacturers": [
+            "Varmebaronen AB",
+            "Värmebaronen AB/Smokeless Heat, LLC",
+        ],
+        "model_regex": "",
+        "note": "EPA spells this name Varmebaronen and Värmebaronen. The second string adds /Smokeless Heat, LLC. The model lines differ: Vedolux under the first string, Pellmax 200 UB under the second. Each model page still shows the original string.",
+        "evidence": "Varmebaronen and Värmebaronen are the same letters apart from the ä. Both strings lead with that name.",
+    },
+    {
+        "brand": "HY-C Company, LLC",
+        "slug": "hy-c-company-llc",
+        "manufacturers": [
+            "HY-C Company, LLC",
+            "Fire Chief Industries/Shelter Furnace/HY-C Company",
+        ],
+        "model_regex": "",
+        "note": "Both EPA strings contain HY-C Company. Model text on both names Fire Chief and Shelter lines (FC1000 or FC1000E, and SF1000 or SF1000E). Each model page still shows the original string.",
+        "evidence": "HY-C Company, LLC lists Fire Chief FC1000E and Shelter SF1000E. Fire Chief Industries/Shelter Furnace/HY-C Company lists Fire Chief FC1000 and Shelter SF1000.",
+    },
+    {
+        "brand": "Central Boiler Inc.- WoodMaster Inc.",
+        "slug": "central-boiler-inc-woodmaster-inc",
+        "manufacturers": [
+            "Central Boiler Inc.- WoodMaster Inc.",
+            "WoodMaster Inc.",
+        ],
+        "model_regex": "",
+        "note": "The longer EPA string contains WoodMaster Inc. Northwest Manufacturing Inc. rows whose model text says Woodmaster stay on that manufacturer hub. Suburban Manufacturing Company's row Woodchief W6-88C, Woodmaster W6-88WC stays on that hub. Each model page still shows the original string.",
+        "evidence": "WoodMaster Inc. is contained in Central Boiler Inc.- WoodMaster Inc. The WoodMaster Inc. model text is CleanFire 300 (Central Boiler Classic Edge 360). The longer string lists Central Boiler Classic Edge 360, WoodMaster– CleanFire 300.",
     },
 ]
 
@@ -241,10 +330,10 @@ ALIASES = [
     {
         "brand": "Enviro",
         "slug": "enviro",
-        "model_regex": r"\bEnviro\b",
+        "model_regex": r"\bEnviro\b(?!\s*chip\b)",
         "manufacturer_contains": "",
-        "note": "Included only where the model text contains Enviro as a whole word. Envirofire and Environmentalist do not match.",
-        "evidence": "Model text under Sherwood Industries, Ltd. and Fireplace Products International Limited contains Enviro.",
+        "note": "Included only where the model text contains Enviro as a whole word. Envirofire and Environmentalist do not match. Piney Manufacturing's ENVIRO CHIP-500 is excluded. That central-heater row does not share a model line with the Sherwood Industries, Ltd. or Fireplace Products International Limited Enviro rows, and Piney's other row is Optimizer 350.",
+        "evidence": "Model text under Sherwood Industries, Ltd. and Fireplace Products International Limited contains Enviro. The excluded row is Piney Manufacturing, model ENVIRO CHIP-500.",
     },
     {
         "brand": "Hampton",

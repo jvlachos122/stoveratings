@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { normalizeHubName } from "../src/lib/brand-names.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -47,6 +48,45 @@ for (const row of firewood) {
 const slugs = new Set(brands.map((brand) => brand.slug));
 for (const stove of stoves) {
   assert.ok(slugs.has(stove.primarySlug), stove.primarySlug);
+  assert.equal(new Set(stove.brandSlugs).size, stove.brandSlugs.length, stove.id);
+}
+const normalizedNames = new Map();
+for (const brand of brands) {
+  const key = normalizeHubName(brand.name);
+  assert.ok(key, brand.slug);
+  assert.equal(normalizedNames.has(key), false, `${brand.name} collides with ${normalizedNames.get(key)}`);
+  normalizedNames.set(key, brand.name);
+  const lines = stoves.filter((stove) => stove.brandSlugs.includes(brand.slug));
+  assert.ok(lines.length > 0, `empty hub ${brand.slug}`);
+}
+const primaryByManufacturer = new Map();
+for (const brand of brands) {
+  if (brand.role !== "primary") continue;
+  for (const manufacturer of brand.manufacturers) {
+    assert.equal(primaryByManufacturer.has(manufacturer), false, manufacturer);
+    primaryByManufacturer.set(manufacturer, brand.slug);
+  }
+}
+for (const stove of stoves) {
+  assert.equal(primaryByManufacturer.get(stove.manufacturer), stove.primarySlug, stove.id);
+}
+const redirects = read("brand-redirects.json");
+const history = read("brand-slug-history.json");
+for (const [slug, name] of Object.entries(history.slugs)) {
+  const brand = brands.find((item) => item.slug === slug);
+  const redirect = redirects.find((item) => item.fromSlug === slug);
+  assert.ok(brand || redirect, `retired hub ${slug} has no redirect`);
+  assert.equal(Boolean(brand && redirect), false, slug);
+  if (brand) assert.equal(brand.name, name, slug);
+  if (redirect) {
+    assert.equal(redirect.fromName, name, slug);
+    assert.ok(slugs.has(redirect.toSlug), redirect.toSlug);
+  }
+}
+for (const redirect of redirects) {
+  assert.equal(history.slugs[redirect.fromSlug], redirect.fromName);
+  assert.ok(noindex.includes(redirect.url), redirect.url);
+  assert.equal(noindex.includes(redirect.targetUrl), false, redirect.targetUrl);
 }
 const drolet = stoves.filter((stove) => stove.brandSlugs.includes("drolet"));
 assert.equal(drolet.length, 1);

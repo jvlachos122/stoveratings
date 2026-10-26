@@ -1,4 +1,5 @@
 import brands from "../../data/brands.json" with { type: "json" };
+import redirects from "../../data/brand-redirects.json" with { type: "json" };
 import changes from "../../data/changes.json" with { type: "json" };
 import firewood from "../../data/firewood.json" with { type: "json" };
 import meta from "../../data/meta.json" with { type: "json" };
@@ -52,6 +53,7 @@ export const brandBySlug = new Map(brands.map((brand) => [brand.slug, brand]));
 export const catalog = {
   stoves,
   brands,
+  redirects,
   stats,
   changes,
   meta,

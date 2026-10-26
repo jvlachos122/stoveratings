@@ -7,6 +7,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
 const site = "https://stoveratings.com";
 const hidden = new Set(JSON.parse(readFileSync(join(root, "data/noindex-paths.json"), "utf8")));
+const redirects = JSON.parse(readFileSync(join(root, "data/brand-redirects.json"), "utf8"));
+const redirectCanonical = new Map(redirects.map((row) => [row.url, new URL(row.targetUrl, site).href]));
 const errors = [];
 
 function walk(dir) {
@@ -21,6 +23,8 @@ function walk(dir) {
 
 function expectedCanonical(file) {
   const rel = file.slice(dist.length).replaceAll("\\", "/");
+  const pagePath = pathFor(file);
+  if (redirectCanonical.has(pagePath)) return redirectCanonical.get(pagePath);
   if (rel === "/404.html") return `${site}/404.html`;
   if (rel === "/finder/index.html") return `${site}/`;
   if (rel === "/index.html") return `${site}/`;

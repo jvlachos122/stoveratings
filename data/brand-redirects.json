@@ -1,0 +1,92 @@
+[
+  {
+    "fromSlug": "hussong-manufacturing-company-inc-kozy-heat",
+    "toSlug": "hussong-manufacturing-company-inc",
+    "fromName": "Hussong Manufacturing Company, Inc.(Kozy Heat)",
+    "toName": "Hussong Manufacturing Company, Inc.",
+    "reason": "The second EPA string adds (Kozy Heat) to Hussong Manufacturing Company, Inc.",
+    "url": "/brands/hussong-manufacturing-company-inc-kozy-heat/",
+    "targetUrl": "/brands/hussong-manufacturing-company-inc/"
+  },
+  {
+    "fromSlug": "high-valley-construction-and-maintenance-corp",
+    "toSlug": "high-valley",
+    "fromName": "High Valley Construction and Maintenance Corp.",
+    "toName": "High Valley",
+    "reason": "Both High Valley strings list the model lines High Valley 1500 and High Valley 1600.",
+    "url": "/brands/high-valley-construction-and-maintenance-corp/",
+    "targetUrl": "/brands/high-valley/"
+  },
+  {
+    "fromSlug": "high-valley-stoves-by-stoll-suppertime-stoves",
+    "toSlug": "high-valley",
+    "fromName": "High Valley Stoves by Stoll (Suppertime Stoves)",
+    "toName": "High Valley",
+    "reason": "Both High Valley strings list the model lines High Valley 1500 and High Valley 1600.",
+    "url": "/brands/high-valley-stoves-by-stoll-suppertime-stoves/",
+    "targetUrl": "/brands/high-valley/"
+  },
+  {
+    "fromSlug": "steel-tech-inc",
+    "toSlug": "heatmaster",
+    "fromName": "Steel Tech, Inc.",
+    "toName": "HeatMaster",
+    "reason": "Heatmaster Furnaces Inc. (SteelTech Inc.) already names SteelTech, and both strings list G Series heaters.",
+    "url": "/brands/steel-tech-inc/",
+    "targetUrl": "/brands/heatmaster/"
+  },
+  {
+    "fromSlug": "high-sierra-stoves-ltd-sierra-products-inc",
+    "toSlug": "sierra-products-inc",
+    "fromName": "High Sierra Stoves, Ltd. (Sierra Products, Inc.)",
+    "toName": "Sierra Products, Inc.",
+    "reason": "The parentheses repeat Sierra Products, Inc., and the model line is Sierra Classic 1500B.",
+    "url": "/brands/high-sierra-stoves-ltd-sierra-products-inc/",
+    "targetUrl": "/brands/sierra-products-inc/"
+  },
+  {
+    "fromSlug": "ningbo-hongsheng-fireplace-company-smg-hearth-and-home-llc",
+    "toSlug": "smg-hearth-and-home-llc",
+    "fromName": "Ningbo Hongsheng Fireplace Company (SMG Hearth and Home, LLC)",
+    "toName": "SMG Hearth and Home, LLC",
+    "reason": "The parentheses name SMG Hearth and Home, LLC, and HP 21, HP 61, and HP22 ComfortBilt are listed under both strings.",
+    "url": "/brands/ningbo-hongsheng-fireplace-company-smg-hearth-and-home-llc/",
+    "targetUrl": "/brands/smg-hearth-and-home-llc/"
+  },
+  {
+    "fromSlug": "cfm-corporation-jacuzzi-leisure-products-inc",
+    "toSlug": "jacuzzi-leisure-products-inc",
+    "fromName": "CFM Corporation (Jacuzzi Leisure Products, Inc.)",
+    "toName": "Jacuzzi Leisure Products, Inc.",
+    "reason": "Both EPA strings contain Jacuzzi Leisure Products, Inc.",
+    "url": "/brands/cfm-corporation-jacuzzi-leisure-products-inc/",
+    "targetUrl": "/brands/jacuzzi-leisure-products-inc/"
+  },
+  {
+    "fromSlug": "varmebaronen-ab-smokeless-heat-llc",
+    "toSlug": "varmebaronen-ab",
+    "fromName": "Värmebaronen AB/Smokeless Heat, LLC",
+    "toName": "Varmebaronen AB",
+    "reason": "EPA also spells this name Varmebaronen. The second string adds /Smokeless Heat, LLC.",
+    "url": "/brands/varmebaronen-ab-smokeless-heat-llc/",
+    "targetUrl": "/brands/varmebaronen-ab/"
+  },
+  {
+    "fromSlug": "fire-chief-industries-shelter-furnace-hy-c-company",
+    "toSlug": "hy-c-company-llc",
+    "fromName": "Fire Chief Industries/Shelter Furnace/HY-C Company",
+    "toName": "HY-C Company, LLC",
+    "reason": "Both strings contain HY-C Company and list Fire Chief and Shelter model lines.",
+    "url": "/brands/fire-chief-industries-shelter-furnace-hy-c-company/",
+    "targetUrl": "/brands/hy-c-company-llc/"
+  },
+  {
+    "fromSlug": "woodmaster-inc",
+    "toSlug": "central-boiler-inc-woodmaster-inc",
+    "fromName": "WoodMaster Inc.",
+    "toName": "Central Boiler Inc.- WoodMaster Inc.",
+    "reason": "Central Boiler Inc.- WoodMaster Inc. contains WoodMaster Inc., and the model text names both.",
+    "url": "/brands/woodmaster-inc/",
+    "targetUrl": "/brands/central-boiler-inc-woodmaster-inc/"
+  }
+]
