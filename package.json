@@ -17,8 +17,9 @@
     "check:links": "node scripts/check-links.mjs",
     "check:html": "node scripts/check-html.mjs",
     "check:origins": "node scripts/check-origins.mjs",
+    "check:dataset": "node scripts/check-dataset.mjs",
     "log:pages": "node scripts/log-pages.mjs",
-    "check": "npm run validate:data && npm test && npm run build && npm run check:links && npm run check:html && npm run check:origins && npm run log:pages"
+    "check": "npm run validate:data && npm test && npm run build && npm run check:links && npm run check:html && npm run check:origins && npm run check:dataset && npm run log:pages"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

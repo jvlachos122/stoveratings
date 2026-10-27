@@ -5,8 +5,9 @@ export function datasetLd(meta) {
     "@type": "Dataset",
     name: "EPA Certified Wood Heater Database snapshot",
     description: `Certification rows from the EPA Certified Wood Heater Database, saved ${meta.snapshotDate}. Emission rates and HHV efficiencies are EPA's figures. StoveRatings does not score stoves.`,
+    url: new URL("/methodology/", site.url).href,
     creator: {
-      "@type": "GovernmentOrganization",
+      "@type": "Organization",
       name: "U.S. Environmental Protection Agency",
       url: "https://www.epa.gov/",
     },
@@ -17,6 +18,7 @@ export function datasetLd(meta) {
     },
     datePublished: meta.snapshotDate,
     license: "https://www.usa.gov/government-works",
+    isAccessibleForFree: true,
     isBasedOn: meta.sourceUrl,
   };
 }
