@@ -8,68 +8,111 @@ import { catalog, stovesForBrand } from "../../lib/catalog.js";
 import { metaDescription, pageTitle } from "../../lib/format.js";
 
 export function getStaticPaths() {
-  return catalog.brands.map((brand) => ({
+  const hubs = catalog.brands.map((brand) => ({
     params: { brand: brand.slug },
-    props: { brand },
+    props: { brand, redirect: null },
   }));
+  const moved = catalog.redirects.map((redirect) => ({
+    params: { brand: redirect.fromSlug },
+    props: { brand: null, redirect },
+  }));
+  return [...hubs, ...moved];
 }
 
-const { brand } = Astro.props;
-const lines = stovesForBrand(brand.slug);
-const sentences = brandSentences(brand, lines, catalog.meta.snapshotDate);
+const { brand, redirect } = Astro.props;
+const target = redirect ? catalog.brandBySlug.get(redirect.toSlug) : null;
+const lines = brand ? stovesForBrand(brand.slug) : [];
+const sentences = redirect
+  ? [
+      `EPA's manufacturer string ${redirect.fromName} is grouped on the ${target.name} hub.`,
+      "This address is the previous URL for that grouping.",
+      `Source: EPA Certified Wood Heater Database, snapshot ${catalog.meta.snapshotDate}.`,
+    ]
+  : brandSentences(brand, lines, catalog.meta.snapshotDate);
 const description = metaDescription(sentences);
 const current = lines.filter((stove) => stove.current);
 const previous = lines.filter((stove) => !stove.current);
+const crumbs = redirect
+  ? [
+      { href: "/", label: "Home" },
+      { href: "/brands/", label: "Brands" },
+      { href: redirect.url, label: redirect.fromName },
+    ]
+  : [
+      { href: "/", label: "Home" },
+      { href: "/brands/", label: "Brands" },
+      { href: brand.url, label: brand.name },
+    ];
 ---
 
-<Base
-  title={pageTitle(brand.name)}
-  description={description}
-  breadcrumbs={[
-    { href: "/", label: "Home" },
-    { href: "/brands/", label: "Brands" },
-    { href: brand.url, label: brand.name },
-  ]}
->
-  <div class="wrap">
-    <h1>{brand.name}</h1>
-    <Answer sentences={sentences} />
-    <p>{brand.note}</p>
-    <p class="small">Evidence used for this hub: {brand.evidence}</p>
-    {
-      brand.manufacturers.length ? (
+{
+  redirect ? (
+    <Base
+      title={pageTitle(`${redirect.fromName} moved`)}
+      description={description}
+      noindex={true}
+      canonicalPath={redirect.targetUrl}
+      refreshPath={redirect.targetUrl}
+      breadcrumbs={crumbs}
+    >
+      <div class="wrap">
+        <h1>{redirect.fromName} is listed on the {target.name} hub</h1>
+        <Answer sentences={sentences} />
         <p>
-          EPA manufacturer {brand.manufacturers.length === 1 ? "string" : "strings"}:
-          {" "}
-          {brand.manufacturers.map((name) => name || "blank cell").join("; ")}.
+          <a href={redirect.targetUrl}>{target.name}</a>
         </p>
-      ) : null
-    }
-    <h2 id="current">Currently certified</h2>
-    {
-      current.length ? (
-        <StoveTable stoves={current} caption={`${brand.name}: model lines EPA lists as currently certified`} />
-      ) : (
-        <p>EPA does not list a currently certified model line on this hub in the {catalog.meta.snapshotDate} snapshot.</p>
-      )
-    }
-    <h2 id="previous">Previously certified</h2>
-    {
-      previous.length ? (
-        <StoveTable stoves={previous} caption={`${brand.name}: model lines not in the currently certified result`} />
-      ) : (
-        <p>Every model line on this hub is in the currently certified result.</p>
-      )
-    }
-    <DataNote
-      items={[
-        brand.role === "alias"
-          ? "This is not the EPA manufacturer field. A row is here because the brand name is in the EPA text cited above."
-          : "The hub title follows the EPA manufacturer string, or the shared name when several strings contain it.",
-        "Counts are model lines. A model line can contain more than one EPA test row; the model page shows each row.",
-        "Blank numbers are not zeros.",
-      ]}
-    />
-    <p><a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a></p>
-  </div>
-</Base>
+        <p>{target.note}</p>
+        <p class="small">Evidence used for this hub: {target.evidence}</p>
+        <p>
+          <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>
+        </p>
+      </div>
+    </Base>
+  ) : (
+    <Base title={pageTitle(brand.name)} description={description} breadcrumbs={crumbs}>
+      <div class="wrap">
+        <h1>{brand.name}</h1>
+        <Answer sentences={sentences} />
+        <p>{brand.note}</p>
+        <p class="small">Evidence used for this hub: {brand.evidence}</p>
+        {
+          brand.manufacturers.length ? (
+            <p>
+              EPA manufacturer {brand.manufacturers.length === 1 ? "string" : "strings"}:
+              {" "}
+              {brand.manufacturers.map((name) => name || "blank cell").join("; ")}.
+            </p>
+          ) : null
+        }
+        <h2 id="current">Currently certified</h2>
+        {
+          current.length ? (
+            <StoveTable stoves={current} caption={`${brand.name}: model lines EPA lists as currently certified`} />
+          ) : (
+            <p>EPA does not list a currently certified model line on this hub in the {catalog.meta.snapshotDate} snapshot.</p>
+          )
+        }
+        <h2 id="previous">Previously certified</h2>
+        {
+          previous.length ? (
+            <StoveTable stoves={previous} caption={`${brand.name}: model lines not in the currently certified result`} />
+          ) : (
+            <p>Every model line on this hub is in the currently certified result.</p>
+          )
+        }
+        <DataNote
+          items={[
+            brand.role === "alias"
+              ? "This is not the EPA manufacturer field. A row is here because the brand name is in the EPA text cited above."
+              : "The hub title follows the EPA manufacturer string, or the shared name when several strings contain it.",
+            "Counts are model lines. A model line can contain more than one EPA test row; the model page shows each row.",
+            "Blank numbers are not zeros.",
+          ]}
+        />
+        <p>
+          <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>
+        </p>
+      </div>
+    </Base>
+  )
+}

@@ -153,6 +153,84 @@ def retail_names(model):
     return names or [text]
 
 
+TRAILING_SUFFIXES = {
+    "inc",
+    "llc",
+    "ltd",
+    "corp",
+    "co",
+    "company",
+    "corporation",
+    "incorporated",
+    "limited",
+    "gmbh",
+    "mbh",
+    "spa",
+    "srl",
+    "snc",
+    "sa",
+    "ltda",
+    "pty",
+    "oyj",
+    "oy",
+    "ab",
+    "as",
+    "aps",
+    "bv",
+    "nv",
+    "plc",
+    "lp",
+    "llp",
+}
+
+
+def normalize_hub_name(name):
+    """Case, diacritics, punctuation, parentheticals, and trailing legal suffixes.
+
+    Parentheticals are removed so "Inc." and "Inc.(Kozy Heat)" collide.
+    Do not use this to force two manufacturer strings onto one hub: dropping
+    the parentheses also makes CFM's Vermont Castings and Jacuzzi strings match.
+    """
+    value = unicodedata.normalize("NFKD", name or "")
+    value = "".join(char for char in value if not unicodedata.combining(char))
+    value = re.sub(r"\([^)]*\)", " ", value)
+    value = value.lower().replace("&", " and ")
+    value = re.sub(r"[^a-z0-9]+", " ", value).strip()
+    tokens = [token for token in value.split() if token]
+    while tokens and tokens[-1] in TRAILING_SUFFIXES:
+        tokens.pop()
+    return " ".join(tokens)
+
+
+def load_redirects():
+    path = DATA / "brand-redirects.csv"
+    with path.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    redirects = []
+    seen = set()
+    for row in rows:
+        source = row["from_slug"].strip()
+        target = row["to_slug"].strip()
+        name = row["from_name"].strip()
+        reason = row["reason"].strip()
+        if not source or not target or not name or not reason:
+            raise SystemExit(f"brand redirect is incomplete: {row}")
+        if source == target:
+            raise SystemExit(f"brand redirect loops: {source}")
+        if source in seen:
+            raise SystemExit(f"duplicate brand redirect: {source}")
+        seen.add(source)
+        redirects.append(
+            {
+                "fromSlug": source,
+                "toSlug": target,
+                "fromName": name,
+                "reason": reason,
+            }
+        )
+    return redirects
+
+
 def load_crosswalk():
     path = DATA / "brand-crosswalk.csv"
     with path.open(newline="", encoding="utf-8") as handle:
@@ -529,6 +607,19 @@ def main():
         raise SystemExit(f"row counts {actual} != (1444, 265, 192, 41) for the 2026-10-23 snapshot")
 
     brands = load_crosswalk()
+    redirects = load_redirects()
+    names_seen = {}
+    for brand in brands:
+        key = normalize_hub_name(brand["name"])
+        if key and key in names_seen:
+            raise SystemExit(f"normalized hub name {key!r} collides: {names_seen[key]!r} and {brand['name']!r}")
+        names_seen[key] = brand["name"]
+    slug_set = {brand["slug"] for brand in brands}
+    for redirect in redirects:
+        if redirect["fromSlug"] in slug_set:
+            raise SystemExit(f"redirect slug is still a hub: {redirect['fromSlug']}")
+        if redirect["toSlug"] not in slug_set:
+            raise SystemExit(f"redirect target is not a hub: {redirect['toSlug']} <- {redirect['fromSlug']}")
     manufacturers = {row["Manufacturer"].strip() for row in room_all + central_all}
     ensure_primary_hubs(brands, manufacturers)
     overrides = load_overrides()
@@ -566,6 +657,11 @@ def main():
         if brand["role"] == "alias" and hits == 0:
             raise SystemExit(f"alias hub {brand['slug']} matched no rows")
 
+    covered = {slug for stove in stoves for slug in stove["brandSlugs"]}
+    for brand in brands:
+        if brand["slug"] not in covered:
+            raise SystemExit(f"hub {brand['slug']} has no model lines")
+
     room_rows = [test for stove in stoves if stove["category"] == "room" for test in stove["tests"]]
     central_rows = [test for stove in stoves if stove["category"] == "central" for test in stove["tests"]]
     room_current_rows = [test for test in room_rows if test["current"]]
@@ -585,6 +681,7 @@ def main():
 
     noindex = [stove["url"] for stove in stoves if not stove["indexable"]]
     noindex.extend(["/finder/", "/compare/"])
+    noindex.extend(f"/brands/{redirect['fromSlug']}/" for redirect in redirects)
 
     brand_payload = []
     for brand in brands:
@@ -600,6 +697,20 @@ def main():
             }
         )
     brand_payload.sort(key=lambda brand: brand["name"].lower())
+    by_slug = {brand["slug"]: brand["name"] for brand in brands}
+    redirect_payload = []
+    for redirect in redirects:
+        redirect_payload.append(
+            {
+                "fromSlug": redirect["fromSlug"],
+                "toSlug": redirect["toSlug"],
+                "fromName": redirect["fromName"],
+                "toName": by_slug[redirect["toSlug"]],
+                "reason": redirect["reason"],
+                "url": f"/brands/{redirect['fromSlug']}/",
+                "targetUrl": f"/brands/{redirect['toSlug']}/",
+            }
+        )
 
     current_wood = [stove for stove in stoves if stove["current"] and stove["type"] == "Wood Stove"]
     current_pellet = [stove for stove in stoves if stove["current"] and stove["type"] == "Pellet Stove"]
@@ -687,6 +798,7 @@ def main():
 
     write_json(DATA / "stoves.json", stoves)
     write_json(DATA / "brands.json", brand_payload)
+    write_json(DATA / "brand-redirects.json", redirect_payload)
     write_json(DATA / "stats.json", stats)
     write_json(DATA / "changes.json", changes)
     write_json(DATA / "meta.json", meta)

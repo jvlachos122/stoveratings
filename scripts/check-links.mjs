@@ -116,6 +116,23 @@ for (const name of sitemapFiles) {
 }
 if (!seen.has("/")) errors.push("sitemap missing home");
 if (seen.has("/compare/")) errors.push("sitemap includes compare");
+const redirects = JSON.parse(readFileSync(join(root, "data/brand-redirects.json"), "utf8"));
+for (const redirect of redirects) {
+  if (!seen.has(redirect.targetUrl)) errors.push(`sitemap missing redirect target ${redirect.targetUrl}`);
+  if (seen.has(redirect.url)) errors.push(`sitemap includes redirected hub ${redirect.url}`);
+  const page = fileForPath(redirect.url);
+  if (!existsSync(page)) {
+    errors.push(`missing redirect page ${redirect.url}`);
+    continue;
+  }
+  const html = readFileSync(page, "utf8");
+  if (!html.includes(`http-equiv="refresh" content="0;url=${redirect.targetUrl}"`)) {
+    errors.push(`${redirect.url} does not refresh to ${redirect.targetUrl}`);
+  }
+  if (!html.includes(`rel="canonical" href="https://stoveratings.com${redirect.targetUrl}"`)) {
+    errors.push(`${redirect.url} canonical is not ${redirect.targetUrl}`);
+  }
+}
 
 const robots = readFileSync(join(dist, "robots.txt"), "utf8");
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /")) errors.push("robots.txt must allow all");

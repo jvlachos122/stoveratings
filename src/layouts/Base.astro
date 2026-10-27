@@ -13,6 +13,7 @@ const {
   canonicalPath = "",
   breadcrumbs = [],
   jsonLd = [],
+  refreshPath = "",
 } = Astro.props;
 
 const fullTitle = home ? title : `${title} · ${site.name}`;
@@ -43,6 +44,7 @@ const structured = graph.length
     <title>{fullTitle}</title>
     <meta name="description" content={description}>
     <link rel="canonical" href={canonical}>
+    {refreshPath ? <meta http-equiv="refresh" content={`0;url=${refreshPath}`}> : null}
     {noindex ? <meta name="robots" content="noindex"> : null}
     <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/fonts/roboto-slab-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
