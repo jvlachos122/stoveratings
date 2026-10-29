@@ -83,6 +83,12 @@ function render() {
     link.href = stove.url;
     link.textContent = stove.model;
     modelCell.append(link);
+    if (stove.insert) {
+      const note = document.createElement("div");
+      note.className = "small";
+      note.textContent = "Name indicates insert";
+      modelCell.append(note);
+    }
     tr.append(modelCell);
     for (const value of [stove.mfr || "Not listed"]) {
       const td = document.createElement("td");

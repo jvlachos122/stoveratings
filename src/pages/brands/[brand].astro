@@ -32,6 +32,10 @@ const sentences = redirect
 const description = metaDescription(sentences);
 const current = lines.filter((stove) => stove.current);
 const previous = lines.filter((stove) => !stove.current);
+const insertLines = lines.filter((stove) => stove.insertFlag);
+const insertCurrent = insertLines.filter((stove) => stove.current).length;
+const insertWood = insertLines.some((stove) => stove.type === "Wood Stove");
+const insertPellet = insertLines.some((stove) => stove.type === "Pellet Stove");
 const crumbs = redirect
   ? [
       { href: "/", label: "Home" },
@@ -81,6 +85,17 @@ const crumbs = redirect
               EPA manufacturer {brand.manufacturers.length === 1 ? "string" : "strings"}:
               {" "}
               {brand.manufacturers.map((name) => name || "blank cell").join("; ")}.
+            </p>
+          ) : null
+        }
+        {
+          insertLines.length ? (
+            <p>
+              EPA lists {insertLines.length} model {insertLines.length === 1 ? "line" : "lines"} on this hub with the label name indicates insert ({insertCurrent} currently certified).
+              {" "}
+              See {insertWood ? <a href="/wood-stove-inserts/">wood stove inserts</a> : null}
+              {insertWood && insertPellet ? " and " : null}
+              {insertPellet ? <a href="/pellet-stove-inserts/">pellet stove inserts</a> : null}.
             </p>
           ) : null
         }

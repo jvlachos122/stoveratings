@@ -35,14 +35,17 @@ function linked(ids) {
 const nearestEmission = linked(stove.nearest.emission);
 const nearestEfficiency = linked(stove.nearest.efficiency);
 const nearestBtu = linked(stove.nearest.btu);
+const insertList = stove.type === "Pellet Stove"
+  ? { href: "/pellet-stove-inserts/", label: "pellet stove inserts" }
+  : { href: "/wood-stove-inserts/", label: "wood stove inserts" };
 const notes = [
   "Each row below is one EPA result row for this model line. Figures are copied from that row.",
   stove.fireboxStatus === "not_applicable"
     ? "EPA lists firebox volume as not applicable on the primary row."
     : "A blank firebox, efficiency, CO, or fuel cell is shown as Not listed, not as zero.",
   stove.insertFlag
-    ? "Name indicates insert: the model text matches insert or -I. EPA has no insert field in this export."
-    : "The model text does not match the insert name check (insert or -I). That is not a statement that the stove is or is not an insert.",
+    ? "Name indicates insert. EPA has no insert field in this export. The label is based on the model name."
+    : "This model name is not labeled name indicates insert. That is not a statement that the stove is or is not an insert.",
   "Currently certified means the row was in EPA's in-production result on the snapshot date. No certification date was in the export.",
 ];
 ---
@@ -65,6 +68,22 @@ const notes = [
       {stove.isNew ? <span class="pill pill-previous">EPA marked New</span> : null}
     </p>
     <Answer sentences={sentences} />
+    {
+      stove.insertFlag ? (
+        <p>
+          Name indicates insert.
+          {" "}
+          <a href={insertList.href}>This model line is on the {insertList.label} list</a>.
+        </p>
+      ) : (
+        <p>
+          <a href="/wood-stove-inserts/">Wood stove inserts</a>
+          {" and "}
+          <a href="/pellet-stove-inserts/">pellet stove inserts</a>
+          {" list the model names labeled name indicates insert."}
+        </p>
+      )
+    }
     <h2 id="specs">EPA rows</h2>
     <div class="table-wrap">
       <table>

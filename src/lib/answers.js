@@ -68,6 +68,14 @@ export function brandSentences(brand, lines, snapshotDate) {
   return sentences;
 }
 
+export const insertDataNotes = [
+  "EPA's export has no insert column. The label is name indicates insert. It is based on the model name.",
+  "The automatic check matches the word insert or a hyphen-I token. Roman-numeral names that this snapshot also numbers II or III are removed, including Outfitter-I and XVR-I. A lone I, as on Expedition I or Explorer I, is not labeled.",
+  "The review also labels a line when the model text pairs an insert code with the freestanding code, including 2100 and 2100 I, F1500 and I1500, 5770 and 5770i, and 1600 FS and 1600 FPI.",
+  "A model line can name both a freestanding stove and an insert. The line is listed when any name in the cell indicates an insert.",
+  "A blank emission, efficiency, or heat-output cell is Not listed, not zero.",
+];
+
 export function homeSentences(stats) {
   const date = stats.snapshotDate;
   return [

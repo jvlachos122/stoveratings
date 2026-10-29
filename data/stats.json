@@ -61,11 +61,17 @@
     "centralCurrentYes": 41
   },
   "insert": {
-    "rows": 112,
-    "currentRows": 26,
-    "modelLines": 109,
-    "currentModelLines": 26,
-    "basis": "Model text matches /insert|\\b-I\\b/i. Labeled name indicates insert. No manual overrides are applied in this snapshot."
+    "rows": 165,
+    "currentRows": 42,
+    "modelLines": 162,
+    "currentModelLines": 42,
+    "woodModelLines": 126,
+    "woodCurrentModelLines": 25,
+    "pelletModelLines": 36,
+    "pelletCurrentModelLines": 17,
+    "reviewedYes": 56,
+    "reviewedNo": 3,
+    "basis": "EPA's export has no insert field. A model line is labeled name indicates insert when the model text matches insert or a hyphen-I token (/insert|\\b-I\\b/i), after the reviewed list in data/insert-overrides.csv. That list removes Roman-numeral -I names this snapshot also numbers II or III, and adds lines whose model text pairs an insert code with the freestanding code. The label is based on the model name."
   },
   "retailNames": {
     "roomTokens": 3258,
