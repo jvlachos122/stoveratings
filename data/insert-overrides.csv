@@ -1,1 +1,60 @@
 manufacturer,model,insert,note
+Hearth and Home Technologies,"Pel-Pro PP60-B, Pleasant Hearth PH35PS-B, Quadra-Fire Outfitter-I",no,"Outfitter-I is a Roman numeral. The same manufacturer lists Quadra-Fire Outfitter II, and Pioneer-II uses the same hyphen-numeral form."
+"Stove Builder International, Inc.","Century Heating FW3000 (FW3000XX Series, CJW2000XXX Series, Classic (2013), Eastwood 1800 (2013), XVR-I SE (2013), FW3000-SD)",no,"XVR-I is a Roman numeral. The same manufacturer lists XVR-II and XVR-III, and XLT-1 beside XLT-II."
+"Stove Builder International, Inc.","XVR-I, XLT-1, Classic, Eastwood 1800",no,XVR-I is a Roman numeral. The same manufacturer lists XVR-II and XVR-III.
+Hearth and Home Technologies,Quadra-Fire 1800 I,yes,"Space-separated I on a model number. The same manufacturer writes Quadra-Fire 2000, 2000-I and Quadra-Fire 5100-I Fireplace Insert."
+Hearth and Home Technologies,"Quadra-Fire 2100, 2100 I",yes,"The cell pairs 2100 with 2100 I, the same pattern as Quadra-Fire 2000, 2000-I."
+Hearth and Home Technologies,"Quadra-Fire 3000F, 3000 I",yes,The cell pairs 3000F with 3000 I.
+Hearth and Home Technologies,"Quadra-Fire 3100F, 3100 I",yes,The cell pairs 3100F with 3100 I.
+Hearth and Home Technologies,Quadra-Fire 5100 I ACT B,yes,Space-separated I. The same manufacturer lists Quadra-Fire 5100-I Fireplace Insert.
+Hearth and Home Technologies,Quadrafire 3100 I ACC,yes,"Space-separated I on 3100, the same pattern as Quadra-Fire 3100F, 3100 I."
+Hearth and Home Technologies,Quadra-Fire 3100 ACT and 3100I ACT,yes,The cell pairs 3100 ACT with 3100I ACT.
+Hearth and Home Technologies,Quadrafire 2700I,yes,Trailing I on the model number. The same manufacturer pairs 3100 ACT with 3100I ACT and lists 5100-I Fireplace Insert.
+Hearth and Home Technologies,"Quadra-Fire Santa Fe-C, Quadra-Fire Santa Fe I-C, Quadra-Fire Castile-C, Quadra-Fire Castile I-C",yes,The cell pairs Santa Fe-C with Santa Fe I-C and Castile-C with Castile I-C.
+Hearth and Home Technologies,Quadra-fire Classic Bay 1200i-C,yes,Trailing i. The same manufacturer lists Classic Bay 1200 without the i and Classic Bay 1200i with it.
+Hearth and Home Technologies,Quadra-fire CB12001/Classic Bay 1200i,yes,The cell uses 1200i. The same manufacturer also lists Classic Bay 1200 without the i.
+United States Stove Company,"5770, 5770i, VG5770, VG5770i, AP5770, AP5770i, DNMP577, DNMP577i, 5790, VG5790, AP5790, DNMP579, Comfort Glow CGPS2100, CGPS2200, DuraHeat DHPS2100, DuraHeat DHPS2200",yes,"The cell pairs 5770 with 5770i, VG5770 with VG5770i, AP5770 with AP5770i, and DNMP577 with DNMP577i."
+United States Stove Company,"6041, 6041I, SP6000",yes,The cell pairs 6041 with 6041I.
+United States Stove Company,"Breckwell and Golden Eagle: SP22E, SP22Ei, 5040E and 5040Ei",yes,The cell pairs SP22E with SP22Ei and 5040E with 5040Ei. Another United States Stove Company row spells Breckwell Blazer Insert.
+United States Stove Company,Breckwell W3000FS/W3000I,yes,The cell pairs W3000FS with W3000I.
+FPI/Regency Fireplace Products,"F1150, I1150, CI1150, HI1150",yes,"The cell pairs F1150 with I1150. Another row in this snapshot says Small Wood Stove Insert beside I1100 and CI1200."
+FPI/Regency Fireplace Products,"F1150-1, i1150-1, Ci1150-1, Hi1150-1",yes,The cell pairs F1150-1 with i1150-1.
+FPI/Regency Fireplace Products,"F1500, I1500",yes,The cell pairs F1500 with I1500.
+FPI/Regency Fireplace Products,"F2450-2, i2450-2, Hi2450-2",yes,The cell pairs F2450-2 with i2450-2.
+FPI/Regency Fireplace Products,"F2500-1, I2500-1",yes,The cell pairs F2500-1 with I2500-1.
+FPI/Regency Fireplace Products,"I2450M, HI2450M",yes,I2450 prefix. The same manufacturer pairs F2450-2 with i2450-2.
+FPI/Regency Fireplace Products,I2500,yes,The model is I2500. The same manufacturer pairs F2500-1 with I2500-1.
+FPI/Regency Fireplace Products,"CI2700, HI500",yes,"CI and HI prefixes. The same manufacturer lists F1150, I1150, CI1150, HI1150. Another row in this snapshot says Small Wood Stove Insert beside CI1200."
+FPI/Regency Fireplace Products,"CI2700-1, HI500-1",yes,"CI and HI prefixes, the same codes as CI2700, HI500 in this snapshot."
+Fireplace Products International Limited,Regency CI2600 and HI400,yes,CI and HI prefixes. A row from this manufacturer says Small Wood Stove Insert beside CI1200 and HI200.
+FPI/Regency Fireplace Products,"Alterra Pro I3000 Series (I300R, I300A)",yes,I300 prefix. The same manufacturer pairs F1500 with I1500 and F2500-1 with I2500-1.
+"RSF / Industrial Chimney Company, Incorporated","RSF 3600 Series: Pearl 3600, Perle 3600, Focus 3600, Focus 3600i, Focus 3600s",yes,The cell pairs Focus 3600 with Focus 3600i.
+"RSF / Industrial Chimney Company, Incorporated","RSF 3600B Series: Pearl 3600B, Perle 3600B, Focus 3600B, Focus 3600Bi",yes,The cell pairs Focus 3600B with Focus 3600Bi.
+Hearth and Home Technologies,Harman TL 300 and TL300i,yes,The cell pairs TL 300 with TL300i.
+Hearth and Home Technologies,Harman Accentra 52i-TC,yes,Trailing i on 52i. The same manufacturer pairs Harman TL 300 with TL300i.
+Hearth and Home Technologies,Harman Accentra 52i,yes,Trailing i on 52i. The same manufacturer pairs Harman TL 300 with TL300i.
+Hearth and Home Technologies,Harman P35i,yes,Trailing i. The same manufacturer pairs Harman TL 300 with TL300i.
+Hearth and Home Technologies,P35i-C,yes,Trailing i. The same manufacturer pairs Harman TL 300 with TL300i.
+Hearth and Home Technologies,P40i-C,yes,Trailing i. The same manufacturer pairs Harman TL 300 with TL300i.
+Hearth and Home Technologies,P42i-TC,yes,Trailing i. The same manufacturer pairs Harman TL 300 with TL300i.
+Wolf Steel Ltd.,"Napoleon S25, Napoleon S25i, Timberwolf T25, Timberwolf T25i",yes,The cell pairs Napoleon S25 with Napoleon S25i and Timberwolf T25 with Timberwolf T25i.
+Wolf Steel Ltd.,"Timberwolf 2200, Timberwolf EPI22, Napoleon S20, Napoleon S20i, Timberwolf T20, Timberwolf T20i, Ambience 9010 &#x28;Outlander 19&#x29;, Ambience 9100 &#x28;Outlander i19&#x29;",yes,"The cell pairs Napoleon S20 with Napoleon S20i, Timberwolf T20 with Timberwolf T20i, and Outlander 19 with Outlander i19."
+"Weitz and Co., Inc.","Briarwood BB, BBI and BBZC",yes,The cell pairs BB with BBI.
+"Orrville Products, Inc.",CC-185I and 165I,yes,Trailing I. The same manufacturer lists CC185 and CC165 without the I.
+Hearth and Home Technologies,S-22 and S-22I,yes,The cell pairs S-22 with S-22I.
+"Englands Stove Works, Inc.","25-EP, 55-TRPEP, 55-SHPEP, 25-EPI, 55-TRPEPI, 55-SHPEPI 25-EPI, 55-TRPEPI, 55-SHPEPI",yes,"The cell pairs 25-EP with 25-EPI, 55-TRPEP with 55-TRPEPI, and 55-SHPEP with 55-SHPEPI."
+"Englands Stove Works, Inc.","25-IP, 55-SHPIP and 55-TRPIP",yes,"IP codes beside the same manufacturer's EP and EPI codes: 25-EP with 25-EPI, and 55-TRPEP with 55-TRPEPI."
+"Sherwood Industries, Ltd.","Enviro 1200, 1200I, Vista Flame 1200, 1200I, 1200 Venice (Kodiak, Boston, Cabello)",yes,The cell pairs 1200 with 1200I and repeats the pair for Vista Flame.
+"Sherwood Industries, Ltd.","Enviro 1700I, 1700 and Vista Flame 1700I, 1700, 1700 Venice (Kodiak, Boston, Cabello)",yes,The cell pairs 1700I with 1700 and repeats the pair for Vista Flame.
+"RJM Manufacturing, Inc.",Achiever FPI-1-LEX,yes,"FPI model code. This snapshot pairs 1600 FS with 1600 FPI, and spells Insert beside GFI55 and beside GCI60."
+"Sherwood Industries, Ltd.","EMPRESS FPI, Milan",yes,"FPI model code. This snapshot pairs 1600 FS with 1600 FPI, and spells Insert beside GFI55 and beside GCI60."
+"Sherwood Industries, Ltd.","EF3, Meridan, Vista Flame 100, Greenfire GF55, GF55FPI",yes,"GF55FPI uses the FPI code. Another row spells Regency GF55, GFI55 Regency Greenfire Pellet Stove and Insert."
+Fireplace Products International Limited,"Enviro – Meridian-1, Meridian FPI, Meridian Cast Iron and Regency Greenfire – GF55, GFI55",yes,"Meridian FPI and GFI55. Another row spells Regency GF55, GFI55 Regency Greenfire Pellet Stove and Insert."
+"Sherwood Industries, Ltd.","Enviro – Meridian-1, Meridian FPI, Meridian Cast Iron, Regency Greenfire – GF55, GFI55",yes,"Meridian FPI and GFI55. Another row spells Regency GF55, GFI55 Regency Greenfire Pellet Stove and Insert."
+"Sherwood Industries, Ltd.","Enviro - M55 FS, M55C-FPI, Regency Greenfire – GC60, GCI60",yes,The cell pairs M55 FS with M55C-FPI and GC60 with GCI60. Another row spells GCI60 Hampton Cast Pellet Stove and Insert.
+"Sherwood Industries, Ltd.","Enviro - Meridian-2, Meridian FPI-2, Meridian Cast Iron-2, Regency Greenfire GF55-2, GFI55-2",yes,"Meridian FPI-2 and GFI55-2. Another row spells Regency GF55, GFI55 Regency Greenfire Pellet Stove and Insert."
+"Sherwood Industries, Ltd.","Enviro M55-FS-2, Enviro M55C-FS-2, Enviro M55C-FPI-2, FPI GC60-2, and FPI GCI60-2",yes,The cell pairs M55-FS-2 with M55C-FPI-2 and names FPI GC60-2 and FPI GCI60-2. Another row spells GCI60 beside Insert.
+"Sherwood Industries, Ltd.","Greenfire GF55, GFI55",yes,"GFI55. Another row spells Regency GF55, GFI55 Regency Greenfire Pellet Stove and Insert."
+"RJM Manufacturing, Inc.",FPI-2-LEX/90,yes,The model code is FPI. This snapshot pairs 1600 FS with 1600 FPI.
+"Derco, Inc./Grizzly Stoves",Super Achiever FPI-2-LEX,yes,The model code is FPI. This snapshot pairs 1600 FS with 1600 FPI.
+"Sherwood Industries, Ltd.","Vista Flame 1600 FS, 1600 FPI, Envirofire 1600 FS, 1600 FPI",yes,"The cell pairs 1600 FS with 1600 FPI, and repeats the pair for Envirofire."

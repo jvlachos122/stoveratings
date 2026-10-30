@@ -323,17 +323,46 @@ def load_overrides():
     path = DATA / "insert-overrides.csv"
     overrides = {}
     with path.open(newline="", encoding="utf-8") as handle:
-        for row in csv.DictReader(handle):
-            if not (row.get("manufacturer") or row.get("model")):
+        reader = csv.DictReader(handle)
+        missing = {"manufacturer", "model", "insert", "note"} - set(reader.fieldnames or [])
+        if missing:
+            raise SystemExit(f"insert-overrides.csv missing columns: {sorted(missing)}")
+        for row in reader:
+            manufacturer = (row.get("manufacturer") or "").strip()
+            model = (row.get("model") or "").strip()
+            if not manufacturer and not model:
                 continue
-            flag = row["insert"].strip().lower()
+            if not manufacturer or not model:
+                raise SystemExit("insert override needs both a manufacturer and a model")
+            flag = (row.get("insert") or "").strip().lower()
             if flag not in {"yes", "no"}:
-                raise SystemExit(f"insert override must be yes or no: {row}")
-            overrides[(row["manufacturer"].strip(), row["model"].strip())] = {
-                "insert": flag == "yes",
-                "note": row.get("note", "").strip(),
-            }
+                raise SystemExit(f"insert override must be yes or no: {manufacturer} / {model[:80]}")
+            note = (row.get("note") or "").strip()
+            if not note:
+                raise SystemExit(f"insert override needs a note: {manufacturer} / {model[:80]}")
+            key = (manufacturer, model)
+            if key in overrides:
+                raise SystemExit(f"duplicate insert override: {manufacturer} / {model[:80]}")
+            overrides[key] = {"insert": flag == "yes", "note": note}
     return overrides
+
+
+def insert_decision(manufacturer, model, overrides, used):
+    """Label from the model name. EPA's export has no insert field.
+
+    The automatic check is insert or a hyphen-I token. data/insert-overrides.csv
+    removes Roman-numeral -I names and adds paired insert codes the check misses.
+    Every positive label stays "name indicates insert".
+    """
+    override = overrides.get((manufacturer, model))
+    if override:
+        used.add((manufacturer, model))
+        if override["insert"]:
+            return True, "name indicates insert"
+        return False, None
+    if INSERT_RE.search(model):
+        return True, "name indicates insert"
+    return False, None
 
 
 def median(values):
@@ -404,7 +433,7 @@ def choose_primary(tests):
     return sorted(pool, key=sort_key)[0]
 
 
-def build_models(category, all_rows, current_rows, fields, brands, overrides):
+def build_models(category, all_rows, current_rows, fields, brands, overrides, used_overrides):
     current_counts = defaultdict(int)
     for row in current_rows:
         current_counts[signature(row, fields)] += 1
@@ -448,13 +477,7 @@ def build_models(category, all_rows, current_rows, fields, brands, overrides):
             suffix += 1
         used_url[(manufacturer_slug, model_slug)] = True
         primary = choose_primary(tests)
-        override = overrides.get((manufacturer, model))
-        if override:
-            insert_flag = override["insert"]
-            insert_basis = "manual override"
-        else:
-            insert_flag = bool(INSERT_RE.search(model))
-            insert_basis = "name indicates insert" if insert_flag else None
+        insert_flag, insert_basis = insert_decision(manufacturer, model, overrides, used_overrides)
         current = any(test["current"] for test in tests)
         indexable = current or any(listed_metric(test) for test in tests)
         slugs = brand_slugs_for(manufacturer, model, brands)
@@ -623,9 +646,17 @@ def main():
     manufacturers = {row["Manufacturer"].strip() for row in room_all + central_all}
     ensure_primary_hubs(brands, manufacturers)
     overrides = load_overrides()
+    used_overrides = set()
 
-    stoves = build_models("room", room_all, room_current, ROOM_FIELDS, brands, overrides)
-    stoves += build_models("central", central_all, central_current, CENTRAL_FIELDS, brands, overrides)
+    stoves = build_models("room", room_all, room_current, ROOM_FIELDS, brands, overrides, used_overrides)
+    stoves += build_models("central", central_all, central_current, CENTRAL_FIELDS, brands, overrides, used_overrides)
+    missed_overrides = sorted(set(overrides) - used_overrides)
+    if missed_overrides:
+        manufacturer, model = missed_overrides[0]
+        raise SystemExit(
+            f"{len(missed_overrides)} insert overrides matched no model line, "
+            f"including {manufacturer!r} / {model[:80]!r}"
+        )
     stoves.sort(key=lambda stove: (stove["category"], stove["manufacturer"].lower(), stove["model"].lower(), stove["id"]))
 
     previous = []
@@ -676,8 +707,24 @@ def main():
         return found
 
     retail_tokens = [name for stove in stoves if stove["category"] == "room" for name in stove["retailNames"]]
-    insert_rows = sum(1 for row in room_all if INSERT_RE.search(row["Model"]))
-    insert_current_rows = sum(1 for row in room_current if INSERT_RE.search(row["Model"]))
+    insert_stoves = [stove for stove in stoves if stove["insertFlag"]]
+    if any(stove["category"] != "room" for stove in insert_stoves):
+        raise SystemExit("insert flag on a central-heater model line")
+    if any(stove["insertBasis"] != "name indicates insert" for stove in insert_stoves):
+        raise SystemExit("insert label must be name indicates insert")
+    if any(stove["insertBasis"] for stove in stoves if not stove["insertFlag"]):
+        raise SystemExit("unlabeled model line has an insert basis")
+
+    def insert_count(type_name=None, current=None):
+        found = insert_stoves
+        if type_name is not None:
+            found = [stove for stove in found if stove["type"] == type_name]
+        if current is not None:
+            found = [stove for stove in found if stove["current"] is current]
+        return len(found)
+
+    insert_rows = sum(stove["rowCount"] for stove in insert_stoves)
+    insert_current_rows = sum(1 for stove in insert_stoves for test in stove["tests"] if test["current"])
 
     noindex = [stove["url"] for stove in stoves if not stove["indexable"]]
     noindex.extend(["/finder/", "/compare/"])
@@ -747,9 +794,20 @@ def main():
         "insert": {
             "rows": insert_rows,
             "currentRows": insert_current_rows,
-            "modelLines": sum(1 for stove in stoves if stove["insertFlag"]),
-            "currentModelLines": sum(1 for stove in stoves if stove["insertFlag"] and stove["current"]),
-            "basis": "Model text matches /insert|\\b-I\\b/i. Labeled name indicates insert. No manual overrides are applied in this snapshot.",
+            "modelLines": len(insert_stoves),
+            "currentModelLines": insert_count(current=True),
+            "woodModelLines": insert_count("Wood Stove"),
+            "woodCurrentModelLines": insert_count("Wood Stove", True),
+            "pelletModelLines": insert_count("Pellet Stove"),
+            "pelletCurrentModelLines": insert_count("Pellet Stove", True),
+            "reviewedYes": sum(1 for item in overrides.values() if item["insert"]),
+            "reviewedNo": sum(1 for item in overrides.values() if not item["insert"]),
+            "basis": (
+                "EPA's export has no insert field. A model line is labeled name indicates insert when the model text "
+                "matches insert or a hyphen-I token (/insert|\\b-I\\b/i), after the reviewed list in data/insert-overrides.csv. "
+                "That list removes Roman-numeral -I names this snapshot also numbers II or III, and adds lines whose model text "
+                "pairs an insert code with the freestanding code. The label is based on the model name."
+            ),
         },
         "retailNames": {
             "roomTokens": len(retail_tokens),

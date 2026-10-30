@@ -6,12 +6,15 @@ import Base from "../layouts/Base.astro";
 import { homeSentences } from "../lib/answers.js";
 import { catalog } from "../lib/catalog.js";
 import { emissionUnitShort, formatNumber, metaDescription } from "../lib/format.js";
+import { inserts } from "../lib/lists.js";
 import { datasetLd, webAppLd } from "../lib/schema.js";
 
 const sentences = homeSentences(catalog.stats);
 const crumbs = [{ href: "/", label: "Home" }];
 const description = metaDescription(sentences);
 const low = catalog.stats.highlights.lowestEmissionWood;
+const woodInserts = inserts(catalog.stoves, "Wood Stove");
+const pelletInserts = inserts(catalog.stoves, "Pellet Stove");
 const changes = catalog.changes;
 const added = changes.addedToCurrent || [];
 const dropped = changes.droppedFromCurrent || [];
@@ -99,6 +102,11 @@ const dropped = changes.droppedFromCurrent || [];
       <a class="button button-ghost" href="/most-efficient-wood-stoves/">Highest HHV efficiency</a>
       <a class="button button-ghost" href="/lookup/">Look up a stove name</a>
     </div>
+    <h2>Names that indicate an insert</h2>
+    <p>
+      EPA lists {woodInserts.current.length} currently certified and {woodInserts.previous.length} previously certified wood-stove model lines, and {pelletInserts.current.length} currently certified and {pelletInserts.previous.length} previously certified pellet-stove model lines, whose names indicate an insert.
+      EPA's export has no insert field. The lists are <a href="/wood-stove-inserts/">wood stove inserts</a> and <a href="/pellet-stove-inserts/">pellet stove inserts</a>.
+    </p>
     <DataNote
       items={[
         "Currently certified means the row was in EPA's in-production result on the snapshot date. This export has no certification date.",
