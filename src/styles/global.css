@@ -244,6 +244,9 @@ button:hover, .button:hover { background: var(--ember-dark); color: #fff; }
 .site-footer li { margin: 0.2rem 0; }
 .operator { margin-top: 1.2rem; border-top: 1px solid #3a3632; padding-top: 0.8rem; }
 
+fieldset { border: 1px solid var(--line); margin: 0 0 1.2rem; padding: 0.75rem 1rem 0.9rem; }
+legend { font-weight: 700; padding: 0 0.35rem; }
+summary { min-height: var(--tap); display: flex; align-items: center; cursor: pointer; font-weight: 600; }
 .result { background: var(--paper-2); border: 1px solid var(--ink); padding: 0.9rem 1rem; }
 .suggestions { list-style: none; padding: 0; margin: 0.3rem 0 0; border: 1px solid var(--line); background: #fff; max-height: 16rem; overflow: auto; }
 .suggestions button { width: 100%; border: 0; border-radius: 0; background: #fff; color: var(--ink); justify-content: flex-start; text-align: left; }

@@ -1,0 +1,72 @@
+[
+  {
+    "id": "natural-gas",
+    "label": "Natural gas",
+    "unit": "Mcf",
+    "price": 26.45,
+    "priceText": "26.45",
+    "priceDecimals": 2,
+    "prefill": true,
+    "period": "2026-07",
+    "periodLabel": "July 2026",
+    "sourceUrl": "https://www.eia.gov/dnav/ng/NG_SUM_LSUM_A_EPG0_PRS_DMCF_M.htm",
+    "retrieved": "2026-10-30",
+    "sourceNote": "U.S. average residential price, dollars per thousand cubic feet, nominal. EIA table release date 2026-09-30. July is outside the main heating season, so this average is not a winter bill."
+  },
+  {
+    "id": "propane",
+    "label": "Propane",
+    "unit": "gallon",
+    "price": 2.73,
+    "priceText": "2.730",
+    "priceDecimals": 3,
+    "prefill": true,
+    "period": "2026-10-26",
+    "periodLabel": "week of October 26, 2026",
+    "sourceUrl": "https://www.eia.gov/dnav/pet/pet_pri_wfr_dcus_nus_w.htm",
+    "retrieved": "2026-10-30",
+    "sourceNote": "U.S. residential propane price, dollars per gallon, weekly heating oil and propane survey. Page release date 2026-10-28."
+  },
+  {
+    "id": "heating-oil",
+    "label": "Heating oil",
+    "unit": "gallon",
+    "price": 6.233,
+    "priceText": "6.233",
+    "priceDecimals": 3,
+    "prefill": true,
+    "period": "2026-10-26",
+    "periodLabel": "week of October 26, 2026",
+    "sourceUrl": "https://www.eia.gov/dnav/pet/pet_pri_wfr_dcus_nus_w.htm",
+    "retrieved": "2026-10-30",
+    "sourceNote": "U.S. residential heating oil price, dollars per gallon, weekly heating oil and propane survey. Page release date 2026-10-28."
+  },
+  {
+    "id": "electricity",
+    "label": "Electricity",
+    "unit": "kWh",
+    "price": 0.1816,
+    "priceText": "0.1816",
+    "priceDecimals": 4,
+    "prefill": true,
+    "period": "2026-08",
+    "periodLabel": "August 2026",
+    "sourceUrl": "https://www.eia.gov/electricity/monthly/update/end-use.php",
+    "retrieved": "2026-10-30",
+    "sourceNote": "U.S. residential average revenue per kilowatthour, 18.16 cents, which EIA publishes as a proxy for retail price. Electricity Monthly Update with data for August 2026, release date 2026-10-23."
+  },
+  {
+    "id": "pellets-domestic",
+    "label": "Wood pellets, domestic sales",
+    "unit": "short ton",
+    "price": 243.39,
+    "priceText": "243.39",
+    "priceDecimals": 2,
+    "prefill": false,
+    "period": "2026-07",
+    "periodLabel": "July 2026",
+    "sourceUrl": "https://www.eia.gov/biofuels/biomass/csv/EIA_63C_Table_7.csv",
+    "retrieved": "2026-10-30",
+    "sourceNote": "U.S. total domestic sales average price, dollars per ton, month 7. EIA notes the figure includes all product types and both retail and wholesale sales, so it is not prefilled as a household price. The report page https://www.eia.gov/biofuels/biomass/ titles this release July 2026."
+  }
+]

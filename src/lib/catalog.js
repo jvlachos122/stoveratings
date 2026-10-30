@@ -2,6 +2,8 @@ import brands from "../../data/brands.json" with { type: "json" };
 import redirects from "../../data/brand-redirects.json" with { type: "json" };
 import changes from "../../data/changes.json" with { type: "json" };
 import firewood from "../../data/firewood.json" with { type: "json" };
+import fuelHeat from "../../data/fuel-heat.json" with { type: "json" };
+import fuelPrices from "../../data/fuel-prices.json" with { type: "json" };
 import meta from "../../data/meta.json" with { type: "json" };
 import stats from "../../data/stats.json" with { type: "json" };
 import stoves from "../../data/stoves.json" with { type: "json" };
@@ -58,6 +60,8 @@ export const catalog = {
   changes,
   meta,
   firewood,
+  fuelHeat,
+  fuelPrices,
   stoveById,
   brandBySlug,
 };

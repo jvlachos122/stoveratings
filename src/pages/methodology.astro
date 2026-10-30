@@ -42,6 +42,7 @@ const description = `How StoveRatings uses the EPA Certified Wood Heater Databas
     <p>A highest-efficiency page sorts by the HHV percent EPA printed, blanks excluded, ties ordered by lower emission rate and then name. A lowest-emission page sorts by grams per hour the same way. The stove size calculator multiplies square feet by planning factors printed on that page. Those factors are not from EPA.</p>
     <h2>Firewood</h2>
     <p>The firewood table is not EPA data. Every row cites the University of Arkansas extension page that compiles USDA Forest Service Leaflet No. 559. The build refuses a firewood row with no source URL.</p>
+    <p>The <a href="/tools/heating-cost-calculator/">heating cost calculator</a> uses that firewood table, plus heat contents and prices committed in <code>data/fuel-heat.csv</code> and <code>data/fuel-prices.csv</code>. The build refuses a row without a source URL and a retrieved date. Cord wood has no default price. The pellet price is not prefilled, because the cited EIA domestic sales average mixes retail and wholesale. Appliance efficiency is the EPA HHV figure when a model line lists one. A blank is not treated as zero.</p>
     {faqs.map((faq) => (
       <section>
         <h2>{faq.question}</h2>

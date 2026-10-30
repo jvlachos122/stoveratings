@@ -1,0 +1,369 @@
+---
+import Answer from "../../components/Answer.astro";
+import DataNote from "../../components/DataNote.astro";
+import Base from "../../layouts/Base.astro";
+import { catalog } from "../../lib/catalog.js";
+import { metaDescription } from "../../lib/format.js";
+import {
+  SIZE_BANDS,
+  cordHeatText,
+  heatContentText,
+  heatingModels,
+  heatingSentences,
+  sharedRetrieved,
+} from "../../lib/heating-cost.js";
+import { webAppLd } from "../../lib/schema.js";
+
+const heat = catalog.fuelHeat;
+const prices = catalog.fuelPrices;
+const priceById = new Map(prices.map((row) => [row.id, row]));
+const gas = priceById.get("natural-gas");
+const oil = priceById.get("heating-oil");
+const propane = priceById.get("propane");
+const electricity = priceById.get("electricity");
+const pelletSales = priceById.get("pellets-domestic");
+const woodRetrieved = catalog.firewood[0]?.sourceNote?.match(/retrieved (\d{4}-\d{2}-\d{2})/i)?.[1];
+const fuelRetrieved = sharedRetrieved([...heat, ...prices]);
+if (!woodRetrieved || !fuelRetrieved || !gas || !oil || !propane || !electricity || !pelletSales) {
+  throw new Error("heating cost snapshot is missing a cited row or date");
+}
+if (oil.periodLabel !== propane.periodLabel) {
+  throw new Error("heating oil and propane price periods differ");
+}
+const sentences = heatingSentences({
+  gas,
+  oil,
+  propane,
+  electricity,
+  pelletSales,
+  firewoodRetrieved: woodRetrieved,
+  fuelRetrieved,
+});
+const description = metaDescription(sentences);
+const species = [...catalog.firewood].sort((a, b) => a.species.localeCompare(b.species));
+const pelletHeat = heat.filter((row) => row.id.startsWith("pellets-"));
+const comparison = ["natural-gas", "propane", "heating-oil", "electricity"].map((id) => heat.find((row) => row.id === id));
+if (comparison.some((row) => !row)) throw new Error("heating cost snapshot is missing a heat row");
+const factorList = SIZE_BANDS.map((band) => `${band.label.toLowerCase()} ${band.low} and ${band.high}`).join(", ");
+const payload = JSON.stringify({
+  snapshotDate: catalog.meta.snapshotDate,
+  bands: SIZE_BANDS,
+  firewood: species.map((row) => ({
+    species: row.species,
+    btuLow: row.btuLow,
+    btuHigh: row.btuHigh,
+  })),
+  heat,
+  models: heatingModels(catalog.stoves),
+}).replace(/</g, "\\u003c");
+const woodSource = catalog.firewood[0].sourceUrl;
+---
+
+<Base
+  title="Heating cost calculator"
+  description={description}
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/tools/heating-cost-calculator/", label: "Heating cost calculator" },
+  ]}
+  jsonLd={[webAppLd("Heating cost calculator", description, "/tools/heating-cost-calculator/")]}
+>
+  <div class="wrap">
+    <h1>Heating cost calculator</h1>
+    <Answer sentences={sentences} />
+    <p>
+      Related pages: <a href="/firewood-btu-chart/">firewood heat values</a>,
+      <a href="/tools/stove-size-calculator/">stove size calculator</a>,
+      <a href="/pellet-stove-vs-wood-stove/">pellet and wood EPA figures</a>,
+      <a href="/wood-stove-inserts/">wood stove inserts</a>,
+      <a href="/pellet-stove-inserts/">pellet stove inserts</a>,
+      and the <a href="/">finder</a>.
+      A model line that lists an HHV efficiency links here as Estimate running cost.
+    </p>
+    <h2>Formula</h2>
+    <p>
+      Fuel energy in million BTU = delivered million BTU ÷ (efficiency ÷ 100).
+      Units burned = fuel energy ÷ million BTU in one unit of that fuel.
+      Season cost = units × price per unit.
+      Cost per million BTU delivered = price per unit ÷ (million BTU per unit × efficiency as a fraction).
+      When a cordwood species lists a range, both ends are calculated. More BTU per unit makes a lower cost.
+      An efficiency at or below zero, and a blank efficiency, are not calculated and are not treated as zero.
+    </p>
+    <p>
+      Season heat can be the million BTU you type, or square feet × a stove-size factor × hours you enter, divided by 1,000,000.
+      The factors are {factorList} BTU per hour per square foot.
+      They match the <a href="/tools/stove-size-calculator/">stove size calculator</a>.
+      They are StoveRatings planning figures for an 8-foot ceiling, not EPA figures. Hours have no default.
+    </p>
+    <form id="cost-form" autocomplete="off">
+      <h2>Heat delivered per season</h2>
+      <fieldset>
+        <legend>Season heat</legend>
+        <label class="check">
+          <input type="radio" name="heat-mode" value="direct" checked>
+          Enter million BTU delivered
+        </label>
+        <label>Million BTU delivered per season
+          <input id="heat-mmbtu" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+        <label class="check">
+          <input type="radio" name="heat-mode" value="size">
+          Estimate with the stove-size formula
+        </label>
+        <div class="filters">
+          <label>Heated floor area (square feet)
+            <input id="size-sqft" type="number" inputmode="decimal" min="1" step="any" value="2000">
+          </label>
+          <label>Planning band
+            <select id="size-band">
+              {SIZE_BANDS.map((band) => (
+                <option value={band.id} selected={band.id === "moderate"}>{band.label}, {band.low}–{band.high} BTU/hr per sq ft</option>
+              ))}
+            </select>
+          </label>
+          <label>End of the band
+            <select id="size-end">
+              <option value="low">Low factor</option>
+              <option value="high">High factor</option>
+            </select>
+          </label>
+          <label>Hours the heater runs per season
+            <input id="size-hours" type="number" inputmode="decimal" min="0" step="any">
+          </label>
+        </div>
+        <p id="size-preview" class="small">Enter million BTU of heat delivered over the season, or switch to the stove-size formula and enter hours.</p>
+      </fieldset>
+      <h2>Cord wood</h2>
+      <div class="filters">
+        <label>Species
+          <select id="wood-species">
+            <option value="">Choose a species</option>
+            {species.map((row) => (
+              <option value={row.species}>{row.species} ({cordHeatText(row.btuLow, row.btuHigh)})</option>
+            ))}
+          </select>
+        </label>
+        <label>Price you pay (dollars per cord)
+          <input id="wood-price" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+        <label>Wood appliance efficiency (percent of cord energy delivered as heat)
+          <input id="wood-eff" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+      </div>
+      <p class="small">No default cord price. This snapshot has no official residential cord price, so enter the price you pay.</p>
+      <label>Wood-burning model line
+        <input id="wood-model-q" type="search" autocomplete="off">
+      </label>
+      <p id="wood-model-status" class="small">Type at least two letters. Choosing a model line fills Overall Efficiency-HHV (%) when EPA lists it.</p>
+      <ul id="wood-matches" class="suggestions"></ul>
+      <p id="wood-model-note" class="small"></p>
+      <h2>Pellets</h2>
+      <div class="filters">
+        <label>EIA region for premium/standard pellets
+          <select id="pellet-region">
+            <option value="">Choose a region</option>
+            {pelletHeat.map((row) => (
+              <option value={row.id}>{row.label} ({heatContentText(row)})</option>
+            ))}
+          </select>
+        </label>
+        <label>Price you pay (dollars per short ton)
+          <input id="pellet-price" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+        <label>Pellet appliance efficiency (percent of pellet energy delivered as heat)
+          <input id="pellet-eff" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+      </div>
+      <p class="small">{`No default pellet price. EIA's domestic sales average of $${pelletSales.priceText} per ton for ${pelletSales.periodLabel} mixes retail and wholesale sales, so it is not the price on a local receipt.`}</p>
+      <label>Pellet-burning model line
+        <input id="pellet-model-q" type="search" autocomplete="off">
+      </label>
+      <p id="pellet-model-status" class="small">Type at least two letters. Choosing a model line fills Overall Efficiency-HHV (%) when EPA lists it.</p>
+      <ul id="pellet-matches" class="suggestions"></ul>
+      <p id="pellet-model-note" class="small"></p>
+      <h2>Other fuels</h2>
+      <div class="filters">
+        <label>Natural gas price (dollars per Mcf)
+          <input id="price-natural-gas" type="number" inputmode="decimal" min="0" step="any" value={gas.priceText}>
+        </label>
+        <label>Natural gas appliance efficiency (percent)
+          <input id="eff-natural-gas" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+        <label>Propane price (dollars per gallon)
+          <input id="price-propane" type="number" inputmode="decimal" min="0" step="any" value={propane.priceText}>
+        </label>
+        <label>Propane appliance efficiency (percent)
+          <input id="eff-propane" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+        <label>Heating oil price (dollars per gallon)
+          <input id="price-heating-oil" type="number" inputmode="decimal" min="0" step="any" value={oil.priceText}>
+        </label>
+        <label>Heating oil appliance efficiency (percent)
+          <input id="eff-heating-oil" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+        <label>Electricity price (dollars per kWh)
+          <input id="price-electricity" type="number" inputmode="decimal" min="0" step="any" value={electricity.priceText}>
+        </label>
+        <label>Electric resistance efficiency (percent of the electricity delivered as heat)
+          <input id="eff-resistance" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+        <label>Heat pump efficiency (percent of electrical energy delivered as heat)
+          <input id="eff-heat-pump" type="number" inputmode="decimal" min="0" step="any">
+        </label>
+      </div>
+      <p class="small">Natural gas: EIA average, {gas.periodLabel}; enter your local price. Propane and heating oil: EIA average, {oil.periodLabel}; enter your local price. Electricity: EIA average, {electricity.periodLabel}; enter your local price. The electricity price is shared by resistance heat and a heat pump. Neither efficiency is filled in. A heat pump can be above 100 percent because it moves heat.</p>
+      <button type="submit">Calculate</button>
+    </form>
+    <h2>Cost comparison</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Cost per million BTU delivered and cost per season for each fuel</caption>
+        <thead>
+          <tr>
+            <th scope="col">Fuel</th>
+            <th scope="col">Heat content</th>
+            <th scope="col">Price</th>
+            <th scope="col">Efficiency</th>
+            <th scope="col" class="num">Cost per million BTU delivered</th>
+            <th scope="col" class="num">Cost per season</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Cord wood</th>
+            <td id="out-wood-heat">Choose a cited heat content.</td>
+            <td id="out-wood-price">Enter a price above zero.</td>
+            <td id="out-wood-eff">Enter efficiency. A blank is not zero.</td>
+            <td class="num" id="out-wood-mmbtu">Calculated in the browser from the formula above.</td>
+            <td class="num" id="out-wood-season">Calculated in the browser from the formula above.</td>
+          </tr>
+          <tr>
+            <th scope="row">Pellets</th>
+            <td id="out-pellet-heat">Choose a cited heat content.</td>
+            <td id="out-pellet-price">Enter a price above zero.</td>
+            <td id="out-pellet-eff">Enter efficiency. A blank is not zero.</td>
+            <td class="num" id="out-pellet-mmbtu">Calculated in the browser from the formula above.</td>
+            <td class="num" id="out-pellet-season">Calculated in the browser from the formula above.</td>
+          </tr>
+          <tr>
+            <th scope="row">Natural gas</th>
+            <td id="out-natural-gas-heat">{heatContentText(comparison[0])}</td>
+            <td id="out-natural-gas-price">{`$${gas.priceText} per Mcf`}</td>
+            <td id="out-natural-gas-eff">Enter efficiency. A blank is not zero.</td>
+            <td class="num" id="out-natural-gas-mmbtu">Calculated in the browser from the formula above.</td>
+            <td class="num" id="out-natural-gas-season">Calculated in the browser from the formula above.</td>
+          </tr>
+          <tr>
+            <th scope="row">Propane</th>
+            <td id="out-propane-heat">{heatContentText(comparison[1])}</td>
+            <td id="out-propane-price">{`$${propane.priceText} per gallon`}</td>
+            <td id="out-propane-eff">Enter efficiency. A blank is not zero.</td>
+            <td class="num" id="out-propane-mmbtu">Calculated in the browser from the formula above.</td>
+            <td class="num" id="out-propane-season">Calculated in the browser from the formula above.</td>
+          </tr>
+          <tr>
+            <th scope="row">Heating oil</th>
+            <td id="out-heating-oil-heat">{heatContentText(comparison[2])}</td>
+            <td id="out-heating-oil-price">{`$${oil.priceText} per gallon`}</td>
+            <td id="out-heating-oil-eff">Enter efficiency. A blank is not zero.</td>
+            <td class="num" id="out-heating-oil-mmbtu">Calculated in the browser from the formula above.</td>
+            <td class="num" id="out-heating-oil-season">Calculated in the browser from the formula above.</td>
+          </tr>
+          <tr>
+            <th scope="row">Electric resistance</th>
+            <td id="out-resistance-heat">{heatContentText(comparison[3])}</td>
+            <td id="out-resistance-price">{`$${electricity.priceText} per kWh`}</td>
+            <td id="out-resistance-eff">Enter efficiency. A blank is not zero.</td>
+            <td class="num" id="out-resistance-mmbtu">Calculated in the browser from the formula above.</td>
+            <td class="num" id="out-resistance-season">Calculated in the browser from the formula above.</td>
+          </tr>
+          <tr>
+            <th scope="row">Electric heat pump</th>
+            <td id="out-heat-pump-heat">{heatContentText(comparison[3])}</td>
+            <td id="out-heat-pump-price">{`$${electricity.priceText} per kWh`}</td>
+            <td id="out-heat-pump-eff">Enter efficiency. A blank is not zero.</td>
+            <td class="num" id="out-heat-pump-mmbtu">Calculated in the browser from the formula above.</td>
+            <td class="num" id="out-heat-pump-season">Calculated in the browser from the formula above.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p id="cost-status" class="result" aria-live="polite">Fill in a price and an efficiency to see a cost. A blank efficiency is not treated as zero.</p>
+    <h2>Cited heat contents and prices</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>Heat contents and prices committed for this calculator</caption>
+        <thead>
+          <tr>
+            <th scope="col">Figure</th>
+            <th scope="col">Value</th>
+            <th scope="col">Period</th>
+            <th scope="col">Retrieved</th>
+            <th scope="col">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Cord wood heat</th>
+            <td>Million BTU per cord, by species</td>
+            <td>Retrieved {woodRetrieved}</td>
+            <td>{woodRetrieved}</td>
+            <td><a href={woodSource}>University of Arkansas extension table</a>. Listed on the <a href="/firewood-btu-chart/">firewood heat values</a> page.</td>
+          </tr>
+          <tr>
+            <th scope="row">Cord wood price</th>
+            <td>No default. Enter the price you pay per cord.</td>
+            <td>None in this snapshot</td>
+            <td>{fuelRetrieved}</td>
+            <td>No official residential cord price is committed here.</td>
+          </tr>
+          {heat.map((row) => (
+            <tr>
+              <th scope="row">{row.label} heat</th>
+              <td>{heatContentText(row)}</td>
+              <td>{row.periodLabel}</td>
+              <td>{row.retrieved}</td>
+              <td><a href={row.sourceUrl}>{row.sourceUrl.replace("https://", "")}</a></td>
+            </tr>
+          ))}
+          {prices.map((row) => (
+            <tr>
+              <th scope="row">{row.label} price</th>
+              <td>
+                {row.prefill
+                  ? `$${row.priceText} per ${row.unit}. EIA average, ${row.periodLabel}; enter your local price.`
+                  : `Not prefilled. Cited average $${row.priceText} per ${row.unit}.`}
+              </td>
+              <td>{row.periodLabel}</td>
+              <td>{row.retrieved}</td>
+              <td><a href={row.sourceUrl}>{row.sourceUrl.replace("https://", "")}</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <details>
+      <summary>Source notes</summary>
+      <ul>
+        <li>Cord wood: {catalog.firewood[0].sourceNote}</li>
+        {heat.map((row) => <li>{row.label} heat: {row.sourceNote}</li>)}
+        {prices.map((row) => <li>{row.label} price: {row.sourceNote}</li>)}
+      </ul>
+    </details>
+    <DataNote
+      items={[
+        `EPA efficiency is Overall Efficiency-HHV (%) on the primary row of the model line, snapshot ${catalog.meta.snapshotDate}. If EPA left that cell blank, this page says not listed by EPA and does not insert zero.`,
+        "Some cordwood species publish a range. The cost row shows both ends.",
+        "The stove-size factors are StoveRatings planning factors, not an EPA heat-loss calculation. Hours are entered on this page and have no default.",
+        `Natural gas is the U.S. residential average for ${gas.periodLabel}. Electricity is the U.S. residential average revenue per kWh for ${electricity.periodLabel}. Heating oil and propane are the U.S. residential weekly prices for ${oil.periodLabel}.`,
+        `Cord price is what you pay. Pellet price is what you pay. EIA's ${pelletSales.periodLabel} domestic average of $${pelletSales.priceText} per ton mixes retail and wholesale, so it is not filled in.`,
+        "Prices and heat contents are files committed in this site. The calculator does not fetch them when you use the page.",
+      ]}
+    />
+    <script id="heating-data" type="application/json" set:html={payload} />
+  </div>
+</Base>
+<script>
+  import { mountHeatingCost } from "../../lib/heating-cost-ui.js";
+  mountHeatingCost(document);
+</script>

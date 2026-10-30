@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeHubName } from "../src/lib/brand-names.js";
+import { sourceIssues } from "../src/lib/heating-cost.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -15,6 +16,8 @@ const brands = read("brands.json");
 const stats = read("stats.json");
 const meta = read("meta.json");
 const firewood = read("firewood.json");
+const fuelHeat = read("fuel-heat.json");
+const fuelPrices = read("fuel-prices.json");
 const noindex = read("noindex-paths.json");
 
 assert.equal(stats.rows.roomAll, 1444);
@@ -44,6 +47,30 @@ for (const row of firewood) {
   assert.match(row.sourceUrl, /^https:\/\//);
   assert.ok(row.btuLow > 0 && row.btuHigh >= row.btuLow);
 }
+
+assert.ok(fuelHeat.length >= 7);
+assert.ok(fuelPrices.length >= 5);
+const heatIds = new Set();
+for (const row of fuelHeat) {
+  assert.equal(sourceIssues(row).length, 0, `${row.id} ${sourceIssues(row).join(",")}`);
+  assert.equal(heatIds.has(row.id), false, row.id);
+  heatIds.add(row.id);
+  assert.ok(row.btuPerUnit > 0, row.id);
+  assert.ok(row.btuText, row.id);
+}
+const priceIds = new Set();
+for (const row of fuelPrices) {
+  assert.equal(sourceIssues(row).length, 0, `${row.id} ${sourceIssues(row).join(",")}`);
+  assert.equal(priceIds.has(row.id), false, row.id);
+  priceIds.add(row.id);
+  assert.equal(typeof row.prefill, "boolean", row.id);
+  assert.ok(row.price > 0 && row.priceText, row.id);
+  if (row.prefill) assert.ok(heatIds.has(row.id), row.id);
+  if (row.id.startsWith("pellet") || row.id.includes("wood") || row.id.includes("cord")) {
+    assert.equal(row.prefill, false, row.id);
+  }
+}
+assert.equal(fuelPrices.some((row) => row.id === "cord-wood" || row.id === "firewood"), false);
 
 const slugs = new Set(brands.map((brand) => brand.slug));
 for (const stove of stoves) {

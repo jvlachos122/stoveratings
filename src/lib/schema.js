@@ -32,9 +32,20 @@ export function webAppLd(name, description, path) {
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Any",
     isAccessibleForFree: true,
+    creator: {
+      "@type": "Organization",
+      name: site.name,
+      url: site.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: site.legalName,
+      url: site.url,
+    },
     provider: {
       "@type": "Organization",
       name: site.legalName,
+      url: site.url,
     },
   };
 }

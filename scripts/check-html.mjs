@@ -84,6 +84,63 @@ for (const file of files) {
   }
 }
 
+function collectTypes(node, found) {
+  if (Array.isArray(node)) {
+    for (const item of node) collectTypes(item, found);
+    return;
+  }
+  if (!node || typeof node !== "object") return;
+  const value = node["@type"];
+  if (typeof value === "string") found.add(value);
+  if (Array.isArray(value)) {
+    for (const item of value) if (typeof item === "string") found.add(item);
+  }
+  for (const child of Object.values(node)) collectTypes(child, found);
+}
+
+const heating = files.find((file) => file.endsWith("/tools/heating-cost-calculator/index.html"));
+if (!heating) errors.push("missing heating cost calculator page");
+else {
+  const html = readFileSync(heating, "utf8");
+  if (!html.includes('class="answer"')) errors.push("heating cost: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length < 1 || paragraphs.length > 3) errors.push("heating cost: answer box sentences");
+  const h1 = html.match(/<h1\b/g) || [];
+  if (h1.length !== 1) errors.push(`heating cost: ${h1.length} h1`);
+  if (!html.includes('rel="canonical" href="https://stoveratings.com/tools/heating-cost-calculator/"')) {
+    errors.push("heating cost: canonical");
+  }
+  const descriptions = [...html.matchAll(/<meta name="description" content="([^"]*)"/g)];
+  if (descriptions.length !== 1 || descriptions[0][1].trim().length < 40) errors.push("heating cost: description");
+  const scripts = [...html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`heating cost: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("heating cost: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "WebApplication"]) {
+        if (!types.has(required)) errors.push(`heating cost: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "FAQPage"]) {
+        if (types.has(banned)) errors.push(`heating cost: forbidden ${banned}`);
+      }
+      const graph = Array.isArray(data["@graph"]) ? data["@graph"] : [];
+      const app = graph.find((node) => node["@type"] === "WebApplication");
+      if (!app || app.creator?.["@type"] !== "Organization" || app.publisher?.["@type"] !== "Organization") {
+        errors.push("heating cost: WebApplication creator and publisher must be Organization");
+      }
+    }
+  }
+}
+
 let reported = 0;
 for (const file of files) {
   const report = await validator.validateFile(file);
