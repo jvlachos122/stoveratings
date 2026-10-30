@@ -209,6 +209,13 @@ const notes = [
         ))}
       </ul>
     ) : <p>EPA does not list a heat-output figure to compare, or no other line lists one.</p>}
+    {stove.efficiency != null ? (
+      <p>
+        <a href={`/tools/heating-cost-calculator/?model=${stove.id}`}>Estimate running cost</a>
+        {" "}
+        with the HHV efficiency EPA lists on the primary row.
+      </p>
+    ) : null}
     <DataNote items={notes} />
     <p>
       {brand ? <a href={brand.url}>{brand.name} hub</a> : null}

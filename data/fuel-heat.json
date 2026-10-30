@@ -1,0 +1,86 @@
+[
+  {
+    "id": "pellets-east",
+    "label": "Premium/standard wood pellets, East",
+    "unit": "pound",
+    "btuPerUnit": 8345.2,
+    "btuText": "8345.2",
+    "period": "2026-07",
+    "periodLabel": "July 2026",
+    "sourceUrl": "https://www.eia.gov/biofuels/biomass/csv/EIA_63C_Table_5.csv",
+    "retrieved": "2026-10-30",
+    "sourceNote": "Form EIA-63C Table 5 average heat content for premium/standard wood pellets, East region, month 7. The report page https://www.eia.gov/biofuels/biomass/ titles this release July 2026. The calculator converts pounds to a short ton with 2000 pounds per ton."
+  },
+  {
+    "id": "pellets-south",
+    "label": "Premium/standard wood pellets, South",
+    "unit": "pound",
+    "btuPerUnit": 7936.664,
+    "btuText": "7936.664",
+    "period": "2026-07",
+    "periodLabel": "July 2026",
+    "sourceUrl": "https://www.eia.gov/biofuels/biomass/csv/EIA_63C_Table_5.csv",
+    "retrieved": "2026-10-30",
+    "sourceNote": "Form EIA-63C Table 5 average heat content for premium/standard wood pellets, South region, month 7. The report page https://www.eia.gov/biofuels/biomass/ titles this release July 2026."
+  },
+  {
+    "id": "pellets-west",
+    "label": "Premium/standard wood pellets, West",
+    "unit": "pound",
+    "btuPerUnit": 8459.172,
+    "btuText": "8459.172",
+    "period": "2026-07",
+    "periodLabel": "July 2026",
+    "sourceUrl": "https://www.eia.gov/biofuels/biomass/csv/EIA_63C_Table_5.csv",
+    "retrieved": "2026-10-30",
+    "sourceNote": "Form EIA-63C Table 5 average heat content for premium/standard wood pellets, West region, month 7. The report page https://www.eia.gov/biofuels/biomass/ titles this release July 2026."
+  },
+  {
+    "id": "natural-gas",
+    "label": "Natural gas delivered to consumers",
+    "unit": "Mcf",
+    "btuPerUnit": 1036000.0,
+    "btuText": "1036000",
+    "period": "2026",
+    "periodLabel": "2026 estimate",
+    "sourceUrl": "https://www.eia.gov/energyexplained/units-and-calculators/energy-conversion-calculators.php",
+    "retrieved": "2026-10-30",
+    "sourceNote": "EIA energy conversion calculator: 1 cubic foot = 1036 Btu, U.S. average for natural gas delivered to consumers in 2026 (estimate). Stored per Mcf (1000 cubic feet) as 1036000 Btu."
+  },
+  {
+    "id": "propane",
+    "label": "Propane",
+    "unit": "gallon",
+    "btuPerUnit": 91452.0,
+    "btuText": "91452",
+    "period": "standing",
+    "periodLabel": "Standing EIA factor",
+    "sourceUrl": "https://www.eia.gov/energyexplained/units-and-calculators/british-thermal-units.php",
+    "retrieved": "2026-10-30",
+    "sourceNote": "EIA sample Btu conversion factor: 1 gallon = 91452 Btu. Monthly Energy Review Appendix A Table A1 lists propane at 3.841 million Btu per barrel (https://www.eia.gov/totalenergy/data/monthly/pdf/sec12.pdf); 3841000 divided by 42 gallons per barrel rounds to 91452."
+  },
+  {
+    "id": "heating-oil",
+    "label": "Distillate fuel oil, 15 ppm sulfur and under",
+    "unit": "gallon",
+    "btuPerUnit": 137381.0,
+    "btuText": "137381",
+    "period": "2026",
+    "periodLabel": "2026 estimate",
+    "sourceUrl": "https://www.eia.gov/energyexplained/units-and-calculators/energy-conversion-calculators.php",
+    "retrieved": "2026-10-30",
+    "sourceNote": "EIA energy conversion calculator: 1 gallon = 137381 Btu for distillate fuel with 15 ppm or less sulfur at 5770000 Btu per barrel in 2026 (estimate)."
+  },
+  {
+    "id": "electricity",
+    "label": "Electricity",
+    "unit": "kWh",
+    "btuPerUnit": 3412.0,
+    "btuText": "3412",
+    "period": "standing",
+    "periodLabel": "Standing EIA factor",
+    "sourceUrl": "https://www.eia.gov/energyexplained/units-and-calculators/british-thermal-units.php",
+    "retrieved": "2026-10-30",
+    "sourceNote": "EIA: 1 kilowatthour = 3412 Btu, the heat content of electricity. Monthly Energy Review Appendix A states the same 3412 Btu per kilowatthour (https://www.eia.gov/totalenergy/data/monthly/pdf/sec12.pdf)."
+  }
+]

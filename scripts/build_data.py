@@ -567,6 +567,125 @@ def top_records(stoves, predicate, value, reverse, limit=5):
     return highlights
 
 
+def _sourced_fields(row, label):
+    source = (row.get("source_url") or "").strip()
+    if not source.startswith("https://"):
+        raise SystemExit(f"{label} missing source_url")
+    if "cfpub.epa.gov" in source:
+        raise SystemExit(f"{label} refuses a cfpub.epa.gov source")
+    retrieved = (row.get("retrieved") or "").strip()
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", retrieved):
+        raise SystemExit(f"{label} missing retrieved")
+    period = (row.get("period") or "").strip()
+    period_label = (row.get("period_label") or "").strip()
+    if not period:
+        raise SystemExit(f"{label} missing period")
+    if not period_label:
+        raise SystemExit(f"{label} missing period_label")
+    note = (row.get("source_note") or "").strip()
+    if not note:
+        raise SystemExit(f"{label} missing source_note")
+    return source, retrieved, period, period_label, note
+
+
+def _read_csv_rows(path):
+    if not path.is_file():
+        raise SystemExit(f"missing {path.name}")
+    with path.open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    if not rows:
+        raise SystemExit(f"{path.name} has no rows")
+    return rows
+
+
+def load_fuel_heat(path=None):
+    path = Path(path) if path else DATA / "fuel-heat.csv"
+    rows = _read_csv_rows(path)
+    cleaned = []
+    seen = set()
+    for row in rows:
+        label = f"{path.name} {(row.get('id') or '').strip() or 'row'}"
+        source, retrieved, period, period_label, note = _sourced_fields(row, label)
+        fuel_id = (row.get("id") or "").strip()
+        name = (row.get("label") or "").strip()
+        unit = (row.get("unit") or "").strip()
+        if not fuel_id or not name or not unit:
+            raise SystemExit(f"{label} missing id, label, or unit")
+        if fuel_id in seen:
+            raise SystemExit(f"{label} duplicate id")
+        seen.add(fuel_id)
+        btu_text = (row.get("btu_per_unit") or "").strip()
+        try:
+            btu = float(btu_text)
+        except ValueError:
+            raise SystemExit(f"{label} bad btu_per_unit") from None
+        if btu <= 0:
+            raise SystemExit(f"{label} bad btu_per_unit")
+        cleaned.append(
+            {
+                "id": fuel_id,
+                "label": name,
+                "unit": unit,
+                "btuPerUnit": btu,
+                "btuText": btu_text,
+                "period": period,
+                "periodLabel": period_label,
+                "sourceUrl": source,
+                "retrieved": retrieved,
+                "sourceNote": note,
+            }
+        )
+    return cleaned
+
+
+def load_fuel_prices(path=None):
+    path = Path(path) if path else DATA / "fuel-prices.csv"
+    rows = _read_csv_rows(path)
+    cleaned = []
+    seen = set()
+    for row in rows:
+        label = f"{path.name} {(row.get('id') or '').strip() or 'row'}"
+        source, retrieved, period, period_label, note = _sourced_fields(row, label)
+        fuel_id = (row.get("id") or "").strip()
+        name = (row.get("label") or "").strip()
+        unit = (row.get("unit") or "").strip()
+        if not fuel_id or not name or not unit:
+            raise SystemExit(f"{label} missing id, label, or unit")
+        if fuel_id in seen:
+            raise SystemExit(f"{label} duplicate id")
+        seen.add(fuel_id)
+        prefill = (row.get("prefill") or "").strip().lower()
+        if prefill not in {"yes", "no"}:
+            raise SystemExit(f"{label} missing prefill")
+        if prefill == "yes" and (fuel_id.startswith("pellet") or "wood" in fuel_id or "cord" in fuel_id):
+            raise SystemExit(f"{label} cord wood and pellet prices are not prefilled")
+        price_text = (row.get("price") or "").strip()
+        try:
+            price = float(price_text)
+            decimals = int((row.get("price_decimals") or "").strip())
+        except ValueError:
+            raise SystemExit(f"{label} bad price") from None
+        if price <= 0 or decimals < 0 or decimals > 6:
+            raise SystemExit(f"{label} bad price")
+        cleaned.append(
+            {
+                "id": fuel_id,
+                "label": name,
+                "unit": unit,
+                "price": price,
+                "priceText": price_text,
+                "priceDecimals": decimals,
+                "prefill": prefill == "yes",
+                "period": period,
+                "periodLabel": period_label,
+                "sourceUrl": source,
+                "retrieved": retrieved,
+                "sourceNote": note,
+            }
+        )
+    return cleaned
+
+
 def load_firewood():
     path = DATA / "firewood.csv"
     with path.open(newline="", encoding="utf-8") as handle:
@@ -839,6 +958,12 @@ def main():
 
     changes = diff_snapshots(previous, stoves, snapshot_date, previous_date if previous else None)
     firewood = load_firewood()
+    fuel_heat = load_fuel_heat()
+    fuel_prices = load_fuel_prices()
+    heat_ids = {row["id"] for row in fuel_heat}
+    for row in fuel_prices:
+        if row["prefill"] and row["id"] not in heat_ids:
+            raise SystemExit(f"prefilled price {row['id']} has no heat content")
 
     # Hash the stove payload without depending on meta, which stores the hash.
     encoded = json.dumps(stoves, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
@@ -861,6 +986,8 @@ def main():
     write_json(DATA / "changes.json", changes)
     write_json(DATA / "meta.json", meta)
     write_json(DATA / "firewood.json", firewood)
+    write_json(DATA / "fuel-heat.json", fuel_heat)
+    write_json(DATA / "fuel-prices.json", fuel_prices)
     write_json(DATA / "noindex-paths.json", sorted(set(noindex)))
     print(
         "MODEL_LINES",
