@@ -3,9 +3,10 @@ import Answer from "../../components/Answer.astro";
 import DataNote from "../../components/DataNote.astro";
 import StoveTable from "../../components/StoveTable.astro";
 import Base from "../../layouts/Base.astro";
-import { brandSentences } from "../../lib/answers.js";
+import { brandAnswer, brandProse } from "../../lib/brand-copy.js";
 import { catalog, stovesForBrand } from "../../lib/catalog.js";
 import { metaDescription, pageTitle } from "../../lib/format.js";
+import { datasetLd } from "../../lib/schema.js";
 
 export function getStaticPaths() {
   const hubs = catalog.brands.map((brand) => ({
@@ -28,7 +29,8 @@ const sentences = redirect
       "This address is the previous URL for that grouping.",
       `Source: EPA Certified Wood Heater Database, snapshot ${catalog.meta.snapshotDate}.`,
     ]
-  : brandSentences(brand, lines, catalog.meta.snapshotDate);
+  : brandAnswer(brand, lines, catalog.meta.snapshotDate);
+const prose = brand ? brandProse(brand, lines) : [];
 const description = metaDescription(sentences);
 const current = lines.filter((stove) => stove.current);
 const previous = lines.filter((stove) => !stove.current);
@@ -73,10 +75,18 @@ const crumbs = redirect
       </div>
     </Base>
   ) : (
-    <Base title={pageTitle(brand.name)} description={description} breadcrumbs={crumbs}>
+    <Base title={pageTitle(brand.name)} description={description} breadcrumbs={crumbs} jsonLd={[datasetLd(catalog.meta)]}>
       <div class="wrap">
         <h1>{brand.name}</h1>
         <Answer sentences={sentences} />
+        {
+          prose.length ? (
+            <div class="prose">
+              <h2 id="listed-figures">Figures EPA lists</h2>
+              {prose.map((sentence) => <p>{sentence}</p>)}
+            </div>
+          ) : null
+        }
         <p>{brand.note}</p>
         <p class="small">Evidence used for this hub: {brand.evidence}</p>
         {
@@ -120,8 +130,8 @@ const crumbs = redirect
             brand.role === "alias"
               ? "This is not the EPA manufacturer field. A row is here because the brand name is in the EPA text cited above."
               : "The hub title follows the EPA manufacturer string, or the shared name when several strings contain it.",
-            "Counts are model lines. A model line can contain more than one EPA test row; the model page shows each row.",
-            "Blank numbers are not zeros.",
+            "Counts in the answer are model lines. A model line can contain more than one EPA test row; the model page shows each row.",
+            "Blank emission and HHV efficiency cells are not listed by EPA. They are not zeros. A median uses only the rows that list the figure, and the n beside it is that row count. An even count is the average of the two middle values.",
           ]}
         />
         <p>

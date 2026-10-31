@@ -1,3 +1,4 @@
+import { brandAnswer } from "./brand-copy.js";
 import { countNoun, efficiencyText, emissionText, formatNumber, kindLabel, shortModel } from "./format.js";
 
 function sourceSentence(snapshotDate) {
@@ -37,35 +38,7 @@ export function modelSentences(stove, snapshotDate) {
 }
 
 export function brandSentences(brand, lines, snapshotDate) {
-  const current = lines.filter((stove) => stove.current);
-  const previous = lines.length - current.length;
-  const sentences = [];
-  if (brand.role === "alias") {
-    sentences.push(`EPA does not use ${brand.name} as the manufacturer name on these rows.`);
-    sentences.push(
-      `${countNoun(lines.length, "model line")} ${lines.length === 1 ? "has" : "have"} ${brand.name} in the EPA text, and ${countNoun(current.length, "of them is currently certified", "of them are currently certified")}.`,
-    );
-    const manufacturers = [...new Set(lines.map((stove) => stove.manufacturer || "a blank manufacturer cell"))];
-    if (manufacturers.length && manufacturers.length <= 4) {
-      sentences.push(`EPA lists ${lines.length === 1 ? "that line" : "those lines"} under ${manufacturers.join("; ")}.`);
-    }
-  } else {
-    sentences.push(
-      `EPA lists ${countNoun(current.length, "currently certified model line")} and ${countNoun(previous, "previously certified model line")} for ${brand.name}.`,
-    );
-    const lowest = current
-      .filter((stove) => stove.emission != null)
-      .sort((a, b) => a.emission - b.emission || a.model.localeCompare(b.model))[0];
-    if (lowest) {
-      sentences.push(
-        `The lowest listed emission rate among those currently certified lines is ${emissionText(lowest.emission, lowest.emissionUnit)}, on ${shortModel(lowest.model)}.`,
-      );
-    } else {
-      sentences.push("None of these model lines are listed as currently certified in this snapshot.");
-    }
-  }
-  sentences.push(sourceSentence(snapshotDate));
-  return sentences;
+  return brandAnswer(brand, lines, snapshotDate);
 }
 
 export const insertDataNotes = [
