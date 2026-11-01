@@ -23,6 +23,29 @@ export function datasetLd(meta) {
   };
 }
 
+export function changelogDatasetLd(date) {
+  return {
+    "@type": "Dataset",
+    name: "EPA wood heater snapshot changelog",
+    description: `Model-line counts and field changes between EPA Certified Wood Heater Database snapshots committed in this repository. The latest snapshot was saved on ${date}. Emission rates and HHV efficiencies are EPA's figures. StoveRatings does not score stoves.`,
+    url: new URL("/data/changelog/", site.url).href,
+    creator: {
+      "@type": "Organization",
+      name: "U.S. Environmental Protection Agency",
+      url: "https://www.epa.gov/",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: site.name,
+      url: site.url,
+    },
+    datePublished: date,
+    license: "https://www.usa.gov/government-works",
+    isAccessibleForFree: true,
+    isBasedOn: site.epaDatabaseUrl,
+  };
+}
+
 export function webAppLd(name, description, path) {
   return {
     "@type": "WebApplication",

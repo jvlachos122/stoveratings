@@ -39,5 +39,6 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Pellet and wood figures: https://stoveratings.com/pellet-stove-vs-wood-stove/
 - Tax credit status: https://stoveratings.com/wood-stove-tax-credit/
 - Methodology: https://stoveratings.com/methodology/
+- Data changelog (committed EPA snapshots): https://stoveratings.com/data/changelog/
 
 Historical model lines that list none of efficiency, firebox, or CO are not indexed. Comparison pages are not indexed.
