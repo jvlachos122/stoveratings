@@ -25,8 +25,9 @@ cfpub.epa.gov's robots.txt disallows automated access (`User-agent: *` / `Disall
 To refresh:
 
 1. Save the four EPA result pages yourself, in a browser.
-2. Commit them under `data/raw/` as HTML (`rh_all.html`, `rh_inprod.html`, `wh_all.html`, `wh_inprod.html`) or as CSV exports with the names above. If an HTML file is present, the rebuild uses it instead of the CSV for that dataset.
-3. Update `SNAPSHOT_DATE` to the day you saved the pages.
-4. Run the **Rebuild EPA snapshot** GitHub Actions workflow manually (`workflow_dispatch`). There is no cron job.
+2. Before replacing the files, copy the current four CSVs into `data/snapshots/YYYY-MM-DD/`, using the date already in `SNAPSHOT_DATE`. The changelog reads those copies. Also copy `data/brand-crosswalk.csv`, `data/brand-redirects.csv`, and `data/insert-overrides.csv` into that folder (all three) if the next changelog should include crosswalk and insert-label changes.
+3. Commit the new export under `data/raw/` as HTML (`rh_all.html`, `rh_inprod.html`, `wh_all.html`, `wh_inprod.html`) or as CSV exports with the names above. If an HTML file is present, the rebuild uses it instead of the CSV for that dataset. Keep the CSV copies: the changelog reads the CSVs.
+4. Update `SNAPSHOT_DATE` to the day you saved the pages.
+5. Run the **Rebuild EPA snapshot** GitHub Actions workflow manually (`workflow_dispatch`). There is no cron job.
 
 The workflow parses the committed files, diffs them against the previous `data/stoves.json`, and commits only when the snapshot changed. It does not download anything from EPA.

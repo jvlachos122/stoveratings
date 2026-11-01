@@ -1,0 +1,569 @@
+---
+import Answer from "../../components/Answer.astro";
+import DataNote from "../../components/DataNote.astro";
+import Base from "../../layouts/Base.astro";
+import { loadChangelog } from "../../lib/epa-snapshots.js";
+import { formatCount, metaDescription } from "../../lib/format.js";
+import { changelogDatasetLd } from "../../lib/schema.js";
+import { NOT_LISTED, editorialHasChanges } from "../../lib/snapshot-diff.js";
+
+const report = loadChangelog();
+const latest = report.snapshots[report.snapshots.length - 1];
+const sentences = report.answer;
+const description = metaDescription(sentences);
+const insertCompared = report.intervals.some((interval) => interval.editorial);
+
+function shownManufacturer(value) {
+  const text = String(value ?? "").trim();
+  return text || NOT_LISTED;
+}
+
+function fuelLabel(value) {
+  return value === "pellet" ? "Pellet" : "Wood";
+}
+
+function groupLabel(category) {
+  return category === "central" ? "Central heater" : "Room heater";
+}
+
+function listingLabel(current) {
+  return current ? "Listed as currently certified" : "Previously listed";
+}
+
+function hasModelChanges(interval) {
+  return (
+    interval.added.length +
+      interval.newlyCurrent.length +
+      interval.movedToPrevious.length +
+      interval.disappeared.length +
+      interval.fieldChanges.length >
+    0
+  );
+}
+
+const notes = [
+  "A model line is one EPA manufacturer-and-model cell. Retail names inside that cell are not separate rows on this page.",
+  "File row counts are the saved CSV rows. Model-line counts group rows that share a manufacturer and a model cell.",
+  "Pellet means the EPA type or certified fuel contains pellet. Cord wood, crib wood, and wood chips are counted as wood. Room heaters and central heaters are counted together in those two columns.",
+  "A blank efficiency or emission cell is shown as not listed by EPA. It is not zero.",
+  "Listed as currently certified on a snapshot date means the row was in that date's in-production file. The export has no certification date, so this site does not say certified on that day.",
+  "EPA's Burn Wise program content stopped updating on October 30, 2025. The dates on this page are the days the snapshot files were saved.",
+];
+if (report.merges.length) {
+  notes.push(
+    "The brand hub table lists launch slugs in data/brand-slug-history.json that data/brand-redirects.csv now redirects. That record is not a difference between two EPA export files.",
+  );
+}
+notes.push(
+  insertCompared
+    ? "Insert-label and crosswalk changes between snapshots come from the copies of insert-overrides.csv, brand-redirects.csv, and brand-crosswalk.csv archived with each snapshot."
+    : "Reviewed insert labels are in data/insert-overrides.csv. No earlier copy of that file is committed beside this snapshot, so those labels are not listed as changes.",
+);
+notes.push("This page is built from files committed in the repository. The build does not contact cfpub.epa.gov.");
+---
+
+<Base
+  title="Data changelog"
+  description={description}
+  breadcrumbs={[{ href: "/", label: "Home" }, { href: "/data/changelog/", label: "Data changelog" }]}
+  jsonLd={[changelogDatasetLd(latest.date)]}
+>
+  <div class="wrap">
+    <h1>Data changelog</h1>
+    <p class="muted">EPA lists the figures. StoveRatings does not score stoves. The comparison uses the snapshot files committed in this repository.</p>
+    <Answer sentences={sentences} />
+
+    <h2>Snapshots committed in this repository</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>EPA snapshot files committed in this repository</caption>
+        <thead>
+          <tr>
+            <th scope="col">Snapshot</th>
+            <th scope="col">File</th>
+            <th scope="col" class="num">Rows</th>
+            <th scope="col">What the file contains</th>
+          </tr>
+        </thead>
+        <tbody>
+          {report.snapshots.flatMap((snapshot) =>
+            snapshot.files.map((file) => (
+              <tr>
+                <td>{snapshot.date}</td>
+                <td><code>{file.name}</code></td>
+                <td class="num">{formatCount(file.rows)}</td>
+                <td>{file.label}</td>
+              </tr>
+            )),
+          )}
+        </tbody>
+      </table>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption>Wood and pellet model lines in each committed snapshot</caption>
+        <thead>
+          <tr>
+            <th scope="col">Snapshot</th>
+            <th scope="col">Listing</th>
+            <th scope="col" class="num">Wood model lines</th>
+            <th scope="col" class="num">Pellet model lines</th>
+          </tr>
+        </thead>
+        <tbody>
+          {report.snapshots.flatMap((snapshot) => [
+            <tr>
+              <td>{snapshot.date}</td>
+              <td>Listed as currently certified</td>
+              <td class="num">{formatCount(snapshot.counts.current.wood)}</td>
+              <td class="num">{formatCount(snapshot.counts.current.pellet)}</td>
+            </tr>,
+            <tr>
+              <td>{snapshot.date}</td>
+              <td>Previously listed</td>
+              <td class="num">{formatCount(snapshot.counts.previous.wood)}</td>
+              <td class="num">{formatCount(snapshot.counts.previous.pellet)}</td>
+            </tr>,
+          ])}
+        </tbody>
+      </table>
+    </div>
+    <p>
+      The latest snapshot, {latest.date}, has {formatCount(latest.modelLines)} model lines.
+      The public database page is <a href="https://www.epa.gov/compliance/epa-certified-wood-heater-database">EPA's Certified Wood Heater Database</a>.
+    </p>
+
+    <h2>Changes between snapshots</h2>
+    {report.firstSnapshot ? (
+      <p>This is the first snapshot, {latest.date}; no earlier snapshot to compare.</p>
+    ) : (
+      report.intervals.map((interval) => (
+        <section>
+          <h3>{interval.fromDate} to {interval.toDate}</h3>
+          {hasModelChanges(interval) ? (
+            <>
+              {interval.added.length ? (
+                <div class="table-wrap">
+                  <table>
+                    <caption>Model lines in the {interval.toDate} snapshot that were not in the {interval.fromDate} snapshot</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Model line</th>
+                        <th scope="col">EPA manufacturer</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">Wood or pellet</th>
+                        <th scope="col">How the later snapshot lists it</th>
+                        <th scope="col">Emission</th>
+                        <th scope="col">HHV efficiency</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {interval.added.map((line) => (
+                        <tr>
+                          <td>{line.url ? <a href={line.url}>{line.model}</a> : line.model}</td>
+                          <td>{shownManufacturer(line.manufacturer)}</td>
+                          <td>{groupLabel(line.category)}</td>
+                          <td>{fuelLabel(line.fuelClass)}</td>
+                          <td>{listingLabel(line.current)}</td>
+                          <td>{line.emission}</td>
+                          <td>{line.efficiency}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
+              {interval.newlyCurrent.length ? (
+                <div class="table-wrap">
+                  <table>
+                    <caption>Model lines newly listed as currently certified on {interval.toDate} that were previously listed on {interval.fromDate}</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Model line</th>
+                        <th scope="col">EPA manufacturer</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">Wood or pellet</th>
+                        <th scope="col">Emission</th>
+                        <th scope="col">HHV efficiency</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {interval.newlyCurrent.map((line) => (
+                        <tr>
+                          <td>{line.url ? <a href={line.url}>{line.model}</a> : line.model}</td>
+                          <td>{shownManufacturer(line.manufacturer)}</td>
+                          <td>{groupLabel(line.category)}</td>
+                          <td>{fuelLabel(line.fuelClass)}</td>
+                          <td>{line.emission}</td>
+                          <td>{line.efficiency}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
+              {interval.movedToPrevious.length ? (
+                <div class="table-wrap">
+                  <table>
+                    <caption>Model lines that moved from currently certified to previously listed between {interval.fromDate} and {interval.toDate}</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Model line</th>
+                        <th scope="col">EPA manufacturer</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">Wood or pellet</th>
+                        <th scope="col">Emission in the later snapshot</th>
+                        <th scope="col">HHV efficiency in the later snapshot</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {interval.movedToPrevious.map((line) => (
+                        <tr>
+                          <td>{line.url ? <a href={line.url}>{line.model}</a> : line.model}</td>
+                          <td>{shownManufacturer(line.manufacturer)}</td>
+                          <td>{groupLabel(line.category)}</td>
+                          <td>{fuelLabel(line.fuelClass)}</td>
+                          <td>{line.emission}</td>
+                          <td>{line.efficiency}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
+              {interval.disappeared.length ? (
+                <div class="table-wrap">
+                  <table>
+                    <caption>Model lines in the {interval.fromDate} snapshot that are not in the {interval.toDate} snapshot</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Model line</th>
+                        <th scope="col">EPA manufacturer</th>
+                        <th scope="col">Group</th>
+                        <th scope="col">Wood or pellet</th>
+                        <th scope="col">Listing in the earlier snapshot</th>
+                        <th scope="col">Emission</th>
+                        <th scope="col">HHV efficiency</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {interval.disappeared.map((line) => (
+                        <tr>
+                          <td>{line.model}</td>
+                          <td>{shownManufacturer(line.manufacturer)}</td>
+                          <td>{groupLabel(line.category)}</td>
+                          <td>{fuelLabel(line.fuelClass)}</td>
+                          <td>{listingLabel(line.current)}</td>
+                          <td>{line.emission}</td>
+                          <td>{line.efficiency}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
+              {interval.fieldChanges.length ? (
+                <div class="table-wrap">
+                  <table>
+                    <caption>Emission, HHV efficiency, and manufacturer changes between {interval.fromDate} and {interval.toDate}</caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Model line</th>
+                        <th scope="col">EPA manufacturer in the later snapshot</th>
+                        <th scope="col">Field</th>
+                        <th scope="col">Earlier snapshot</th>
+                        <th scope="col">Later snapshot</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {interval.fieldChanges.flatMap((line) =>
+                        line.changes.map((change) => (
+                          <tr>
+                            <td>{line.url ? <a href={line.url}>{line.model}</a> : line.model}</td>
+                            <td>{shownManufacturer(line.manufacturer)}</td>
+                            <td>{change.label}</td>
+                            <td>{change.before}</td>
+                            <td>{change.after}</td>
+                          </tr>
+                        )),
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
+            </>
+          ) : (
+            <p>No model line was added, moved from currently certified to previously listed, dropped from the export, or changed in emission, HHV efficiency, or manufacturer string.</p>
+          )}
+          {interval.editorial ? (
+            editorialHasChanges(interval.editorial) ? (
+              <>
+                <h3>Crosswalk and insert labels, {interval.fromDate} to {interval.toDate}</h3>
+                {interval.editorial.redirects.added.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Brand redirects added between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Earlier hub</th>
+                          <th scope="col">Redirects to</th>
+                          <th scope="col">Reason in the file</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.redirects.added.map((row) => (
+                          <tr>
+                            <td>{row.fromName}</td>
+                            <td><a href={`/brands/${row.toSlug}/`}>{row.toSlug}</a></td>
+                            <td>{row.reason}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.redirects.removed.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Brand redirects removed between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Earlier hub</th>
+                          <th scope="col">Had redirected to</th>
+                          <th scope="col">Reason in the earlier file</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.redirects.removed.map((row) => (
+                          <tr>
+                            <td>{row.fromName}</td>
+                            <td>{row.toSlug}</td>
+                            <td>{row.reason}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.redirects.changed.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Brand redirect changes between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Earlier hub</th>
+                          <th scope="col">Field</th>
+                          <th scope="col">Earlier snapshot</th>
+                          <th scope="col">Later snapshot</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.redirects.changed.flatMap((row) =>
+                          row.changes.map((change) => (
+                            <tr>
+                              <td>{row.after.fromName}</td>
+                              <td>{change.field}</td>
+                              <td>{change.before}</td>
+                              <td>{change.after}</td>
+                            </tr>
+                          )),
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.crosswalk.added.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Brand crosswalk rows added between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Brand</th>
+                          <th scope="col">Role</th>
+                          <th scope="col">Manufacturer strings</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.crosswalk.added.map((row) => (
+                          <tr>
+                            <td><a href={`/brands/${row.slug}/`}>{row.name}</a></td>
+                            <td>{row.role}</td>
+                            <td>{row.manufacturers || NOT_LISTED}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.crosswalk.removed.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Brand crosswalk rows removed between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Brand</th>
+                          <th scope="col">Role</th>
+                          <th scope="col">Manufacturer strings</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.crosswalk.removed.map((row) => (
+                          <tr>
+                            <td>{row.name}</td>
+                            <td>{row.role}</td>
+                            <td>{row.manufacturers || NOT_LISTED}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.crosswalk.changed.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Brand crosswalk changes between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">Brand</th>
+                          <th scope="col">Field</th>
+                          <th scope="col">Earlier snapshot</th>
+                          <th scope="col">Later snapshot</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.crosswalk.changed.flatMap((row) =>
+                          row.changes.map((change) => (
+                            <tr>
+                              <td><a href={`/brands/${row.after.slug}/`}>{row.after.name}</a></td>
+                              <td>{change.field}</td>
+                              <td>{change.before}</td>
+                              <td>{change.after}</td>
+                            </tr>
+                          )),
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.overrides.added.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Reviewed insert labels added between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">EPA manufacturer</th>
+                          <th scope="col">Model line</th>
+                          <th scope="col">Reviewed insert label</th>
+                          <th scope="col">Note in the file</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.overrides.added.map((row) => (
+                          <tr>
+                            <td>{shownManufacturer(row.manufacturer)}</td>
+                            <td>{row.model}</td>
+                            <td>{row.insert ? "yes" : "no"}</td>
+                            <td>{row.note}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.overrides.removed.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Reviewed insert labels removed between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">EPA manufacturer</th>
+                          <th scope="col">Model line</th>
+                          <th scope="col">Reviewed insert label</th>
+                          <th scope="col">Note in the earlier file</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.overrides.removed.map((row) => (
+                          <tr>
+                            <td>{shownManufacturer(row.manufacturer)}</td>
+                            <td>{row.model}</td>
+                            <td>{row.insert ? "yes" : "no"}</td>
+                            <td>{row.note}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+                {interval.editorial.overrides.changed.length ? (
+                  <div class="table-wrap">
+                    <table>
+                      <caption>Reviewed insert-label changes between {interval.fromDate} and {interval.toDate}</caption>
+                      <thead>
+                        <tr>
+                          <th scope="col">EPA manufacturer</th>
+                          <th scope="col">Model line</th>
+                          <th scope="col">Field</th>
+                          <th scope="col">Earlier snapshot</th>
+                          <th scope="col">Later snapshot</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {interval.editorial.overrides.changed.flatMap((row) =>
+                          row.changes.map((change) => (
+                            <tr>
+                              <td>{shownManufacturer(row.after.manufacturer)}</td>
+                              <td>{row.after.model}</td>
+                              <td>{change.field}</td>
+                              <td>{change.before}</td>
+                              <td>{change.after}</td>
+                            </tr>
+                          )),
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <p>The brand crosswalk, redirects, and insert labels archived with these two snapshots match.</p>
+            )
+          ) : null}
+        </section>
+      ))
+    )}
+
+    {report.merges.length ? (
+      <>
+        <h2>Brand hub merges recorded in the repository</h2>
+        <p>
+          Each row is a hub slug in <code>data/brand-slug-history.json</code> that <code>data/brand-redirects.csv</code> now sends to another hub.
+          The reason is the text committed in that file.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <caption>Brand hub merges recorded in data/brand-slug-history.json and data/brand-redirects.csv</caption>
+            <thead>
+              <tr>
+                <th scope="col">Earlier hub</th>
+                <th scope="col">Now redirects to</th>
+                <th scope="col">Reason in the file</th>
+              </tr>
+            </thead>
+            <tbody>
+              {report.merges.map((merge) => (
+                <tr>
+                  <td><a href={`/brands/${merge.fromSlug}/`}>{merge.fromName}</a></td>
+                  <td><a href={`/brands/${merge.toSlug}/`}>{merge.toName}</a></td>
+                  <td>{merge.reason}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    ) : null}
+
+    <DataNote items={notes} />
+  </div>
+</Base>
