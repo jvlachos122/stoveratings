@@ -27,6 +27,7 @@ function expectedCanonical(file) {
   if (redirectCanonical.has(pagePath)) return redirectCanonical.get(pagePath);
   if (rel === "/404.html") return `${site}/404.html`;
   if (rel === "/finder/index.html") return `${site}/`;
+  if (rel === "/compare/tool/index.html") return `${site}/compare/`;
   if (rel === "/index.html") return `${site}/`;
   if (rel.endsWith("/index.html")) return site + rel.slice(0, -"index.html".length);
   return site + rel;

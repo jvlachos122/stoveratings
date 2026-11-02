@@ -846,7 +846,7 @@ def main():
     insert_current_rows = sum(1 for stove in insert_stoves for test in stove["tests"] if test["current"])
 
     noindex = [stove["url"] for stove in stoves if not stove["indexable"]]
-    noindex.extend(["/finder/", "/compare/"])
+    noindex.extend(["/finder/", "/compare/tool/"])
     noindex.extend(f"/brands/{redirect['fromSlug']}/" for redirect in redirects)
 
     brand_payload = []

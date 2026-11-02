@@ -40,5 +40,8 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Tax credit status: https://stoveratings.com/wood-stove-tax-credit/
 - Methodology: https://stoveratings.com/methodology/
 - Data changelog (committed EPA snapshots): https://stoveratings.com/data/changelog/
+- Example comparisons (not a ranking; no sales data): https://stoveratings.com/compare/
+- One example pair: https://stoveratings.com/compare/{model-a}-vs-{model-b}/
+- Compare any two model lines (not indexed; canonical URL is /compare/): https://stoveratings.com/compare/tool/
 
-Historical model lines that list none of efficiency, firebox, or CO are not indexed. Comparison pages are not indexed.
+Historical model lines that list none of efficiency, firebox, or CO are not indexed. The any-two comparison tool is not indexed. Example comparison pages are indexed.

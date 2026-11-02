@@ -1,0 +1,85 @@
+---
+import Answer from "../../components/Answer.astro";
+import DataNote from "../../components/DataNote.astro";
+import Base from "../../layouts/Base.astro";
+import { catalog } from "../../lib/catalog.js";
+import {
+  compareCaption,
+  compareNotes,
+  compareSentences,
+  compareTableRows,
+  pairHeading,
+  selectComparePairs,
+} from "../../lib/compare-pairs.js";
+import { metaDescription, pageTitle } from "../../lib/format.js";
+import { articleLd } from "../../lib/schema.js";
+
+export function getStaticPaths() {
+  return selectComparePairs(catalog.stoves).map((pair) => ({
+    params: { pair: pair.slug },
+    props: { pair },
+  }));
+}
+
+const { pair } = Astro.props;
+const date = catalog.meta.snapshotDate;
+const sentences = compareSentences(pair.left, pair.right, date, catalog.brandBySlug);
+const description = metaDescription(sentences);
+const heading = pairHeading(pair.left, pair.right);
+const rows = compareTableRows(pair.left, pair.right, catalog.brandBySlug, date);
+const notes = compareNotes(pair.left, pair.right);
+---
+
+<Base
+  title={pageTitle(heading)}
+  description={description}
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/compare/", label: "Compare" },
+    { href: pair.url, label: pageTitle(heading, 48) },
+  ]}
+  jsonLd={[articleLd(heading, description, pair.url, date)]}
+>
+  <div class="wrap">
+    <h1>{heading}</h1>
+    <p class="muted">Example comparison. The figures below are EPA's. This page does not rank the two model lines.</p>
+    <Answer sentences={sentences} />
+    <div class="table-wrap">
+      <table>
+        <caption>{compareCaption(date)}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Field</th>
+            <th scope="col">{pair.left.model}</th>
+            <th scope="col">{pair.right.model}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rows.map((row) => (
+              <tr>
+                <th scope="row">{row.label}</th>
+                <td class:list={{ num: row.numeric }}>
+                  {row.leftHref ? <a href={row.leftHref}>{row.left}</a> : row.left}
+                </td>
+                <td class:list={{ num: row.numeric }}>
+                  {row.rightHref ? <a href={row.rightHref}>{row.right}</a> : row.right}
+                </td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p>
+      Source: <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>, snapshot {date}.
+      Emission rates and HHV efficiencies are EPA's figures.
+    </p>
+    <p>
+      <a href="/compare/">All example comparisons</a>
+      {" · "}
+      <a href="/compare/tool/">Compare any two model lines</a>
+    </p>
+    <DataNote items={notes} />
+  </div>
+</Base>

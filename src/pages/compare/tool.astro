@@ -1,27 +1,33 @@
 ---
-import DataNote from "../components/DataNote.astro";
-import Base from "../layouts/Base.astro";
-import { catalog } from "../lib/catalog.js";
-import { webAppLd } from "../lib/schema.js";
+import DataNote from "../../components/DataNote.astro";
+import Base from "../../layouts/Base.astro";
+import { catalog } from "../../lib/catalog.js";
+import { webAppLd } from "../../lib/schema.js";
 
-const description = `Compare two EPA model lines from the ${catalog.meta.snapshotDate} snapshot. Emission rates and HHV efficiencies are EPA's figures, shown side by side.`;
+const description = `Compare any two EPA model lines from the ${catalog.meta.snapshotDate} snapshot. Emission rates and HHV efficiencies are EPA's figures, shown side by side.`;
 ---
 
 <Base
   title="Compare two model lines"
   description={description}
   noindex={true}
+  canonicalPath="/compare/"
   breadcrumbs={[
     { href: "/", label: "Home" },
     { href: "/compare/", label: "Compare" },
+    { href: "/compare/tool/", label: "Compare two model lines" },
   ]}
-  jsonLd={[webAppLd("Compare two EPA model lines", description, "/compare/")]}
+  jsonLd={[webAppLd("Compare two EPA model lines", description, "/compare/tool/")]}
 >
   <div class="wrap">
     <h1>Compare two model lines</h1>
     <p>
       Pick two model lines from this snapshot. The table shows the primary EPA row for each one.
       When a model line has more than one EPA row, the model page lists every row.
+      This page does not rank the two lines.
+    </p>
+    <p>
+      <a href="/compare/">Example comparisons</a> lists fixed pairs from the same snapshot.
     </p>
     <form id="compare-form">
       <div class="filters">
@@ -44,8 +50,8 @@ const description = `Compare two EPA model lines from the ${catalog.meta.snapsho
     <div id="compare-result" class="table-wrap"></div>
     <DataNote
       items={[
-        "This page is not indexed. It does not rank the two stoves.",
-        "Blank figures stay Not listed. They are not zeros.",
+        "This page is not indexed. An address with a and b parameters uses this page, and the canonical URL is /compare/.",
+        "A blank figure is not listed by EPA. It is not zero.",
         `Snapshot date: ${catalog.meta.snapshotDate}.`,
       ]}
     />

@@ -31,6 +31,12 @@ To keep a comparison the next time you publish a snapshot:
 
 Do not add a scheduled or automated fetch. See `data/snapshots/README.md`.
 
+## Example comparisons
+
+`/compare/` lists example side-by-side pages for currently listed model lines. The site has no sales or popularity data, so these pairs are not described as popular or best-selling.
+
+The selection rule is in `src/lib/compare-pairs.js`. Among the eight brand hubs with the most currently listed wood-stove and pellet-stove model lines, a pair is two lines from different hubs that share an EPA type and subtype and whose heat-output midpoints are within 15 percent of the higher midpoint. The closest unused pairs are kept, up to 20. `/compare/tool/` compares any two model lines and is not indexed. Its canonical URL is `/compare/`.
+
 ## Domain
 
 `public/CNAME` is `stoveratings.com`. GitHub ignores that file when Pages is deployed by Actions, so the domain is set in the repository settings. The owner steps and the Hostinger records are in the launch pull request. This repository does not change those settings itself.
