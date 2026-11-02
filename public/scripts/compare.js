@@ -6,6 +6,7 @@ const rightList = document.querySelector("#compare-b-list");
 const result = document.querySelector("#compare-result");
 const status = document.querySelector("#compare-status");
 let stoves = [];
+let snapshot = "";
 const byId = new Map();
 
 function clear(node) {
@@ -32,11 +33,11 @@ function heat(stove) {
   }
   if (stove.btuLo != null) return `${Math.round(stove.btuLo).toLocaleString("en-US")} BTU/hr`;
   if (stove.btuMax != null) return `${Math.round(stove.btuMax).toLocaleString("en-US")} BTU/hr maximum`;
-  return "Not listed";
+  return "not listed by EPA";
 }
 
 function num(value, digits, suffix) {
-  if (value == null) return "Not listed";
+  if (value == null) return "not listed by EPA";
   return `${Number(Number(value).toFixed(digits))}${suffix || ""}`;
 }
 
@@ -67,6 +68,26 @@ function selected(input) {
   return stoves.find((stove) => stove.model.toLowerCase() === query) || null;
 }
 
+function fuelKind(type) {
+  if (type === "Wood Stove") return "Wood stove";
+  if (type === "Pellet Stove") return "Pellet stove";
+  if (!type) return "not listed by EPA";
+  return type;
+}
+
+function technology(sub) {
+  if (sub === "Catalytic Stove") return "Catalytic";
+  if (sub === "Non-Catalytic Stove") return "Non-catalytic";
+  if (sub === "Hybrid") return "Hybrid";
+  if (!sub) return "not listed by EPA";
+  return sub;
+}
+
+function listing(stove) {
+  if (stove.current) return snapshot ? `Listed as currently certified on ${snapshot}` : "Currently certified";
+  return snapshot ? `Previously listed as of ${snapshot}` : "Previously certified";
+}
+
 function show() {
   const a = selected(leftInput);
   const b = selected(rightInput);
@@ -85,9 +106,11 @@ function show() {
   const tbody = document.createElement("tbody");
   table.append(tbody);
   addRow(tbody, "Model line", a.model, b.model);
-  addRow(tbody, "EPA manufacturer", a.mfr || "Not listed", b.mfr || "Not listed");
-  addRow(tbody, "Status", a.current ? "Currently certified" : "Previously certified", b.current ? "Currently certified" : "Previously certified");
-  addRow(tbody, "Emission", a.em == null ? "Not listed" : `${num(a.em, 3)} ${a.emUnit}`, b.em == null ? "Not listed" : `${num(b.em, 3)} ${b.emUnit}`);
+  addRow(tbody, "EPA manufacturer", a.mfr || "not listed by EPA", b.mfr || "not listed by EPA");
+  addRow(tbody, "Wood or pellet", fuelKind(a.type), fuelKind(b.type));
+  addRow(tbody, "Catalytic, non-catalytic, or hybrid", technology(a.sub), technology(b.sub));
+  addRow(tbody, "Listing status", listing(a), listing(b));
+  addRow(tbody, "Emission", a.em == null ? "not listed by EPA" : `${num(a.em, 3)} ${a.emUnit}`, b.em == null ? "not listed by EPA" : `${num(b.em, 3)} ${b.emUnit}`);
   addRow(tbody, "HHV efficiency", num(a.eff, 2, "%"), num(b.eff, 2, "%"));
   addRow(tbody, "Heat output", heat(a), heat(b));
   result.append(table);
@@ -106,6 +129,7 @@ Promise.all([fetch("/data/current.json"), fetch("/data/historical.json")])
   .then(async ([left, right]) => {
     const current = await left.json();
     const historical = await right.json();
+    snapshot = current.snapshot || "";
     stoves = current.stoves.concat(historical.stoves);
     for (const stove of stoves) byId.set(stove.id, stove);
     leftInput.addEventListener("input", () => {

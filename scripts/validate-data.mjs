@@ -119,7 +119,8 @@ const drolet = stoves.filter((stove) => stove.brandSlugs.includes("drolet"));
 assert.equal(drolet.length, 1);
 assert.match(drolet[0].model, /Drolet/);
 
-assert.ok(noindex.includes("/compare/"));
+assert.ok(noindex.includes("/compare/tool/"));
+assert.equal(noindex.includes("/compare/"), false);
 assert.ok(noindex.includes("/finder/"));
 assert.equal(noindex.filter((path) => path.startsWith("/stoves/")).length, stats.modelLines.noindex);
 

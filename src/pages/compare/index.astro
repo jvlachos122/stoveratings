@@ -1,0 +1,87 @@
+---
+import Answer from "../../components/Answer.astro";
+import DataNote from "../../components/DataNote.astro";
+import Base from "../../layouts/Base.astro";
+import { catalog } from "../../lib/catalog.js";
+import {
+  COMPARE_BRAND_LIMIT,
+  COMPARE_HEAT_RELATIVE_MAX,
+  compareIndexSentences,
+  pairHeading,
+  selectComparePairs,
+  technologyLabel,
+  woodOrPelletLabel,
+} from "../../lib/compare-pairs.js";
+import { metaDescription } from "../../lib/format.js";
+import { articleLd } from "../../lib/schema.js";
+
+const date = catalog.meta.snapshotDate;
+const pairs = selectComparePairs(catalog.stoves);
+const sentences = compareIndexSentences(date, pairs.length);
+const description = metaDescription(sentences);
+const percent = Math.round(COMPARE_HEAT_RELATIVE_MAX * 100);
+
+function brandName(stove) {
+  return catalog.brandBySlug.get(stove.primarySlug)?.name || stove.manufacturer || "not listed by EPA";
+}
+---
+
+<Base
+  title="Example comparisons"
+  description={description}
+  breadcrumbs={[
+    { href: "/", label: "Home" },
+    { href: "/compare/", label: "Compare" },
+  ]}
+  jsonLd={[articleLd("Example comparisons of EPA model lines", description, "/compare/", date)]}
+>
+  <div class="wrap">
+    <h1>Example comparisons</h1>
+    <Answer sentences={sentences} />
+    <p>
+      <a class="button" href="/compare/tool/">Compare any two model lines</a>
+    </p>
+    <p>
+      The tool reads the same snapshot. Addresses that name two model lines are not indexed, and their canonical URL is this page.
+    </p>
+    <h2>Pairs from this snapshot</h2>
+    <div class="cards">
+      {
+        pairs.map((pair) => (
+          <a class="card" href={pair.url}>
+            <strong>{pairHeading(pair.left, pair.right)}</strong>
+            <span class="small">
+              {woodOrPelletLabel(pair.left.type)}
+              {" · "}
+              {technologyLabel(pair.left.subtype)}
+            </span>
+            <span class="small">
+              {brandName(pair.left)}
+              {" and "}
+              {brandName(pair.right)}
+            </span>
+          </a>
+        ))
+      }
+    </div>
+    <DataNote
+      items={[
+        "Pair selection uses only this snapshot. The export has no sales or popularity field.",
+        `A hub is counted by its currently listed wood-stove and pellet-stove model lines that publish both a low and a high heat output. This list keeps the ${COMPARE_BRAND_LIMIT} hubs with the largest counts. Equal counts are ordered by brand slug.`,
+        `The two model lines must use different hubs, the same EPA type, and the same subtype. Heat-output midpoint is the average of the listed low and high. The absolute difference must be at most ${percent} percent of the higher midpoint.`,
+        "Each model line is used once. Candidates are taken in order of that difference, then stove id, up to 20 pairs.",
+        "A blank cell on a pair page is not listed by EPA. It is not zero.",
+        `Snapshot date: ${date}.`,
+      ]}
+    />
+    <p>
+      Source: <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>, snapshot {date}.
+    </p>
+  </div>
+</Base>
+<script is:inline>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    if (params.get("a") && params.get("b")) location.replace("/compare/tool/?" + params.toString());
+  })();
+</script>

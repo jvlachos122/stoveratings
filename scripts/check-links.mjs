@@ -115,7 +115,10 @@ for (const name of sitemapFiles) {
   }
 }
 if (!seen.has("/")) errors.push("sitemap missing home");
-if (seen.has("/compare/")) errors.push("sitemap includes compare");
+if (!seen.has("/compare/")) errors.push("sitemap missing compare index");
+if (seen.has("/compare/tool/")) errors.push("sitemap includes compare tool");
+const comparePairs = [...seen].filter((pathname) => /^\/compare\/[^/]+\/$/.test(pathname) && pathname !== "/compare/tool/");
+if (comparePairs.length < 20) errors.push(`sitemap compare pairs ${comparePairs.length}`);
 const redirects = JSON.parse(readFileSync(join(root, "data/brand-redirects.json"), "utf8"));
 for (const redirect of redirects) {
   if (!seen.has(redirect.targetUrl)) errors.push(`sitemap missing redirect target ${redirect.targetUrl}`);

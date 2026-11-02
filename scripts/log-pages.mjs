@@ -26,6 +26,8 @@ const buckets = {
   finderAlias: count((file) => file === "/finder/index.html"),
   lookup: count((file) => file === "/lookup/index.html"),
   compare: count((file) => file === "/compare/index.html"),
+  compareTool: count((file) => file === "/compare/tool/index.html"),
+  comparePairs: count((file) => /^\/compare\/[^/]+\/index\.html$/.test(file) && file !== "/compare/tool/index.html"),
   brandIndex: count((file) => file === "/brands/index.html"),
   brandHubs: count((file) => /^\/brands\/[^/]+\/index\.html$/.test(file)),
   modelPages: count((file) => /^\/stoves\/[^/]+\/[^/]+\/index\.html$/.test(file)),
@@ -60,11 +62,13 @@ if (buckets.other) {
     (file) =>
       !/^\/brands\/[^/]+\/index\.html$/.test(file) &&
       !/^\/stoves\/[^/]+\/[^/]+\/index\.html$/.test(file) &&
+      !/^\/compare\/[^/]+\/index\.html$/.test(file) &&
       ![
         "/index.html",
         "/finder/index.html",
         "/lookup/index.html",
         "/compare/index.html",
+        "/compare/tool/index.html",
         "/brands/index.html",
         "/404.html",
         "/about/index.html",
