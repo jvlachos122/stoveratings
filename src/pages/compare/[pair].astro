@@ -6,80 +6,128 @@ import { catalog } from "../../lib/catalog.js";
 import {
   compareCaption,
   compareNotes,
+  compareRedirects,
   compareSentences,
   compareTableRows,
-  pairHeading,
   selectComparePairs,
 } from "../../lib/compare-pairs.js";
 import { metaDescription, pageTitle } from "../../lib/format.js";
 import { articleLd } from "../../lib/schema.js";
 
 export function getStaticPaths() {
-  return selectComparePairs(catalog.stoves).map((pair) => ({
+  const pairs = selectComparePairs(catalog.stoves, { brandBySlug: catalog.brandBySlug });
+  const pages = pairs.map((pair) => ({
     params: { pair: pair.slug },
-    props: { pair },
+    props: { pair, redirect: null },
   }));
+  const moved = compareRedirects(pairs).map((redirect) => ({
+    params: { pair: redirect.fromSlug },
+    props: {
+      pair: pairs.find((item) => item.slug === redirect.toSlug),
+      redirect,
+    },
+  }));
+  return [...pages, ...moved];
 }
 
-const { pair } = Astro.props;
+const { pair, redirect } = Astro.props;
 const date = catalog.meta.snapshotDate;
-const sentences = compareSentences(pair.left, pair.right, date, catalog.brandBySlug);
+const sentences = redirect
+  ? [
+      `This address is the previous URL for ${redirect.heading}.`,
+      "The comparison now uses a shorter address. This page is not indexed.",
+      `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+    ]
+  : compareSentences(pair.left, pair.right, date, catalog.brandBySlug, pair);
 const description = metaDescription(sentences);
-const heading = pairHeading(pair.left, pair.right);
-const rows = compareTableRows(pair.left, pair.right, catalog.brandBySlug, date);
-const notes = compareNotes(pair.left, pair.right);
+const rows = pair ? compareTableRows(pair.left, pair.right, catalog.brandBySlug, date) : [];
+const notes = pair ? compareNotes(pair.left, pair.right) : [];
 ---
 
-<Base
-  title={pageTitle(heading)}
-  description={description}
-  breadcrumbs={[
-    { href: "/", label: "Home" },
-    { href: "/compare/", label: "Compare" },
-    { href: pair.url, label: pageTitle(heading, 48) },
-  ]}
-  jsonLd={[articleLd(heading, description, pair.url, date)]}
->
-  <div class="wrap">
-    <h1>{heading}</h1>
-    <p class="muted">Example comparison. The figures below are EPA's. This page does not rank the two model lines.</p>
-    <Answer sentences={sentences} />
-    <div class="table-wrap">
-      <table>
-        <caption>{compareCaption(date)}</caption>
-        <thead>
-          <tr>
-            <th scope="col">Field</th>
-            <th scope="col">{pair.left.model}</th>
-            <th scope="col">{pair.right.model}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            rows.map((row) => (
+{
+  redirect ? (
+    <Base
+      title={pageTitle(`${redirect.heading} moved`)}
+      description={description}
+      noindex={true}
+      canonicalPath={redirect.targetUrl}
+      refreshPath={redirect.targetUrl}
+      breadcrumbs={[
+        { href: "/", label: "Home" },
+        { href: "/compare/", label: "Compare" },
+        { href: redirect.url, label: redirect.heading },
+      ]}
+    >
+      <div class="wrap">
+        <h1>This comparison moved</h1>
+        <Answer sentences={sentences} />
+        <p>
+          <a href={redirect.targetUrl}>{redirect.heading}</a>
+        </p>
+        <p>
+          Source: <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>, snapshot {date}.
+        </p>
+      </div>
+    </Base>
+  ) : (
+    <Base
+      title={pair.title}
+      description={description}
+      bareTitle={true}
+      breadcrumbs={[
+        { href: "/", label: "Home" },
+        { href: "/compare/", label: "Compare" },
+        { href: pair.url, label: pair.heading },
+      ]}
+      jsonLd={[articleLd(pair.title, description, pair.url, date)]}
+    >
+      <div class="wrap">
+        <h1>{pair.title}</h1>
+        <p class="muted">Example comparison. The figures below are EPA's. This page does not rank the two model lines.</p>
+        <Answer sentences={sentences} />
+        <p>
+          Model lines covered: <a href={pair.left.url}>{pair.left.model}</a>
+          {" and "}
+          <a href={pair.right.url}>{pair.right.model}</a>.
+        </p>
+        <div class="table-wrap">
+          <table>
+            <caption>{compareCaption(date)}</caption>
+            <thead>
               <tr>
-                <th scope="row">{row.label}</th>
-                <td class:list={{ num: row.numeric }}>
-                  {row.leftHref ? <a href={row.leftHref}>{row.left}</a> : row.left}
-                </td>
-                <td class:list={{ num: row.numeric }}>
-                  {row.rightHref ? <a href={row.rightHref}>{row.right}</a> : row.right}
-                </td>
+                <th scope="col">Field</th>
+                <th scope="col">{pair.leftLabel}</th>
+                <th scope="col">{pair.rightLabel}</th>
               </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-    <p>
-      Source: <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>, snapshot {date}.
-      Emission rates and HHV efficiencies are EPA's figures.
-    </p>
-    <p>
-      <a href="/compare/">All example comparisons</a>
-      {" · "}
-      <a href="/compare/tool/">Compare any two model lines</a>
-    </p>
-    <DataNote items={notes} />
-  </div>
-</Base>
+            </thead>
+            <tbody>
+              {
+                rows.map((row) => (
+                  <tr>
+                    <th scope="row">{row.label}</th>
+                    <td class:list={{ num: row.numeric }}>
+                      {row.leftHref ? <a href={row.leftHref}>{row.left}</a> : row.left}
+                    </td>
+                    <td class:list={{ num: row.numeric }}>
+                      {row.rightHref ? <a href={row.rightHref}>{row.right}</a> : row.right}
+                    </td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Source: <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>, snapshot {date}.
+          Emission rates and HHV efficiencies are EPA's figures.
+        </p>
+        <p>
+          <a href="/compare/">All example comparisons</a>
+          {" · "}
+          <a href="/compare/tool/">Compare any two model lines</a>
+        </p>
+        <DataNote items={notes} />
+      </div>
+    </Base>
+  )
+}

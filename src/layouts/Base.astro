@@ -14,9 +14,10 @@ const {
   breadcrumbs = [],
   jsonLd = [],
   refreshPath = "",
+  bareTitle = false,
 } = Astro.props;
 
-const fullTitle = home ? title : `${title} · ${site.name}`;
+const fullTitle = home || bareTitle ? title : `${title} · ${site.name}`;
 const canonical = new URL(canonicalPath || Astro.url.pathname, site.url).href;
 const graph = [];
 if (breadcrumbs.length) {

@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { compareRedirects, selectComparePairs } from "../src/lib/compare-pairs.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
@@ -54,4 +55,18 @@ const snapshot = meta.snapshotDate;
 writeFileSync(join(dir, "current.json"), JSON.stringify({ snapshot, stoves: current }));
 writeFileSync(join(dir, "historical.json"), JSON.stringify({ snapshot, stoves: historical }));
 writeFileSync(join(dir, "names.json"), JSON.stringify({ snapshot, names }));
-console.log(`Public data: ${current.length} current, ${historical.length} historical, ${names.length} names.`);
+
+const brands = JSON.parse(readFileSync(join(root, "data/brands.json"), "utf8"));
+const brandBySlug = new Map(brands.map((brand) => [brand.slug, brand]));
+const redirects = compareRedirects(selectComparePairs(stoves, { brandBySlug }));
+writeFileSync(join(root, "data/compare-redirects.json"), `${JSON.stringify(redirects, null, 2)}\n`);
+
+const noindexPath = join(root, "data/noindex-paths.json");
+const noindex = new Set(JSON.parse(readFileSync(noindexPath, "utf8")));
+const targets = new Set(redirects.map((row) => row.targetUrl));
+for (const row of redirects) {
+  if (!targets.has(row.url)) noindex.add(row.url);
+}
+for (const target of targets) noindex.delete(target);
+writeFileSync(noindexPath, `${JSON.stringify([...noindex].sort(), null, 2)}\n`);
+console.log(`Public data: ${current.length} current, ${historical.length} historical, ${names.length} names. Compare redirects: ${redirects.length}.`);

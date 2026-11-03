@@ -41,7 +41,8 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Methodology: https://stoveratings.com/methodology/
 - Data changelog (committed EPA snapshots): https://stoveratings.com/data/changelog/
 - Example comparisons (not a ranking; no sales data): https://stoveratings.com/compare/
-- One example pair: https://stoveratings.com/compare/{model-a}-vs-{model-b}/
+- One example pair: https://stoveratings.com/compare/enerco-ws110-vs-sbi-solution-2-5/
+- Previous long pair addresses redirect to the short address and are not indexed.
 - Compare any two model lines (not indexed; canonical URL is /compare/): https://stoveratings.com/compare/tool/
 
-Historical model lines that list none of efficiency, firebox, or CO are not indexed. The any-two comparison tool is not indexed. Example comparison pages are indexed.
+Historical model lines that list none of efficiency, firebox, or CO are not indexed. The any-two comparison tool is not indexed. The short example comparison pages are indexed. Their previous long addresses are not.

@@ -1,4 +1,4 @@
-const TRAILING_SUFFIXES = new Set([
+export const TRAILING_SUFFIXES = new Set([
   "inc",
   "llc",
   "ltd",

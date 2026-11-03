@@ -37,6 +37,26 @@ Do not add a scheduled or automated fetch. See `data/snapshots/README.md`.
 
 The selection rule is in `src/lib/compare-pairs.js`. Among the eight brand hubs with the most currently listed wood-stove and pellet-stove model lines, a pair is two lines from different hubs that share an EPA type and subtype and whose heat-output midpoints are within 15 percent of the higher midpoint. The closest unused pairs are kept, up to 20. `/compare/tool/` compares any two model lines and is not indexed. Its canonical URL is `/compare/`.
 
+The pair address and title use a short brand label and the primary model name, not the full EPA model-line string. Example: `/compare/enerco-ws110-vs-sbi-solution-2-5/` and `Enerco WS110 vs SBI Solution 2.5: EPA emissions and efficiency`. The rendered `<title>` is that comparison title, with no site-name suffix, and is capped at 65 characters. The slug is capped at 80 characters.
+
+Brand label, from the hub name (the name published for the EPA manufacturer string):
+
+- Drop a parenthetical, then the trailing legal suffixes used for hub matching (Inc, LLC, Company, and the rest of that list), then a trailing Group or Industries.
+- Ignore and, of, the, for, and by when counting words.
+- Three or more remaining words become initials: Stove Builder International → SBI, Hearth and Home Technologies → HHT, United States Stove → USS.
+- One or two words stay spelled: Enerco, Hearthstone, Travis, Foyers Supreme, Pacific Energy. If the title or slug is still over the cap, a two-word label can fall back to initials (Foyers Supreme → FS, Pacific Energy → PE).
+
+Primary model name, from the EPA `model` field. That field is a model line, not one retail model.
+
+- Text before a colon is a line label (`PS60W Model Line`, `1.7R Series`). Use the text after the colon.
+- Otherwise, `{label} Series ( ... )` is a line label. Use the first model inside the parentheses. `2.5R Series (Solution 2.5 ZC II, ...)` starts at Solution 2.5.
+- Otherwise use the first comma, semicolon, or "and" item.
+- Remove a parenthetical aside. Drop a trailing roman numeral or 1–4 letter all-caps code that follows a token containing a digit (`Solution 2.5 ZC II` → `Solution 2.5`). Drop a trailing `Series` plus a series letter when a name remains (`True North TN20 Series B` → `True North TN20`).
+
+The slug is those two labels, slugified, joined with `-vs-`. Pair order is stove id, the same order as the old long slug. If the title is over 65 characters or the slug is over 80, shorten in this order: step the longer model name to its next shorter form, but do not drop to a bare number yet; then switch the longer two-word brand to initials; then allow a bare number. Left wins a tie. If two pairs still share a slug, the later pair in selection order gets `-2`, `-3`, and so on.
+
+The full EPA model-line string stays on the page, in the comparison table and in a "Model lines covered" line. The previous long URL is a noindex refresh page whose canonical URL is the short one. Long URLs are not in the sitemap. Short URLs are.
+
 ## Domain
 
 `public/CNAME` is `stoveratings.com`. GitHub ignores that file when Pages is deployed by Actions, so the domain is set in the repository settings. The owner steps and the Hostinger records are in the launch pull request. This repository does not change those settings itself.

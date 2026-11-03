@@ -8,7 +8,10 @@ const dist = join(root, "dist");
 const site = "https://stoveratings.com";
 const hidden = new Set(JSON.parse(readFileSync(join(root, "data/noindex-paths.json"), "utf8")));
 const redirects = JSON.parse(readFileSync(join(root, "data/brand-redirects.json"), "utf8"));
-const redirectCanonical = new Map(redirects.map((row) => [row.url, new URL(row.targetUrl, site).href]));
+const compareRedirects = JSON.parse(readFileSync(join(root, "data/compare-redirects.json"), "utf8"));
+const redirectCanonical = new Map(
+  [...redirects, ...compareRedirects].map((row) => [row.url, new URL(row.targetUrl, site).href]),
+);
 const errors = [];
 
 function walk(dir) {
@@ -67,6 +70,9 @@ for (const file of files) {
   if (!/<html[^>]*\slang="en"/.test(html)) errors.push(`${rel}: missing lang`);
   const titles = [...html.matchAll(/<title>([^<]*)<\/title>/g)];
   if (titles.length !== 1 || !titles[0][1].trim()) errors.push(`${rel}: title`);
+  else if (/^\/compare\/[^/]+\/$/.test(pagePath) && pagePath !== "/compare/tool/" && !hidden.has(pagePath)) {
+    if (titles[0][1].length > 65) errors.push(`${rel}: compare title length ${titles[0][1].length}`);
+  }
   const descriptions = [...html.matchAll(/<meta name="description" content="([^"]*)"/g)];
   if (descriptions.length !== 1 || descriptions[0][1].trim().length < 40) errors.push(`${rel}: description`);
   const canonicals = [...html.matchAll(/<link rel="canonical" href="([^"]+)"/g)];
