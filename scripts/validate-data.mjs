@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { normalizeHubName } from "../src/lib/brand-names.js";
+import { compareRedirects, selectComparePairs } from "../src/lib/compare-pairs.js";
 import { sourceIssues } from "../src/lib/heating-cost.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -118,6 +119,22 @@ for (const redirect of redirects) {
 const drolet = stoves.filter((stove) => stove.brandSlugs.includes("drolet"));
 assert.equal(drolet.length, 1);
 assert.match(drolet[0].model, /Drolet/);
+
+const brandBySlug = new Map(brands.map((brand) => [brand.slug, brand]));
+const comparePairs = selectComparePairs(stoves, { brandBySlug });
+const compareMoves = compareRedirects(comparePairs);
+assert.deepEqual(read("compare-redirects.json"), compareMoves);
+const compareSlugs = new Set();
+for (const pair of comparePairs) {
+  assert.ok(pair.slug.length <= 80, pair.slug);
+  assert.ok(pair.title.length <= 65, pair.title);
+  assert.equal(compareSlugs.has(pair.slug), false, pair.slug);
+  compareSlugs.add(pair.slug);
+  assert.equal(pair.legacySlug === pair.slug, false, pair.slug);
+  assert.ok(noindex.includes(pair.legacyUrl), pair.legacyUrl);
+  assert.equal(noindex.includes(pair.url), false, pair.url);
+}
+assert.equal(compareMoves.length, comparePairs.length);
 
 assert.ok(noindex.includes("/compare/tool/"));
 assert.equal(noindex.includes("/compare/"), false);

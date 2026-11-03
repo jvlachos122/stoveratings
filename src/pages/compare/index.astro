@@ -7,7 +7,6 @@ import {
   COMPARE_BRAND_LIMIT,
   COMPARE_HEAT_RELATIVE_MAX,
   compareIndexSentences,
-  pairHeading,
   selectComparePairs,
   technologyLabel,
   woodOrPelletLabel,
@@ -16,7 +15,7 @@ import { metaDescription } from "../../lib/format.js";
 import { articleLd } from "../../lib/schema.js";
 
 const date = catalog.meta.snapshotDate;
-const pairs = selectComparePairs(catalog.stoves);
+const pairs = selectComparePairs(catalog.stoves, { brandBySlug: catalog.brandBySlug });
 const sentences = compareIndexSentences(date, pairs.length);
 const description = metaDescription(sentences);
 const percent = Math.round(COMPARE_HEAT_RELATIVE_MAX * 100);
@@ -49,7 +48,7 @@ function brandName(stove) {
       {
         pairs.map((pair) => (
           <a class="card" href={pair.url}>
-            <strong>{pairHeading(pair.left, pair.right)}</strong>
+            <strong>{pair.heading}</strong>
             <span class="small">
               {woodOrPelletLabel(pair.left.type)}
               {" · "}
@@ -70,6 +69,7 @@ function brandName(stove) {
         `A hub is counted by its currently listed wood-stove and pellet-stove model lines that publish both a low and a high heat output. This list keeps the ${COMPARE_BRAND_LIMIT} hubs with the largest counts. Equal counts are ordered by brand slug.`,
         `The two model lines must use different hubs, the same EPA type, and the same subtype. Heat-output midpoint is the average of the listed low and high. The absolute difference must be at most ${percent} percent of the higher midpoint.`,
         "Each model line is used once. Candidates are taken in order of that difference, then stove id, up to 20 pairs.",
+        "The pair address and title use a short brand label and the primary model name from the EPA model line. The full model line is on the pair page. The previous long address redirects to the short one and is not indexed.",
         "A blank cell on a pair page is not listed by EPA. It is not zero.",
         `Snapshot date: ${date}.`,
       ]}

@@ -118,7 +118,12 @@ if (!seen.has("/")) errors.push("sitemap missing home");
 if (!seen.has("/compare/")) errors.push("sitemap missing compare index");
 if (seen.has("/compare/tool/")) errors.push("sitemap includes compare tool");
 const comparePairs = [...seen].filter((pathname) => /^\/compare\/[^/]+\/$/.test(pathname) && pathname !== "/compare/tool/");
-if (comparePairs.length < 20) errors.push(`sitemap compare pairs ${comparePairs.length}`);
+const compareRedirects = JSON.parse(readFileSync(join(root, "data/compare-redirects.json"), "utf8"));
+const compareTargets = new Set(compareRedirects.map((row) => row.targetUrl));
+if (comparePairs.length !== compareTargets.size) errors.push(`sitemap compare pairs ${comparePairs.length}`);
+for (const pathname of comparePairs) {
+  if (!compareTargets.has(pathname)) errors.push(`sitemap unexpected compare ${pathname}`);
+}
 const redirects = JSON.parse(readFileSync(join(root, "data/brand-redirects.json"), "utf8"));
 for (const redirect of redirects) {
   if (!seen.has(redirect.targetUrl)) errors.push(`sitemap missing redirect target ${redirect.targetUrl}`);
@@ -135,6 +140,24 @@ for (const redirect of redirects) {
   if (!html.includes(`rel="canonical" href="https://stoveratings.com${redirect.targetUrl}"`)) {
     errors.push(`${redirect.url} canonical is not ${redirect.targetUrl}`);
   }
+}
+for (const redirect of compareRedirects) {
+  if (!seen.has(redirect.targetUrl)) errors.push(`sitemap missing compare target ${redirect.targetUrl}`);
+  if (seen.has(redirect.url)) errors.push(`sitemap includes redirected compare ${redirect.url}`);
+  const page = fileForPath(redirect.url);
+  if (!existsSync(page)) {
+    errors.push(`missing compare redirect page ${redirect.url}`);
+    continue;
+  }
+  const html = readFileSync(page, "utf8");
+  if (!html.includes(`http-equiv="refresh" content="0;url=${redirect.targetUrl}"`)) {
+    errors.push(`${redirect.url} does not refresh to ${redirect.targetUrl}`);
+  }
+  if (!html.includes(`rel="canonical" href="https://stoveratings.com${redirect.targetUrl}"`)) {
+    errors.push(`${redirect.url} canonical is not ${redirect.targetUrl}`);
+  }
+  if (!html.includes('content="noindex"')) errors.push(`${redirect.url} is indexed`);
+  if (!html.includes(redirect.heading)) errors.push(`${redirect.url} missing heading`);
 }
 
 const robots = readFileSync(join(dist, "robots.txt"), "utf8");

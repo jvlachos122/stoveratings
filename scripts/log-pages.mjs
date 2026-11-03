@@ -1,4 +1,4 @@
-import { readdirSync, statSync } from "node:fs";
+import { readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -17,6 +17,9 @@ function walk(dir) {
 }
 
 const files = walk(dist);
+const compareRedirectFiles = new Set(
+  JSON.parse(readFileSync(join(root, "data/compare-redirects.json"), "utf8")).map((row) => `${row.url}index.html`),
+);
 function count(predicate) {
   return files.filter(predicate).length;
 }
@@ -27,7 +30,8 @@ const buckets = {
   lookup: count((file) => file === "/lookup/index.html"),
   compare: count((file) => file === "/compare/index.html"),
   compareTool: count((file) => file === "/compare/tool/index.html"),
-  comparePairs: count((file) => /^\/compare\/[^/]+\/index\.html$/.test(file) && file !== "/compare/tool/index.html"),
+  comparePairs: count((file) => /^\/compare\/[^/]+\/index\.html$/.test(file) && file !== "/compare/tool/index.html" && !compareRedirectFiles.has(file)),
+  compareRedirects: count((file) => compareRedirectFiles.has(file)),
   brandIndex: count((file) => file === "/brands/index.html"),
   brandHubs: count((file) => /^\/brands\/[^/]+\/index\.html$/.test(file)),
   modelPages: count((file) => /^\/stoves\/[^/]+\/[^/]+\/index\.html$/.test(file)),
