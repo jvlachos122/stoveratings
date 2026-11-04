@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compareRedirects, selectComparePairs } from "../src/lib/compare-pairs.js";
+import { heatingCostPayload } from "../src/lib/heating-cost.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
@@ -55,6 +56,14 @@ const snapshot = meta.snapshotDate;
 writeFileSync(join(dir, "current.json"), JSON.stringify({ snapshot, stoves: current }));
 writeFileSync(join(dir, "historical.json"), JSON.stringify({ snapshot, stoves: historical }));
 writeFileSync(join(dir, "names.json"), JSON.stringify({ snapshot, names }));
+const firewood = JSON.parse(readFileSync(join(root, "data/firewood.json"), "utf8"));
+const fuelHeat = JSON.parse(readFileSync(join(root, "data/fuel-heat.json"), "utf8"));
+writeFileSync(join(dir, "heating-cost.json"), JSON.stringify(heatingCostPayload({
+  snapshotDate: snapshot,
+  firewood,
+  heat: fuelHeat,
+  stoves,
+})));
 
 const brands = JSON.parse(readFileSync(join(root, "data/brands.json"), "utf8"));
 const brandBySlug = new Map(brands.map((brand) => [brand.slug, brand]));

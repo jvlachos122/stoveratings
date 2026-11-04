@@ -4,8 +4,9 @@ import DataNote from "../components/DataNote.astro";
 import Finder from "../components/Finder.astro";
 import Base from "../layouts/Base.astro";
 import { homeSentences } from "../lib/answers.js";
+import { homeBrandHubs } from "../lib/brand-hubs.js";
 import { catalog } from "../lib/catalog.js";
-import { emissionUnitShort, formatNumber, metaDescription } from "../lib/format.js";
+import { countNoun, emissionUnitShort, formatNumber, metaDescription } from "../lib/format.js";
 import { inserts } from "../lib/lists.js";
 import { datasetLd, webAppLd } from "../lib/schema.js";
 
@@ -18,6 +19,7 @@ const pelletInserts = inserts(catalog.stoves, "Pellet Stove");
 const changes = catalog.changes;
 const added = changes.addedToCurrent || [];
 const dropped = changes.droppedFromCurrent || [];
+const brandHubs = homeBrandHubs();
 
 ---
 
@@ -104,6 +106,33 @@ const dropped = changes.droppedFromCurrent || [];
       <a class="button button-ghost" href="/lookup/">Look up a stove name</a>
       <a class="button button-ghost" href="/tools/heating-cost-calculator/">Heating cost</a>
     </div>
+    <h2>Browse the list</h2>
+    <ul>
+      <li><a href="/tools/heating-cost-calculator/">Heating cost calculator</a></li>
+      <li><a href="/lookup/">Look up a stove name</a></li>
+      <li><a href="/compare/">Example comparisons</a></li>
+      <li><a href="/most-efficient-wood-stoves/">Wood stoves ordered by HHV efficiency</a></li>
+      <li><a href="/most-efficient-pellet-stoves/">Pellet stoves ordered by HHV efficiency</a></li>
+      <li><a href="/cleanest-burning-wood-stoves/">Wood stoves ordered by emission rate</a></li>
+      <li><a href="/wood-stove-tax-credit/">Tax credit status</a></li>
+      <li><a href="/brands/">Browse all brands</a></li>
+    </ul>
+    <h2>Brand hubs with the most model lines</h2>
+    <p>
+      These {brandHubs.length} hubs list the most model lines in the {catalog.meta.snapshotDate} snapshot, including lines that are no longer currently certified.
+      Equal counts are ordered by brand name.
+    </p>
+    <ul>
+      {brandHubs.map((brand) => (
+        <li>
+          <a href={brand.url}>{brand.name}</a>
+          {" — "}
+          {countNoun(brand.lines, "model line")}
+          {", "}
+          {countNoun(brand.current, "currently certified line", "currently certified lines")}
+        </li>
+      ))}
+    </ul>
     <h2>Names that indicate an insert</h2>
     <p>
       EPA lists {woodInserts.current.length} currently certified and {woodInserts.previous.length} previously certified wood-stove model lines, and {pelletInserts.current.length} currently certified and {pelletInserts.previous.length} previously certified pellet-stove model lines, whose names indicate an insert.

@@ -18,6 +18,7 @@ import {
   efficiencyVaries,
   formatUsd,
   formatUsdRange,
+  heatingCostPayload,
   heatingModels,
   heatingSentences,
   pelletBtuPerShortTon,
@@ -298,6 +299,19 @@ test("the calculator page is one WebApplication with an answer box and no review
   assert.equal((page.match(/<h1\b/g) || []).length, 1);
   assert.match(page, /<Answer/);
   assert.match(page, /webAppLd\(/);
+  assert.match(page, /<table/);
+  assert.doesNotMatch(page, /id="heating-data"|heatingModels\(/);
+  assert.match(page, /mountHeatingCost\(document\)/);
+  const payload = heatingCostPayload({
+    snapshotDate: "2026-10-23",
+    firewood: [{ species: "Oak", btuLow: 24, btuHigh: 28, overallRating: "Excellent" }],
+    heat: [{ id: "natural-gas" }],
+    stoves: [{ id: "a", model: "A", manufacturer: "", type: "Wood Stove", efficiency: null, url: "/stoves/a/a/", fuel: "", current: true, tests: [] }],
+  });
+  assert.equal(payload.models.length, 1);
+  assert.equal(payload.models[0].eff, null);
+  assert.equal(payload.firewood[0].overallRating, undefined);
+  assert.equal(payload.snapshotDate, "2026-10-23");
   assert.match(page, /Heating cost calculator/);
   assert.match(page, /breadcrumbs=/);
   assert.match(layout, /rel="canonical"/);

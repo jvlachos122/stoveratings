@@ -1,6 +1,9 @@
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, normalize, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { homeBrandHubs } from "../src/lib/brand-hubs.js";
+import { catalog, stovesForBrand } from "../src/lib/catalog.js";
+import { relatedLists } from "../src/lib/lists.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -44,6 +47,7 @@ function idsIn(html) {
 
 const files = walk(dist);
 const htmlByFile = new Map(files.map((file) => [file, readFileSync(file, "utf8")]));
+const linksFrom = new Map();
 
 for (const [file, html] of htmlByFile) {
   const ids = idsIn(html);
@@ -67,6 +71,13 @@ for (const [file, html] of htmlByFile) {
     if (!existsSync(target)) {
       errors.push(`${file}: missing ${url.pathname}`);
       continue;
+    }
+    if (/^<a\b/i.test(tag)) {
+      const from = pageUrl(file);
+      let dest = url.pathname === "/index.html" ? "/" : url.pathname;
+      if (dest !== "/" && !dest.endsWith("/") && !dest.includes(".")) dest = `${dest}/`;
+      if (!linksFrom.has(from)) linksFrom.set(from, new Set());
+      linksFrom.get(from).add(dest);
     }
     if (url.hash) {
       const id = decodeURIComponent(url.hash.slice(1));
@@ -92,6 +103,7 @@ for (const required of [
   "CNAME",
   "llms.txt",
   "fonts/ibm-plex-sans-latin-400-normal.woff2",
+  "data/heating-cost.json",
 ]) {
   if (!existsSync(join(dist, required))) errors.push(`missing dist/${required}`);
 }
@@ -114,6 +126,101 @@ for (const name of sitemapFiles) {
     if (!existsSync(target)) errors.push(`sitemap missing ${url.pathname}`);
   }
 }
+const indexable = new Set();
+for (const file of files) {
+  const path = pageUrl(file);
+  if (path === "/404.html" || path.includes("/404")) continue;
+  if (hidden.has(path)) continue;
+  indexable.add(path);
+}
+for (const path of indexable) {
+  if (!seen.has(path)) errors.push(`indexable page missing from sitemap ${path}`);
+}
+for (const path of seen) {
+  if (path.endsWith(".xml")) continue;
+  if (!indexable.has(path)) errors.push(`sitemap URL is not an indexable page ${path}`);
+}
+
+const heatingPath = join(dist, "tools/heating-cost-calculator/index.html");
+const heatingHtml = htmlByFile.get(heatingPath) || "";
+const heatingBytes = Buffer.byteLength(heatingHtml);
+if (heatingBytes > 100_000) errors.push(`heating cost HTML is ${heatingBytes} bytes`);
+if (heatingHtml.includes('id="heating-data"')) errors.push("heating cost still inlines heating-data");
+const heatingJsonPath = join(dist, "data/heating-cost.json");
+if (existsSync(heatingJsonPath)) {
+  const heatingJson = JSON.parse(readFileSync(heatingJsonPath, "utf8"));
+  if (heatingJson.models?.length !== catalog.stoves.length) {
+    errors.push(`heating-cost.json models ${heatingJson.models?.length} != ${catalog.stoves.length}`);
+  }
+  if (!heatingHtml.includes('class="answer"') || !heatingHtml.includes("<table")) {
+    errors.push("heating cost page is missing the server-rendered answer or table");
+  }
+}
+
+for (const brand of catalog.brands) {
+  const html = htmlByFile.get(resolve(fileForPath(brand.url))) || "";
+  if (!html) {
+    errors.push(`missing brand hub ${brand.url}`);
+    continue;
+  }
+  for (const stove of stovesForBrand(brand.slug)) {
+    if (!html.includes(`href="${stove.url}"`)) errors.push(`${brand.url} does not link to ${stove.url}`);
+  }
+}
+for (const stove of catalog.stoves) {
+  if (!stove.indexable || hidden.has(stove.url)) continue;
+  const html = htmlByFile.get(resolve(fileForPath(stove.url))) || "";
+  if (!html) {
+    errors.push(`missing stove page ${stove.url}`);
+    continue;
+  }
+  const brand = catalog.brandBySlug.get(stove.primarySlug);
+  if (!brand || !html.includes(`href="${brand.url}"`)) errors.push(`${stove.url} does not link to its brand`);
+  for (const list of relatedLists(stove)) {
+    if (!html.includes(`href="${list.href}"`)) errors.push(`${stove.url} does not link to ${list.href}`);
+  }
+}
+
+const MAX_CLICKS = 3;
+const depth = new Map([["/", 0]]);
+const queue = ["/"];
+while (queue.length) {
+  const current = queue.shift();
+  const hops = depth.get(current);
+  if (hops >= MAX_CLICKS) continue;
+  for (const next of linksFrom.get(current) || []) {
+    if (depth.has(next)) continue;
+    depth.set(next, hops + 1);
+    queue.push(next);
+  }
+}
+const directFromHome = [
+  "/tools/heating-cost-calculator/",
+  "/lookup/",
+  "/compare/",
+  "/most-efficient-wood-stoves/",
+  "/most-efficient-pellet-stoves/",
+  "/cleanest-burning-wood-stoves/",
+  "/wood-stove-tax-credit/",
+  "/brands/",
+  ...homeBrandHubs().map((brand) => brand.url),
+];
+for (const href of directFromHome) {
+  if (depth.get(href) !== 1) errors.push(`home does not link directly to ${href} (depth ${depth.get(href) ?? "none"})`);
+}
+const homeHtml = htmlByFile.get(join(dist, "index.html")) || "";
+if (!homeHtml.includes(">Browse all brands<")) errors.push("home is missing the footer link Browse all brands");
+let beyond = 0;
+for (const pathname of seen) {
+  if (pathname.endsWith(".xml")) continue;
+  const hops = depth.get(pathname);
+  if (hops == null || hops > MAX_CLICKS) {
+    beyond += 1;
+    if (beyond <= 15) errors.push(`sitemap URL not within ${MAX_CLICKS} clicks of home: ${pathname} (${hops ?? "unreachable"})`);
+  }
+}
+if (beyond > 15) errors.push(`${beyond} sitemap URLs are beyond ${MAX_CLICKS} clicks`);
+
 if (!seen.has("/")) errors.push("sitemap missing home");
 if (!seen.has("/compare/")) errors.push("sitemap missing compare index");
 if (seen.has("/compare/tool/")) errors.push("sitemap includes compare tool");
@@ -170,4 +277,4 @@ if (errors.length) {
   console.error(`${errors.length} link errors`);
   process.exit(1);
 }
-console.log(`Links OK across ${files.length} HTML files. Sitemap URLs: ${seen.size}.`);
+console.log(`Links OK across ${files.length} HTML files. Sitemap URLs: ${seen.size}. All sitemap URLs are within ${MAX_CLICKS} clicks of home. Heating cost HTML: ${heatingBytes} bytes.`);
