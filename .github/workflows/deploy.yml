@@ -80,4 +80,6 @@ jobs:
           node scripts/indexnow.mjs --submit \
             --manifest .indexnow/manifest.json \
             --previous .indexnow/previous-manifest.json
-          cp .indexnow/manifest.json .indexnow/previous-manifest.json
+      - name: Promote IndexNow manifest
+        if: success()
+        run: cp .indexnow/manifest.json .indexnow/previous-manifest.json

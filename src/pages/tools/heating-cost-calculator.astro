@@ -8,7 +8,6 @@ import {
   SIZE_BANDS,
   cordHeatText,
   heatContentText,
-  heatingModels,
   heatingSentences,
   sharedRetrieved,
 } from "../../lib/heating-cost.js";
@@ -45,17 +44,6 @@ const pelletHeat = heat.filter((row) => row.id.startsWith("pellets-"));
 const comparison = ["natural-gas", "propane", "heating-oil", "electricity"].map((id) => heat.find((row) => row.id === id));
 if (comparison.some((row) => !row)) throw new Error("heating cost snapshot is missing a heat row");
 const factorList = SIZE_BANDS.map((band) => `${band.label.toLowerCase()} ${band.low} and ${band.high}`).join(", ");
-const payload = JSON.stringify({
-  snapshotDate: catalog.meta.snapshotDate,
-  bands: SIZE_BANDS,
-  firewood: species.map((row) => ({
-    species: row.species,
-    btuLow: row.btuLow,
-    btuHigh: row.btuHigh,
-  })),
-  heat,
-  models: heatingModels(catalog.stoves),
-}).replace(/</g, "\\u003c");
 const woodSource = catalog.firewood[0].sourceUrl;
 ---
 
@@ -357,10 +345,9 @@ const woodSource = catalog.firewood[0].sourceUrl;
         "The stove-size factors are StoveRatings planning factors, not an EPA heat-loss calculation. Hours are entered on this page and have no default.",
         `Natural gas is the U.S. residential average for ${gas.periodLabel}. Electricity is the U.S. residential average revenue per kWh for ${electricity.periodLabel}. Heating oil and propane are the U.S. residential weekly prices for ${oil.periodLabel}.`,
         `Cord price is what you pay. Pellet price is what you pay. EIA's ${pelletSales.periodLabel} domestic average of $${pelletSales.priceText} per ton mixes retail and wholesale, so it is not filled in.`,
-        "Prices and heat contents are files committed in this site. The calculator does not fetch them when you use the page.",
+        "Prices and heat contents are files committed in this site. The model-line list is one of those files and loads from this site when you calculate. The page does not request EPA or a price service.",
       ]}
     />
-    <script id="heating-data" type="application/json" set:html={payload} />
   </div>
 </Base>
 <script>

@@ -170,6 +170,22 @@ export function heatingModels(stoves) {
   }));
 }
 
+/** Static file the calculator fetches. Same fields the page used to inline. */
+export function heatingCostPayload({ snapshotDate, firewood, heat, stoves }) {
+  const species = [...firewood].sort((a, b) => a.species.localeCompare(b.species, "en"));
+  return {
+    snapshotDate,
+    bands: SIZE_BANDS,
+    firewood: species.map((row) => ({
+      species: row.species,
+      btuLow: row.btuLow,
+      btuHigh: row.btuHigh,
+    })),
+    heat,
+    models: heatingModels(stoves),
+  };
+}
+
 export function efficiencyNote(model, snapshotDate) {
   if (!model) return "";
   if (model.eff == null) {

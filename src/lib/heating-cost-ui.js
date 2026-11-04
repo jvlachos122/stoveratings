@@ -27,13 +27,27 @@ function clear(node) {
   while (node.firstChild) node.removeChild(node.firstChild);
 }
 
-export function mountHeatingCost(doc) {
-  const data = JSON.parse(doc.getElementById("heating-data").textContent);
+export async function mountHeatingCost(doc, dataUrl = "/data/heating-cost.json") {
+  const status = doc.getElementById("cost-status");
+  let data;
+  try {
+    const response = await fetch(dataUrl);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    data = await response.json();
+  } catch {
+    if (status) {
+      status.textContent = "The heating-cost file on this site did not load. The tables above still show the cited figures. Reload the page to calculate.";
+    }
+    return;
+  }
+  if (!data?.models || !data.heat || !data.firewood || !data.bands) {
+    if (status) status.textContent = "The heating-cost file on this site is missing a required list. Reload the page to calculate.";
+    return;
+  }
   const heatById = new Map(data.heat.map((row) => [row.id, row]));
   const models = data.models.slice().sort((a, b) => Number(b.current) - Number(a.current) || a.model.localeCompare(b.model, "en"));
   const form = doc.getElementById("cost-form");
   const preview = doc.getElementById("size-preview");
-  const status = doc.getElementById("cost-status");
   const state = { woodUnlisted: false, pelletUnlisted: false, woodModel: null, pelletModel: null };
   let seasonValue = null;
 

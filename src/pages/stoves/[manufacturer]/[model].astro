@@ -15,6 +15,7 @@ import {
   pageTitle,
   statusLabel,
 } from "../../../lib/format.js";
+import { relatedLists } from "../../../lib/lists.js";
 
 export function getStaticPaths() {
   return catalog.stoves.map((stove) => ({
@@ -35,6 +36,7 @@ function linked(ids) {
 const nearestEmission = linked(stove.nearest.emission);
 const nearestEfficiency = linked(stove.nearest.efficiency);
 const nearestBtu = linked(stove.nearest.btu);
+const lists = relatedLists(stove);
 const insertList = stove.type === "Pellet Stove"
   ? { href: "/pellet-stove-inserts/", label: "pellet stove inserts" }
   : { href: "/wood-stove-inserts/", label: "wood stove inserts" };
@@ -83,6 +85,18 @@ const notes = [
           {" list the model names labeled name indicates insert."}
         </p>
       )
+    }
+    {
+      lists.length ? (
+        <>
+          <h2 id="lists">Lists that include this model line</h2>
+          <ul>
+            {lists.map((list) => (
+              <li><a href={list.href}>{list.label}</a></li>
+            ))}
+          </ul>
+        </>
+      ) : null
     }
     <h2 id="specs">EPA rows</h2>
     <div class="table-wrap">
