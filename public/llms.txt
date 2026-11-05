@@ -19,6 +19,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 
 - Finder: https://stoveratings.com/
 - Name lookup: https://stoveratings.com/lookup/
+- Retail-name aliases (forty names linked to the EPA model line that lists them): https://stoveratings.com/lookup/#name-aliases
 - Brands: https://stoveratings.com/brands/
 - Model lines: https://stoveratings.com/stoves/{manufacturer}/{model}/
 - Catalytic wood stoves: https://stoveratings.com/catalytic-wood-stoves/

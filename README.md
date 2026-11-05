@@ -57,6 +57,22 @@ The slug is those two labels, slugified, joined with `-vs-`. Pair order is stove
 
 The full EPA model-line string stays on the page, in the comparison table and in a "Model lines covered" line. The previous long URL is a noindex refresh page whose canonical URL is the short one. Long URLs are not in the sitemap. Short URLs are.
 
+## Retail-name aliases
+
+`/lookup/#name-aliases` lists 40 names that link to an existing model-line page (`#retail-names`). The home page links to those anchors. No separate page is built for a retail name.
+
+This repository does not include `data/retail-alias-research.json`. Until that file exists, the list is not a search-volume measurement and the pages do not describe it as one.
+
+1. The first five phrases, in this order: Ashley wood stove, Vogelzang, Castle Serenity, Blaze King Ashford 30, Drolet Escape 1500.
+2. A phrase matches a model line only when one retail name contains those words, in order. The words wood and stove are set aside when other words remain. A leading brand name is set aside only when the remaining words match a retail name.
+3. If that brand is printed on at least one matching line, lines without it are omitted. If it is printed on none of them, every matching line is listed and the alias says the brand word is not in those cells. Drolet Escape 1500 resolves to the lines that list Escape 1500. Those cells do not include Drolet.
+4. A number matches that number or that number plus a decimal part. 30 matches 30.2. It does not match 300 or AF30.
+5. The other slots are exact retail names from this snapshot, counted once per model line. More lines come first, then more currently certified lines, then the name A to Z. A name is skipped when one of the five phrases already lists every line it is on.
+
+If `data/retail-alias-research.json` is committed, that array replaces this list. Each object needs a `query`. Entries that match no retail name are omitted. The file is capped at 40 and is not padded from the frequency list.
+
+The lookup search box reads the same aliases from `data/names.json` (`alias: true`). A one-word query still searches retail names. A phrase matches an alias when the typed text sits inside that alias.
+
 ## Domain
 
 `public/CNAME` is `stoveratings.com`. GitHub ignores that file when Pages is deployed by Actions, so the domain is set in the repository settings. The owner steps and the Hostinger records are in the launch pull request. This repository does not change those settings itself.

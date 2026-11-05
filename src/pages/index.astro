@@ -6,6 +6,7 @@ import Base from "../layouts/Base.astro";
 import { homeSentences } from "../lib/answers.js";
 import { homeBrandHubs } from "../lib/brand-hubs.js";
 import { catalog } from "../lib/catalog.js";
+import { selectRetailAliases } from "../lib/retail-aliases.js";
 import { countNoun, emissionUnitShort, formatNumber, metaDescription } from "../lib/format.js";
 import { inserts } from "../lib/lists.js";
 import { datasetLd, webAppLd } from "../lib/schema.js";
@@ -20,6 +21,7 @@ const changes = catalog.changes;
 const added = changes.addedToCurrent || [];
 const dropped = changes.droppedFromCurrent || [];
 const brandHubs = homeBrandHubs();
+const aliases = selectRetailAliases(catalog.stoves, catalog.brands);
 
 ---
 
@@ -116,6 +118,16 @@ const brandHubs = homeBrandHubs();
       <li><a href="/cleanest-burning-wood-stoves/">Wood stoves ordered by emission rate</a></li>
       <li><a href="/wood-stove-tax-credit/">Tax credit status</a></li>
       <li><a href="/brands/">Browse all brands</a></li>
+    </ul>
+    <h2>Retail names linked to a model line</h2>
+    <p>
+      These {aliases.length} names link to the lookup anchors for retail names in the {catalog.meta.snapshotDate} EPA snapshot.
+      The <a href="/lookup/#name-aliases">lookup page</a> lists every matching model line.
+    </p>
+    <ul>
+      {aliases.map((alias) => (
+        <li><a href={alias.anchor}>{alias.label}</a></li>
+      ))}
     </ul>
     <h2>Brand hubs with the most model lines</h2>
     <p>

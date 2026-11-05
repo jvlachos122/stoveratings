@@ -3,8 +3,19 @@ const list = document.querySelector("#lookup-results");
 const status = document.querySelector("#lookup-status");
 let names = [];
 
+// Filler tokens match ALIAS_FILLER in src/lib/retail-aliases.js.
+const ALIAS_FILLER = new Set(["wood", "stove", "stoves", "pellet", "pellets", "heater", "heaters", "epa", "certified"]);
+
 function clear(node) {
   while (node.firstChild) node.removeChild(node.firstChild);
+}
+
+function aliasHit(entry, query) {
+  if (!entry.alias) return false;
+  if (entry.q === query) return true;
+  const tokens = query.split(/[^a-z0-9.]+/).filter(Boolean).filter((token) => !ALIAS_FILLER.has(token));
+  if (tokens.length < 2) return false;
+  return entry.q.includes(query);
 }
 
 function render() {
@@ -15,9 +26,22 @@ function render() {
     return;
   }
   const matches = [];
+  const seen = new Set();
+  function take(entry) {
+    if (seen.has(entry.id)) return;
+    seen.add(entry.id);
+    matches.push(entry);
+  }
   for (const entry of names) {
-    if (entry.q.includes(query)) matches.push(entry);
+    if (aliasHit(entry, query)) take(entry);
     if (matches.length === 25) break;
+  }
+  if (matches.length < 25) {
+    for (const entry of names) {
+      if (entry.alias) continue;
+      if (entry.q.includes(query)) take(entry);
+      if (matches.length === 25) break;
+    }
   }
   if (!matches.length) {
     status.textContent = "No retail name in this snapshot contains that text. EPA often lists a model line, not the name on the stove.";
@@ -45,7 +69,9 @@ fetch("/data/names.json")
   .then((payload) => {
     names = payload.names;
     input.addEventListener("input", render);
-    status.textContent = `${names.length.toLocaleString("en-US")} retail names from the model-line field are ready to search.`;
+    const aliases = names.filter((entry) => entry.alias).length;
+    const retail = names.length - aliases;
+    status.textContent = `${retail.toLocaleString("en-US")} retail names from the model-line field are ready to search, plus ${aliases.toLocaleString("en-US")} alias entries for the linked names below.`;
   })
   .catch(() => {
     status.textContent = "The name index did not load.";
