@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compareRedirects, selectComparePairs } from "../src/lib/compare-pairs.js";
 import { heatingCostPayload } from "../src/lib/heating-cost.js";
+import { aliasSearchEntries, selectRetailAliases } from "../src/lib/retail-aliases.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
@@ -40,7 +41,7 @@ for (const stove of stoves) {
       n: name,
       q: name.toLowerCase(),
       id: stove.id,
-      url: stove.url,
+      url: `${stove.url}#retail-names`,
       current: stove.current,
       mfr: stove.manufacturer,
       model: stove.model,
@@ -49,6 +50,9 @@ for (const stove of stoves) {
   }
 }
 names.sort((a, b) => a.q.localeCompare(b.q) || a.model.localeCompare(b.model));
+const brands = JSON.parse(readFileSync(join(root, "data/brands.json"), "utf8"));
+const aliases = selectRetailAliases(stoves, brands);
+names.push(...aliasSearchEntries(aliases));
 
 const dir = join(root, "public/data");
 mkdirSync(dir, { recursive: true });
@@ -65,7 +69,6 @@ writeFileSync(join(dir, "heating-cost.json"), JSON.stringify(heatingCostPayload(
   stoves,
 })));
 
-const brands = JSON.parse(readFileSync(join(root, "data/brands.json"), "utf8"));
 const brandBySlug = new Map(brands.map((brand) => [brand.slug, brand]));
 const redirects = compareRedirects(selectComparePairs(stoves, { brandBySlug }));
 writeFileSync(join(root, "data/compare-redirects.json"), `${JSON.stringify(redirects, null, 2)}\n`);

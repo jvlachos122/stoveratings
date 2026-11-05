@@ -3,10 +3,14 @@ import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
-import { formatCount, metaDescription } from "../lib/format.js";
+import { formatCount, metaDescription, shortModel, statusLabel } from "../lib/format.js";
+import { aliasSentences, selectRetailAliases } from "../lib/retail-aliases.js";
 import { webAppLd } from "../lib/schema.js";
 
 const names = catalog.stats.retailNames.roomDistinct;
+const aliases = selectRetailAliases(catalog.stoves, catalog.brands);
+const exampleAliases = aliases.filter((alias) => alias.source === "example");
+const frequencyAliases = aliases.filter((alias) => alias.source === "frequency");
 const sentences = [
   `This lookup searches ${formatCount(catalog.stats.retailNames.roomTokens)} retail names split from ${formatCount(catalog.stats.modelLines.room)} room-heater model lines, ${formatCount(names)} of them distinct, plus central-heater names.`,
   "EPA publishes a model line, often with several retail names in one cell. A name that is not in that cell will not match, even if a dealer sells it.",
@@ -32,6 +36,66 @@ const description = metaDescription(sentences);
     </label>
     <p id="lookup-status" class="small" aria-live="polite">Loading names…</p>
     <ul id="lookup-results" class="stack"></ul>
+    <h2 id="name-aliases">Retail names linked to a model line</h2>
+    <p>
+      {exampleAliases.length ? (
+        <>
+          {exampleAliases.length} phrases are listed first. A model line is included only when its retail names contain the phrase, and a brand word EPA did not print is not added to the cell.
+          {" "}
+          The other {frequencyAliases.length} entries are the retail names on the most model lines in the snapshot dated {catalog.meta.snapshotDate}, ordered by that count, then by currently certified lines, then by name.
+        </>
+      ) : (
+        <>These names are the committed research queries that match a retail name in the snapshot dated {catalog.meta.snapshotDate}.</>
+      )}
+      {" "}
+      Source: EPA Certified Wood Heater Database, snapshot {catalog.meta.snapshotDate}.
+    </p>
+    <div class="table-wrap">
+      <table>
+        <caption>Retail-name aliases and the model lines that list them</caption>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col" class="num">Model lines</th>
+            <th scope="col" class="num">Currently certified</th>
+            <th scope="col">EPA model line</th>
+          </tr>
+        </thead>
+        <tbody>
+          {aliases.map((alias) => (
+            <tr>
+              <th scope="row"><a href={`#${alias.slug}`}>{alias.label}</a></th>
+              <td class="num">{formatCount(alias.lines)}</td>
+              <td class="num">{formatCount(alias.currentLines)}</td>
+              <td>
+                {alias.targets.length === 1 ? (
+                  <a href={alias.targets[0].href}>{shortModel(alias.targets[0].model, 72)}</a>
+                ) : (
+                  <a href={`#${alias.slug}`}>{formatCount(alias.targets.length)} model lines</a>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {aliases.map((alias) => (
+      <section id={alias.slug}>
+        <h3>{alias.label}</h3>
+        {aliasSentences(alias).map((sentence) => <p>{sentence}</p>)}
+        <ul>
+          {alias.targets.map((target) => (
+            <li>
+              <a href={target.href}>{target.model}</a>
+              {" — "}
+              {target.manufacturer || "manufacturer not listed"}
+              {" — "}
+              {statusLabel(target.current)}
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
     <h2>If the name is not found</h2>
     <p>
       EPA's field is a model line, not a catalog number from a store. Search a shorter token, then open the model line and read the retail names.
@@ -42,6 +106,7 @@ const description = metaDescription(sentences);
         "A match means the name appears in an EPA model-line cell in this snapshot. It does not mean StoveRatings inspected the stove.",
         "Currently certified means that model line was in EPA's in-production result on the snapshot date.",
         "Names are split on a colon, then on commas and semicolons. Parentheses are removed. Text EPA joined with a slash may stay one name.",
+        "A linked name points only at model lines whose retail names contain it. When a phrase names a brand EPA did not print on those lines, the line is still listed and the missing word is stated.",
       ]}
     />
   </div>
