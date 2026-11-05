@@ -1,85 +1,90 @@
-"""Draw the StoveRatings icons. No EPA mark, no star, no rating."""
+"""Draw the StoveRatings Ember Bars social image.
+
+Favicon, apple-touch, PWA icons, and site.webmanifest in public/ are the
+design-kit files. This script refreshes public/og-image.png only.
+"""
 
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
+from fontTools.ttLib import TTFont
 from PIL import Image, ImageDraw, ImageFont
 
-ROOT = Path(__file__).resolve().parents[1] / "public"
-PAPER = (245, 241, 234, 255)
-INK = (30, 28, 26, 255)
-EMBER = (180, 68, 31, 255)
-FONT = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf")
-FONT_TEXT = Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")
+ROOT = Path(__file__).resolve().parents[1]
+PUBLIC = ROOT / "public"
+PAPER = (245, 241, 234)
+INK = (30, 28, 26)
+SOOT = (91, 87, 83)
+CHARCOAL = (42, 36, 32)
+EMBER = (180, 68, 31)
+EMBER_MID = (217, 119, 58)
 
 
-def draw_plate(draw, box, stroke):
-    x0, y0, x1, y1 = box
-    width = x1 - x0
-    height = y1 - y0
-    radius = max(4, width // 12)
-    draw.rounded_rectangle(box, radius=radius, fill=PAPER, outline=INK, width=stroke)
-    bolt = max(2, width // 22)
-
-    def bolt_at(cx, cy):
-        draw.ellipse((cx - bolt, cy - bolt, cx + bolt, cy + bolt), fill=INK)
-
-    inset = max(6, width // 10)
-    bolt_at(x0 + inset, y0 + inset)
-    bolt_at(x1 - inset, y0 + inset)
-    bolt_at(x0 + inset, y1 - inset)
-    bolt_at(x1 - inset, y1 - inset)
-    body = (
-        x0 + width * 0.22,
-        y0 + height * 0.30,
-        x1 - width * 0.22,
-        y1 - height * 0.28,
-    )
-    draw.rounded_rectangle(body, radius=max(2, width // 40), fill=INK)
-    window = (
-        body[0] + (body[2] - body[0]) * 0.18,
-        body[1] + (body[3] - body[1]) * 0.22,
-        body[2] - (body[2] - body[0]) * 0.18,
-        body[3] - (body[3] - body[1]) * 0.22,
-    )
-    draw.rectangle(window, fill=EMBER)
+def ttf_from_woff2(woff2, dest):
+    font = TTFont(woff2)
+    font.flavor = None
+    font.save(dest)
+    return dest
 
 
-def icon(size, pad_ratio):
-    image = Image.new("RGBA", (size, size), PAPER)
-    draw = ImageDraw.Draw(image)
-    pad = int(size * pad_ratio)
-    stroke = max(2, size // 48)
-    draw_plate(draw, (pad, pad, size - pad - 1, size - pad - 1), stroke)
-    return image
+def draw_mark(draw, origin, size):
+    x, y = origin
+    scale = size / 64
 
+    def box(bx, by, bw, bh):
+        return (
+            x + bx * scale,
+            y + by * scale,
+            x + (bx + bw) * scale,
+            y + (by + bh) * scale,
+        )
 
-def save_png(image, name):
-    image.save(ROOT / name, "PNG")
+    draw.rounded_rectangle(box(0, 0, 64, 64), radius=14 * scale, fill=CHARCOAL)
+    draw.rounded_rectangle(box(12, 34, 10, 18), radius=3 * scale, fill=EMBER)
+    draw.rounded_rectangle(box(27, 24, 10, 28), radius=3 * scale, fill=EMBER_MID)
+    draw.rounded_rectangle(box(42, 14, 10, 38), radius=3 * scale, fill=PAPER)
 
 
 def main():
-    save_png(icon(180, 0.08), "apple-touch-icon.png")
-    save_png(icon(192, 0.08), "icon-192.png")
-    save_png(icon(512, 0.08), "icon-512.png")
-    save_png(icon(512, 0.22), "icon-maskable-512.png")
-    ico_base = icon(48, 0.06)
-    ico_base.save(
-        ROOT / "favicon.ico",
-        format="ICO",
-        sizes=[(16, 16), (32, 32), (48, 48)],
-        append_images=[icon(16, 0.04), icon(32, 0.06)],
-    )
+    with TemporaryDirectory() as tmp_name:
+        tmp = Path(tmp_name)
+        display = ttf_from_woff2(
+            PUBLIC / "fonts" / "roboto-slab-latin-700-normal.woff2",
+            tmp / "roboto-slab-700.ttf",
+        )
+        body = ttf_from_woff2(
+            PUBLIC / "fonts" / "ibm-plex-sans-latin-400-normal.woff2",
+            tmp / "ibm-plex-sans-400.ttf",
+        )
+        write_og(display, body)
 
-    og = Image.new("RGB", (1200, 630), PAPER[:3])
-    draw = ImageDraw.Draw(og)
-    plate = icon(420, 0.08).convert("RGB")
-    og.paste(plate, (70, 105))
-    title = ImageFont.truetype(str(FONT), 84)
-    body = ImageFont.truetype(str(FONT_TEXT), 36)
-    draw.text((540, 190), "StoveRatings", font=title, fill=INK[:3])
-    draw.text((540, 310), "EPA test numbers", font=body, fill=INK[:3])
-    draw.text((540, 370), "Snapshot 2026-10-23", font=body, fill=(91, 87, 83))
-    og.save(ROOT / "og-image.png", "PNG")
+
+def write_og(display, body):
+
+    width, height = 1200, 630
+    image = Image.new("RGB", (width, height), PAPER)
+    draw = ImageDraw.Draw(image)
+    mark = 300
+    draw_mark(draw, (88, (height - mark) // 2), mark)
+
+    title_font = ImageFont.truetype(str(display), 78)
+    sub_font = ImageFont.truetype(str(body), 36)
+    title = "StoveRatings"
+    subtitle = "EPA test numbers"
+    title_box = draw.textbbox((0, 0), title, font=title_font)
+    sub_box = draw.textbbox((0, 0), subtitle, font=sub_font)
+    gap = 18
+    block = (title_box[3] - title_box[1]) + gap + (sub_box[3] - sub_box[1])
+    text_x = 88 + mark + 64
+    text_y = (height - block) / 2
+    draw.text((text_x, text_y - title_box[1]), title, font=title_font, fill=INK)
+    draw.text(
+        (text_x, text_y + (title_box[3] - title_box[1]) + gap - sub_box[1]),
+        subtitle,
+        font=sub_font,
+        fill=SOOT,
+    )
+    image.save(PUBLIC / "og-image.png", "PNG")
 
 
 if __name__ == "__main__":

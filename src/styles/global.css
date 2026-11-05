@@ -55,14 +55,21 @@
   --paper-2: #fffdf8;
   --chip: #e7e1d6;
   --line: #d9d1c4;
+  --line-strong: #857a6b;
   --ink: #1e1c1a;
   --soot: #5b5753;
+  --muted: #5b5753;
+  --subtle: #6e6963;
   --ember: #b4441f;
   --ember-dark: #8c3418;
+  --ember-mid: #d9773a;
+  --on-ember: #ffffff;
+  --charcoal: #2a2420;
   --amber-bg: #f3e2c0;
   --amber-ink: #6d4a08;
   --steel: #3e5c6b;
   --focus: #1e1c1a;
+  --shadow: 0 1px 0 rgba(30, 28, 26, .04);
   --font-display: "Roboto Slab", "Iowan Old Style", Palatino, Georgia, serif;
   --font-body: "IBM Plex Sans", "Plex Fallback", "Segoe UI", sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
@@ -132,7 +139,7 @@ a:hover { color: var(--ember); }
   flex: none;
   max-width: 100%;
 }
-.mark { display: block; flex: none; }
+.mark { display: block; width: 32px; height: 32px; flex: none; }
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -146,7 +153,7 @@ a:hover { color: var(--ember); }
   line-height: 1.1;
 }
 .tagline {
-  color: var(--soot);
+  color: var(--muted);
   font-family: var(--font-body);
   font-size: 0.8125rem;
   font-weight: 400;
