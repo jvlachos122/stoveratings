@@ -13,6 +13,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Central heaters, all rows: 192
 - Central heaters, currently certified: 41
 - Currently certified means the row was in EPA's in-production result on the snapshot date. The export has no certification date.
+- EPA's March 15, 2013 List of EPA Certified Wood Stoves was reviewed from a local PDF. It has no certification date and no certification number. It is not used for emission rates, HHV efficiency, or current-certification status. See https://stoveratings.com/methodology/#certified-wood-2013
 - Blank cells are missing, not zero.
 
 ## URLs
