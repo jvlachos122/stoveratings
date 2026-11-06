@@ -1,5 +1,13 @@
 ---
+import Answer from "../components/Answer.astro";
 import Base from "../layouts/Base.astro";
+import {
+  certifiedWood2013Columns,
+  certifiedWood2013Comparison,
+  certifiedWood2013Faq,
+  certifiedWood2013Intro,
+  certifiedWood2013Sentences,
+} from "../lib/certified-wood-2013.js";
 import { catalog } from "../lib/catalog.js";
 import { loadChangelog } from "../lib/epa-snapshots.js";
 import { datasetLd, faqLd } from "../lib/schema.js";
@@ -11,7 +19,7 @@ const date = catalog.meta.snapshotDate;
 const faqs = [
   {
     question: "What does currently certified mean here?",
-    answer: `It means the row was in EPA's result with previously certified models excluded, saved on ${date}. The export does not include a certification date, so this site does not say certified on a particular day.`,
+    answer: `It means the row was in EPA's result with previously certified models excluded, saved on ${date}. The export does not include a certification date, so this site does not say certified on a particular day. The March 15, 2013 list reviewed below does not add one.`,
   },
   {
     question: "Why are some numbers missing?",
@@ -21,8 +29,10 @@ const faqs = [
     question: "Does StoveRatings score stoves?",
     answer: "No. Lists that look sorted are ordered by one EPA number, and the page says which number. Ties stay ties. There is no star rating and no review score.",
   },
+  certifiedWood2013Faq(date),
 ];
 const description = `How StoveRatings uses the EPA Certified Wood Heater Database snapshot of ${date}: model lines, blanks, brand names, and the manual refresh.`;
+const certifiedWood2013Answer = certifiedWood2013Sentences(date);
 ---
 
 <Base title="Methodology" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/methodology/", label: "Methodology" }]} jsonLd={[datasetLd(catalog.meta), faqLd(faqs)]}>
@@ -50,6 +60,31 @@ const description = `How StoveRatings uses the EPA Certified Wood Heater Databas
     <h2>What the export does not have</h2>
     <p>No certification number, no certification date, and no separate insert column. The New flag appears on only a few rows. 2020 NSPS compliance is a Yes or No cell: {catalog.stats.nsps.roomAllYes} room-heater rows say Yes, including previously certified models, and {catalog.stats.nsps.roomCurrentYes} of the currently certified room-heater rows say Yes. {catalog.stats.nsps.roomCurrentNo} currently certified room-heater {catalog.stats.nsps.roomCurrentNo === 1 ? "row says" : "rows say"} No.</p>
     <p>EPA's Burn Wise material has described the program's published history as running through 2025, while the database landing page was updated after that. If the database is retired, this site will keep the last snapshot and will keep the date on it.</p>
+    <h2 id="certified-wood-2013">March 15, 2013 certified wood stove list</h2>
+    <Answer sentences={certifiedWood2013Answer} />
+    <p>{certifiedWood2013Intro()}</p>
+    <div class="table-wrap">
+      <table>
+        <caption>Columns in Section 1 of EPA's March 15, 2013 List of EPA Certified Wood Stoves</caption>
+        <thead>
+          <tr>
+            <th scope="col">Column</th>
+            <th scope="col">What the 2013 list prints</th>
+            <th scope="col">Live figure on this site</th>
+          </tr>
+        </thead>
+        <tbody>
+          {certifiedWood2013Columns.map((column) => (
+            <tr>
+              <td>{column.name}</td>
+              <td>{column.meaning}</td>
+              <td>Not used</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>{certifiedWood2013Comparison()}</p>
     <h2>Sorted lists and the size calculator</h2>
     <p>A highest-efficiency page sorts by the HHV percent EPA printed, blanks excluded, ties ordered by lower emission rate and then name. A lowest-emission page sorts by grams per hour the same way. The stove size calculator multiplies square feet by planning factors printed on that page. Those factors are not from EPA.</p>
     <h2>Firewood</h2>
