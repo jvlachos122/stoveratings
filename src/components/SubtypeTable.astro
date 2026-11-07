@@ -1,0 +1,47 @@
+---
+import { listedNumber } from "../lib/subtype-explain.js";
+
+const { blocks, caption, split = false, mode = "summary" } = Astro.props;
+const summary = mode !== "range";
+const range = mode === "range";
+---
+
+<div class="table-wrap">
+  <table>
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">EPA subtype</th>
+        {summary ? <th scope="col" class="num">Rows</th> : null}
+        {summary && split ? <th scope="col" class="num">Wood-stove rows</th> : null}
+        {summary && split ? <th scope="col" class="num">Pellet-stove rows</th> : null}
+        {summary ? <th scope="col" class="num">Median emission (g/hr)</th> : null}
+        {summary ? <th scope="col" class="num">Rows listing emission</th> : null}
+        {range ? <th scope="col" class="num">Lowest listed emission (g/hr)</th> : null}
+        {range ? <th scope="col" class="num">Highest listed emission (g/hr)</th> : null}
+        {summary ? <th scope="col" class="num">Median HHV efficiency (%)</th> : null}
+        {summary ? <th scope="col" class="num">Rows listing HHV efficiency</th> : null}
+        {range ? <th scope="col" class="num">Lowest listed HHV efficiency (%)</th> : null}
+        {range ? <th scope="col" class="num">Highest listed HHV efficiency (%)</th> : null}
+      </tr>
+    </thead>
+    <tbody>
+      {blocks.map((block) => (
+        <tr>
+          <th scope="row">{block.label}</th>
+          {summary ? <td class="num">{block.rows}</td> : null}
+          {summary && split ? <td class="num">{block.woodRows}</td> : null}
+          {summary && split ? <td class="num">{block.pelletRows}</td> : null}
+          {summary ? <td class="num">{listedNumber(block.emissionMedian, 3)}</td> : null}
+          {summary ? <td class="num">{block.emissionN}</td> : null}
+          {range ? <td class="num">{listedNumber(block.emissionLow, 3)}</td> : null}
+          {range ? <td class="num">{listedNumber(block.emissionHigh, 3)}</td> : null}
+          {summary ? <td class="num">{listedNumber(block.efficiencyMedian, 2)}</td> : null}
+          {summary ? <td class="num">{block.efficiencyN}</td> : null}
+          {range ? <td class="num">{listedNumber(block.efficiencyLow, 2)}</td> : null}
+          {range ? <td class="num">{listedNumber(block.efficiencyHigh, 2)}</td> : null}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
