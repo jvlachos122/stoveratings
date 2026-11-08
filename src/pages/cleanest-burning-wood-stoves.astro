@@ -15,9 +15,9 @@ const date = catalog.meta.snapshotDate;
 const sentences = [
   `The lowest emission rate EPA lists on a currently certified wood-stove model line is ${emissionText(top.emission, top.emissionUnit)}, on ${shortModel(top.model)}.`,
   excluded === 0
-    ? `All ${ranked.length} currently certified wood-stove model lines list an emission rate, so none were left out.`
-    : `${excluded} currently certified wood-stove model lines have no emission rate listed, so they are left out.`,
-  "The table orders that grams-per-hour figure from lowest to highest. A lower test result is not a StoveRatings score.",
+    ? `All ${ranked.length} currently certified wood-stove model lines list an emission rate, so none were left out. A blank emission rate is not listed by EPA and is not zero.`
+    : `${ranked.length} currently certified wood-stove model lines list an emission rate. ${excluded} are not listed by EPA for an emission rate, so they are left out of this order. A blank is not zero.`,
+  "The table orders that grams-per-hour figure from lowest to highest. Ties are ordered by a higher HHV efficiency, then by model name. EPA does not break those ties, and a lower test result is not a StoveRatings score.",
   `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
 ];
 const description = metaDescription(sentences);
@@ -28,6 +28,7 @@ const description = metaDescription(sentences);
     <h1>Wood stoves with the lowest EPA emission rates</h1>
     <Answer sentences={sentences} />
     <StoveTable stoves={ranked} caption="Currently certified wood stoves ordered by emission rate, lowest first" />
-    <DataNote items={["People search this topic as cleanest-burning wood stoves. The order is EPA's grams-per-hour result only.", "Pellet stoves use the same grams-per-hour unit and are listed on the pellet pages, not in this table."]} />
+    <p>Pellet stoves are ordered separately on <a href="/cleanest-burning-pellet-stoves/">the pellet emission list</a>.</p>
+    <DataNote items={["People search this topic as cleanest-burning wood stoves. The order is EPA's grams-per-hour result only.", "A blank emission rate is not listed by EPA. It is not zero, and that model line is left out of this order.", "Pellet stoves use the same grams-per-hour unit and are not in this table."]} />
   </div>
 </Base>

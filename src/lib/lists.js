@@ -37,6 +37,8 @@ export function rankByEfficiency(stoves, type) {
     .sort((a, b) => b.efficiency - a.efficiency || (a.emission ?? 999) - (b.emission ?? 999) || a.model.localeCompare(b.model));
 }
 
+// Lowest listed emission first. Ties break by a higher HHV efficiency, then model name.
+// A missing emission is excluded. It is not treated as zero. EPA does not define this tie break.
 export function rankByEmission(stoves, type) {
   return stoves
     .filter((stove) => stove.current && stove.type === type && stove.emission != null)
@@ -92,6 +94,9 @@ export function relatedLists(stove) {
   }
   if (stove.current && stove.type === "Wood Stove" && stove.emission != null) {
     lists.push({ href: "/cleanest-burning-wood-stoves/", label: "Wood stoves ordered by emission rate" });
+  }
+  if (stove.current && stove.type === "Pellet Stove" && stove.emission != null) {
+    lists.push({ href: "/cleanest-burning-pellet-stoves/", label: "Pellet stoves ordered by emission rate" });
   }
   return lists;
 }

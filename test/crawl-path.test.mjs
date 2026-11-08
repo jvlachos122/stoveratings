@@ -39,6 +39,7 @@ test("related lists follow the page filters and skip lists that omit the line", 
   assert.ok(catalytic.includes("/wood-stove-inserts/"));
   assert.ok(catalytic.includes("/most-efficient-wood-stoves/"));
   assert.ok(catalytic.includes("/cleanest-burning-wood-stoves/"));
+  assert.equal(catalytic.includes("/cleanest-burning-pellet-stoves/"), false);
   assert.equal(catalytic.includes("/pellet-stoves/"), false);
   assert.equal(catalytic.includes("/hybrid-wood-stoves/"), false);
 
@@ -73,6 +74,34 @@ test("related lists follow the page filters and skip lists that omit the line", 
   }).map((list) => list.href);
   assert.deepEqual(cordBoiler, ["/outdoor-wood-boilers/"]);
 
+  const pellet = relatedLists({
+    category: "room",
+    type: "Pellet Stove",
+    subtype: "Non-Catalytic Stove",
+    current: true,
+    efficiency: 80,
+    emission: 0.5,
+    insertFlag: true,
+    fuel: "Wood Pellets",
+  }).map((list) => list.href);
+  assert.ok(pellet.includes("/pellet-stoves/"));
+  assert.ok(pellet.includes("/pellet-stove-inserts/"));
+  assert.ok(pellet.includes("/most-efficient-pellet-stoves/"));
+  assert.ok(pellet.includes("/cleanest-burning-pellet-stoves/"));
+  assert.equal(pellet.includes("/cleanest-burning-wood-stoves/"), false);
+
+  const pelletBlankEmission = relatedLists({
+    category: "room",
+    type: "Pellet Stove",
+    current: true,
+    efficiency: 80,
+    emission: null,
+    insertFlag: false,
+    fuel: "Wood Pellets",
+  }).map((list) => list.href);
+  assert.ok(pelletBlankEmission.includes("/most-efficient-pellet-stoves/"));
+  assert.equal(pelletBlankEmission.includes("/cleanest-burning-pellet-stoves/"), false);
+
   const furnace = relatedLists({
     category: "central",
     type: "Forced Air Furnace",
@@ -93,6 +122,7 @@ test("the home page and footer link the browse path in server-rendered anchors",
     "/most-efficient-wood-stoves/",
     "/most-efficient-pellet-stoves/",
     "/cleanest-burning-wood-stoves/",
+    "/cleanest-burning-pellet-stoves/",
     "/wood-stove-tax-credit/",
     "/brands/",
   ]) {

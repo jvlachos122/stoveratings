@@ -230,6 +230,7 @@ test("the explainer is an indexable page that names the EPA fields it orders by"
     "/most-efficient-wood-stoves/",
     "/cleanest-burning-wood-stoves/",
     "/most-efficient-pellet-stoves/",
+    "/cleanest-burning-pellet-stoves/",
     "/pellet-stoves/",
   ]) {
     assert.ok(page.includes(`href="${href}"`), href);
