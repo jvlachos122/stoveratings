@@ -1,0 +1,34 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import StoveTable from "../components/StoveTable.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { emissionText, metaDescription, shortModel } from "../lib/format.js";
+import { excludedEmission, rankByEmission } from "../lib/lists.js";
+import { articleLd } from "../lib/schema.js";
+
+const ranked = rankByEmission(catalog.stoves, "Pellet Stove");
+const excluded = excludedEmission(catalog.stoves, "Pellet Stove");
+const top = ranked[0];
+const date = catalog.meta.snapshotDate;
+const sentences = [
+  `The lowest emission rate EPA lists on a currently certified pellet-stove model line is ${emissionText(top.emission, top.emissionUnit)}, on ${shortModel(top.model)}.`,
+  excluded === 0
+    ? `All ${ranked.length} currently certified pellet-stove model lines list an emission rate, so none were left out. A blank emission rate is not listed by EPA and is not zero.`
+    : `${ranked.length} currently certified pellet-stove model lines list an emission rate. ${excluded} are not listed by EPA for an emission rate, so they are left out of this order. A blank is not zero.`,
+  "The table orders that grams-per-hour figure from lowest to highest. Ties are ordered by a higher HHV efficiency, then by model name. EPA does not break those ties, and this is not a StoveRatings score.",
+  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
+];
+const description = metaDescription(sentences);
+---
+
+<Base title="Lowest emission pellet stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/cleanest-burning-pellet-stoves/", label: "Lowest pellet emission rates" }]} jsonLd={[articleLd("Pellet stoves ordered by EPA emission rate", description, "/cleanest-burning-pellet-stoves/", date)]}>
+  <div class="wrap">
+    <h1>Pellet stoves with the lowest EPA emission rates</h1>
+    <Answer sentences={sentences} />
+    <StoveTable stoves={ranked} caption="Currently certified pellet stoves ordered by emission rate, lowest first" />
+    <p>The same pellet stoves are ordered by HHV efficiency on <a href="/most-efficient-pellet-stoves/">the pellet efficiency list</a>. Wood stoves are ordered separately on <a href="/cleanest-burning-wood-stoves/">the wood emission list</a>.</p>
+    <DataNote items={["People search this topic as cleanest-burning pellet stoves. The order is EPA's grams-per-hour result only.", "A blank emission rate is not listed by EPA. It is not zero, and that model line is left out of this order.", "The order uses the primary EPA row for each model line. A line with two rows keeps the current row with the lower emission rate as its primary row.", "Previously certified pellet model lines are not in this table."]} />
+  </div>
+</Base>

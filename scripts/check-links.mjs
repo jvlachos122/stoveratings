@@ -201,6 +201,7 @@ const directFromHome = [
   "/most-efficient-wood-stoves/",
   "/most-efficient-pellet-stoves/",
   "/cleanest-burning-wood-stoves/",
+  "/cleanest-burning-pellet-stoves/",
   "/wood-stove-tax-credit/",
   "/brands/",
   ...homeBrandHubs().map((brand) => brand.url),
@@ -221,6 +222,14 @@ for (const pathname of seen) {
 }
 if (beyond > 15) errors.push(`${beyond} sitemap URLs are beyond ${MAX_CLICKS} clicks`);
 
+for (const rankedPath of [
+  "/most-efficient-wood-stoves/",
+  "/most-efficient-pellet-stoves/",
+  "/cleanest-burning-wood-stoves/",
+  "/cleanest-burning-pellet-stoves/",
+]) {
+  if (!seen.has(rankedPath)) errors.push(`sitemap missing ${rankedPath}`);
+}
 if (!seen.has("/")) errors.push("sitemap missing home");
 if (!seen.has("/compare/")) errors.push("sitemap missing compare index");
 if (seen.has("/compare/tool/")) errors.push("sitemap includes compare tool");
