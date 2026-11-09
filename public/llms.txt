@@ -37,7 +37,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Forced-air furnaces: https://stoveratings.com/wood-furnaces/
 - Pellet hydronic heaters: https://stoveratings.com/pellet-boilers/
 - Firewood heat values (extension table, not EPA): https://stoveratings.com/firewood-btu-chart/
-- Size calculator (our formula, shown on the page): https://stoveratings.com/tools/stove-size-calculator/
+- Size calculator (StoveRatings planning factors, common floor areas, and currently certified models whose EPA heat-output range overlaps): https://stoveratings.com/tools/stove-size-calculator/
 - Heating cost calculator (cord wood, pellets, and other fuels; prices and heat contents are committed files): https://stoveratings.com/tools/heating-cost-calculator/
 - Pellet and wood figures: https://stoveratings.com/pellet-stove-vs-wood-stove/
 - Tax credit status: https://stoveratings.com/wood-stove-tax-credit/

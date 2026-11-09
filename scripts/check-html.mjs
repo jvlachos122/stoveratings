@@ -1,7 +1,22 @@
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { HtmlValidate } from "html-validate";
+import { formatCount } from "../src/lib/format.js";
+import {
+  COMMON_SIZES,
+  SIZE_TABLE_CAPTION,
+  commonSizeRows,
+  exampleAnswer,
+  excludedHeatCount,
+  excludedSentence,
+  planningSentence,
+  planningSpan,
+  sizeAnchor,
+  sizeFaqs,
+  bandById,
+  EXAMPLE_SQFT,
+} from "../src/lib/stove-size.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -144,6 +159,92 @@ else {
       if (!app || app.creator?.["@type"] !== "Organization" || app.publisher?.["@type"] !== "Organization") {
         errors.push("heating cost: WebApplication creator and publisher must be Organization");
       }
+    }
+  }
+}
+
+const calculator = files.find((file) => file.endsWith("/tools/stove-size-calculator/index.html"));
+if (!calculator) errors.push("missing stove size calculator page");
+else {
+  const html = readFileSync(calculator, "utf8").replaceAll("&#39;", "'").replaceAll("&quot;", '"').replaceAll("&amp;", "&");
+  const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
+  const meta = JSON.parse(readFileSync(join(root, "data/meta.json"), "utf8"));
+  if (!html.includes('class="answer"')) errors.push("stove size: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("stove size: answer box sentences");
+  for (const sentence of exampleAnswer(stoves, meta.snapshotDate)) {
+    if (!html.includes(sentence)) errors.push("stove size: answer sentence missing");
+  }
+  const exampleBand = bandById("moderate");
+  if (!html.includes(planningSentence(EXAMPLE_SQFT, exampleBand))) errors.push("stove size: worked example");
+  if (!html.includes(excludedSentence(excludedHeatCount(stoves)))) errors.push("stove size: excluded count");
+  if (!html.includes("not listed by EPA") || !html.includes("not zero")) errors.push("stove size: blank wording");
+  if (!html.includes("lab test range") || !html.includes("not a sizing guarantee")) errors.push("stove size: overlap caveat");
+  const h1 = html.match(/<h1\b/g) || [];
+  if (h1.length !== 1) errors.push(`stove size: ${h1.length} h1`);
+  if (html.includes("/scripts/calculator.js")) errors.push("stove size: old calculator script");
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`stove size: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("stove size: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "WebApplication", "FAQPage"]) {
+        if (!types.has(required)) errors.push(`stove size: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating"]) {
+        if (types.has(banned)) errors.push(`stove size: forbidden ${banned}`);
+      }
+    }
+  }
+  for (const faq of sizeFaqs(stoves, meta.snapshotDate)) {
+    if (!html.includes(faq.question) || !html.includes(faq.answer)) errors.push(`stove size: FAQ missing ${faq.question}`);
+  }
+  const tableMatch = html.match(/<table id="size-table">[\s\S]*?<\/table>/);
+  if (!tableMatch) errors.push("stove size: common size table");
+  else {
+    const flat = tableMatch[0].replace(/<[^>]+>/g, "").replace(/\s+/g, "");
+    if (!flat.includes(SIZE_TABLE_CAPTION.replace(/\s+/g, ""))) errors.push("stove size: size caption");
+    const rows = commonSizeRows(stoves);
+    const renderedRows = tableMatch[0].match(/<tr\b/g) || [];
+    if (renderedRows.length !== rows.length + 1) errors.push(`stove size: ${renderedRows.length} table rows`);
+    for (const row of rows) {
+      const bit = `${row.band.label}${planningSpan(row.range)}${formatCount(row.wood)}${formatCount(row.pellet)}`;
+      if (!flat.includes(bit)) errors.push(`stove size: missing ${row.sqft} ${row.band.id}`);
+    }
+    for (const sqft of COMMON_SIZES) {
+      if (!tableMatch[0].includes(`id="${sizeAnchor(sqft)}"`)) errors.push(`stove size: missing #${sizeAnchor(sqft)}`);
+    }
+  }
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd) : "";
+  const prose = main.replace(/<tbody id="overlap-rows">[\s\S]*?<\/tbody>/, "");
+  if (/\bbest\b/i.test(prose) || /\bright size\b/i.test(prose) || /\bscores?\b/i.test(prose)) {
+    errors.push("stove size: banned wording");
+  }
+  const sources = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/gi)].map((match) => match[1]);
+  const fetched = sources.some((src) => {
+    const file = join(dist, src.replace(/^\//, "").split("?")[0]);
+    return existsSync(file) && readFileSync(file, "utf8").includes("/data/size-overlap.json");
+  });
+  if (!fetched) errors.push("stove size: page script does not fetch /data/size-overlap.json");
+  const overlapFile = join(dist, "data/size-overlap.json");
+  if (!existsSync(overlapFile)) errors.push("stove size: missing size-overlap.json");
+  else {
+    const payload = JSON.parse(readFileSync(overlapFile, "utf8"));
+    if (payload.snapshot !== meta.snapshotDate) errors.push("stove size: json snapshot");
+    if (payload.excluded !== excludedHeatCount(stoves)) errors.push("stove size: json excluded count");
+    if (!Array.isArray(payload.models) || payload.models.some((model) => model.lo == null || model.hi == null)) {
+      errors.push("stove size: json heat output");
     }
   }
 }
