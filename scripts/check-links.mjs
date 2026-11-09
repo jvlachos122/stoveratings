@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { homeBrandHubs } from "../src/lib/brand-hubs.js";
 import { catalog, stovesForBrand } from "../src/lib/catalog.js";
 import { relatedLists } from "../src/lib/lists.js";
+import { isSitemapLastmod, isW3cDateTime, lastmodInstant } from "../src/lib/sitemap-lastmod.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -277,6 +278,57 @@ for (const redirect of compareRedirects) {
   if (!html.includes(redirect.heading)) errors.push(`${redirect.url} missing heading`);
 }
 
+const childMax = new Map();
+let pelletLastmod = "";
+let newestLastmod = "";
+for (const name of sitemapFiles) {
+  const xml = readFileSync(join(dist, name), "utf8");
+  if (!xml.includes("<urlset")) continue;
+  let max = "";
+  for (const match of xml.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]*)<\/lastmod>/g)) {
+    const loc = match[1];
+    const lastmod = match[2];
+    if (!isW3cDateTime(lastmod) || !isSitemapLastmod(lastmod)) {
+      errors.push(`invalid sitemap lastmod ${lastmod} for ${loc}`);
+      continue;
+    }
+    if (!max || lastmodInstant(lastmod) > lastmodInstant(max)) max = lastmod;
+    if (new URL(loc).pathname === "/cleanest-burning-pellet-stoves/") {
+      pelletLastmod = lastmod;
+      if (lastmod.slice(0, 10) <= "2026-10-23") {
+        errors.push(`/cleanest-burning-pellet-stoves/ lastmod ${lastmod} is not after 2026-10-23`);
+      }
+    }
+  }
+  if (!max) errors.push(`${name} has no URL lastmod`);
+  else childMax.set(name, max);
+}
+if (!pelletLastmod) errors.push("sitemap missing lastmod for /cleanest-burning-pellet-stoves/");
+for (const lastmod of childMax.values()) {
+  if (!newestLastmod || lastmodInstant(lastmod) > lastmodInstant(newestLastmod)) newestLastmod = lastmod;
+}
+const indexXml = sitemapFiles.includes("sitemap-index.xml") ? readFileSync(join(dist, "sitemap-index.xml"), "utf8") : "";
+if (!indexXml.includes("<sitemapindex")) errors.push("missing sitemap-index.xml");
+let newestIndex = "";
+for (const match of indexXml.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]*)<\/lastmod>/g)) {
+  const loc = match[1];
+  const lastmod = match[2];
+  if (!isW3cDateTime(lastmod) || !isSitemapLastmod(lastmod)) {
+    errors.push(`invalid sitemap index lastmod ${lastmod}`);
+    continue;
+  }
+  const child = decodeURIComponent(new URL(loc).pathname).split("/").pop();
+  const childNewest = childMax.get(child);
+  if (!childNewest) errors.push(`sitemap index lists ${loc} without a child lastmod`);
+  else if (lastmodInstant(lastmod) < lastmodInstant(childNewest)) {
+    errors.push(`sitemap index lastmod ${lastmod} is older than newest URL lastmod ${childNewest} in ${child}`);
+  }
+  if (!newestIndex || lastmodInstant(lastmod) > lastmodInstant(newestIndex)) newestIndex = lastmod;
+}
+if (newestLastmod && (!newestIndex || lastmodInstant(newestIndex) < lastmodInstant(newestLastmod))) {
+  errors.push(`sitemap index lastmod ${newestIndex || "missing"} is older than newest URL lastmod ${newestLastmod}`);
+}
+
 const robots = readFileSync(join(dist, "robots.txt"), "utf8");
 if (!robots.includes("User-agent: *") || !robots.includes("Allow: /")) errors.push("robots.txt must allow all");
 if (robots.includes("Disallow")) errors.push("robots.txt must not disallow");
@@ -287,4 +339,4 @@ if (errors.length) {
   console.error(`${errors.length} link errors`);
   process.exit(1);
 }
-console.log(`Links OK across ${files.length} HTML files. Sitemap URLs: ${seen.size}. All sitemap URLs are within ${MAX_CLICKS} clicks of home. Heating cost HTML: ${heatingBytes} bytes.`);
+console.log(`Links OK across ${files.length} HTML files. Sitemap URLs: ${seen.size}. Newest lastmod: ${newestLastmod}. All sitemap URLs are within ${MAX_CLICKS} clicks of home. Heating cost HTML: ${heatingBytes} bytes.`);
