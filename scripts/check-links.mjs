@@ -230,6 +230,7 @@ for (const rankedPath of [
 ]) {
   if (!seen.has(rankedPath)) errors.push(`sitemap missing ${rankedPath}`);
 }
+if (!seen.has("/tools/stove-size-calculator/")) errors.push("sitemap missing stove size calculator");
 if (!seen.has("/")) errors.push("sitemap missing home");
 if (!seen.has("/compare/")) errors.push("sitemap missing compare index");
 if (seen.has("/compare/tool/")) errors.push("sitemap includes compare tool");

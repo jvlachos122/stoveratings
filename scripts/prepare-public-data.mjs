@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compareRedirects, selectComparePairs } from "../src/lib/compare-pairs.js";
 import { heatingCostPayload } from "../src/lib/heating-cost.js";
+import { sizeOverlapPayload } from "../src/lib/stove-size.js";
 import { aliasSearchEntries, selectRetailAliases } from "../src/lib/retail-aliases.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -68,6 +69,10 @@ writeFileSync(join(dir, "heating-cost.json"), JSON.stringify(heatingCostPayload(
   heat: fuelHeat,
   stoves,
 })));
+const overlap = sizeOverlapPayload(stoves, snapshot);
+const overlapJson = JSON.stringify(overlap);
+writeFileSync(join(dir, "size-overlap.json"), overlapJson);
+console.log(`Size overlap: ${overlap.models.length} models, ${overlap.excluded} excluded, ${Buffer.byteLength(overlapJson)} bytes.`);
 
 const brandBySlug = new Map(brands.map((brand) => [brand.slug, brand]));
 const redirects = compareRedirects(selectComparePairs(stoves, { brandBySlug }));

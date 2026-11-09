@@ -142,13 +142,21 @@ test("stove-size hours reuse the published band factors and do not invent a dura
   assert.equal(deliveredMmbtuFromSize(2000, 45, 1000), 90);
   assert.equal(deliveredMmbtuFromSize(2000, 30, ""), null);
   assert.equal(deliveredMmbtuFromSize(2000, 30, 0), null);
-  const calc = readFileSync(join(root, "public/scripts/calculator.js"), "utf8");
   const page = readFileSync(join(root, "src/pages/tools/stove-size-calculator.astro"), "utf8");
-  for (const band of SIZE_BANDS) {
-    assert.match(calc, new RegExp(`${band.id}: \\[${band.low}, ${band.high}\\]`));
-    assert.match(page, new RegExp(`${band.low}`));
-    assert.match(page, new RegExp(`${band.high}`));
-  }
+  const lib = readFileSync(join(root, "src/lib/stove-size.js"), "utf8");
+  const ui = readFileSync(join(root, "src/lib/stove-size-ui.js"), "utf8");
+  assert.match(page, /SIZE_BANDS/);
+  assert.match(lib, /from "\.\/heating-cost\.js"/);
+  assert.match(ui, /planningRange/);
+  assert.deepEqual(
+    SIZE_BANDS.map((band) => [band.id, band.low, band.high]),
+    [
+      ["mild", 20, 30],
+      ["moderate", 30, 45],
+      ["cold", 45, 60],
+      ["severe", 60, 75],
+    ],
+  );
   assert.equal(cordHeatText(24, 28), "24 to 28 million BTU per cord");
   assert.equal(cordHeatText(27, 27), "27 million BTU per cord");
 });
