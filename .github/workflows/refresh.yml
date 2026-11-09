@@ -28,6 +28,9 @@ jobs:
       changed: ${{ steps.guard.outputs.changed }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Lastmod is the commit that changed each page, which a depth-1 checkout cannot see.
+          fetch-depth: 0
       - name: Reject a snapshot path outside data/raw
         env:
           RAW_DIR: ${{ inputs.raw_dir }}
