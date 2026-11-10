@@ -1,10 +1,30 @@
-// Lastmod is the newest git commit that touched a page's source, template, or
-// rendered data. Header, footer, and the base layout are chrome, not inputs.
-// Stove and other EPA pages also consider the snapshot date; it wins only when
-// it is later than those commits. Nothing here uses the build clock.
+// Lastmod is the newest commit that changes a page's main content.
+//
+// Counted for each URL:
+// - that page's own source file (a shared route template counts for every URL it renders)
+// - content modules and components that render its copy, lists, or tools
+// - client scripts the page loads from public/scripts
+// - data files it renders: catalog JSON, the brand crosswalk and other editorial
+//   inputs behind those JSON files, and the raw EPA snapshot files for pages
+//   that render stove rows
+// - the EPA snapshot date, and only when it is later than those commits
+//
+// Not counted (a commit that only touches these leaves every lastmod unchanged):
+// - layouts, the shared header, footer, and breadcrumbs
+// - global CSS, fonts, favicons, the web manifest, robots.txt, the OG image,
+//   and brand-mark assets
+// - src/lib/schema.js, which only builds JSON-LD. A new export there is not
+//   the page body (the changelog helper used to date every brand hub)
+// - relatedLists from src/lib/lists.js. That helper only adds cross-links,
+//   the same class of change as a footer link. List pages that render a list
+//   from lists.js still use the module as list source
+//
+// Nothing here uses the build clock. A full git history is required for
+// accurate dates (actions/checkout fetch-depth: 0). A shallow checkout still
+// builds: files this checkout cannot date fall back to the EPA snapshot date.
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
-import { dirname, join, relative } from "node:path";
+import { dirname, join, normalize, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import redirects from "../../data/brand-redirects.json" with { type: "json" };
 import brands from "../../data/brands.json" with { type: "json" };
@@ -13,27 +33,56 @@ import stoves from "../../data/stoves.json" with { type: "json" };
 import { compareRedirects, selectComparePairs } from "./compare-pairs.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "../..");
-const CHROME = new Set([
-  "src/layouts/Base.astro",
+
+const IGNORED_PREFIXES = ["src/layouts/", "src/styles/", "public/fonts/", "public/brand/"];
+const IGNORED_FILES = new Set([
   "src/components/Header.astro",
   "src/components/Footer.astro",
   "src/components/Breadcrumbs.astro",
+  "src/lib/schema.js",
+  "public/favicon.ico",
+  "public/favicon.svg",
+  "public/apple-touch-icon.png",
+  "public/icon-192.png",
+  "public/icon-512.png",
+  "public/icon-maskable-512.png",
+  "public/og-image.png",
+  "public/site.webmanifest",
+  "public/robots.txt",
 ]);
+
+const EPA_RAW_FILES = [
+  "data/raw/SNAPSHOT_DATE",
+  "data/raw/rh_all.csv",
+  "data/raw/rh_inprod.csv",
+  "data/raw/wh_all.csv",
+  "data/raw/wh_inprod.csv",
+];
 const CATALOG_DATA = [
-  { pattern: /catalog\.stoves|stovesForBrand|stoveById/, file: "data/stoves.json" },
-  { pattern: /catalog\.brands|brandBySlug/, file: "data/brands.json" },
-  { pattern: /catalog\.stats/, file: "data/stats.json" },
-  { pattern: /catalog\.firewood/, file: "data/firewood.json" },
-  { pattern: /catalog\.fuelHeat/, file: "data/fuel-heat.json" },
-  { pattern: /catalog\.fuelPrices/, file: "data/fuel-prices.json" },
-  { pattern: /catalog\.changes/, file: "data/changes.json" },
-  { pattern: /catalog\.redirects/, file: "data/brand-redirects.json" },
+  {
+    pattern: /catalog\.stoves|stovesForBrand|stoveById/,
+    files: ["data/stoves.json", "data/insert-overrides.csv", ...EPA_RAW_FILES],
+  },
+  {
+    pattern: /catalog\.brands|brandBySlug/,
+    files: ["data/brands.json", "data/brand-crosswalk.csv"],
+  },
+  { pattern: /catalog\.stats/, files: ["data/stats.json"] },
+  { pattern: /catalog\.firewood/, files: ["data/firewood.json", "data/firewood.csv"] },
+  { pattern: /catalog\.fuelHeat/, files: ["data/fuel-heat.json", "data/fuel-heat.csv"] },
+  { pattern: /catalog\.fuelPrices/, files: ["data/fuel-prices.json", "data/fuel-prices.csv"] },
+  { pattern: /catalog\.changes/, files: ["data/changes.json"] },
+  {
+    pattern: /catalog\.redirects/,
+    files: ["data/brand-redirects.json", "data/brand-redirects.csv"],
+  },
 ];
 const SNAPSHOT_FILES = new Set(["SNAPSHOT_DATE", "rh_all.csv", "rh_inprod.csv", "wh_all.csv", "wh_inprod.csv"]);
 const EDITORIAL_FILES = new Set(["brand-redirects.csv", "insert-overrides.csv", "brand-crosswalk.csv"]);
 const STOVE_TEMPLATE = "src/pages/stoves/[manufacturer]/[model].astro";
 const BRAND_TEMPLATE = "src/pages/brands/[brand].astro";
 const COMPARE_TEMPLATE = "src/pages/compare/[pair].astro";
+const NAV_ONLY_LIST_EXPORTS = new Set(["relatedLists"]);
 
 const SITEMAP_LASTMOD = /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}):(\d{2})(Z|[+-]\d{2}:\d{2}))?$/;
 
@@ -85,18 +134,37 @@ export function chooseLastmod(dates) {
 }
 
 function gitFileDates() {
-  const shallow = execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
-    cwd: root,
-    encoding: "utf8",
-  }).trim();
-  if (shallow === "true") {
-    throw new Error("Shallow git history cannot date sitemap lastmod. Set actions/checkout fetch-depth: 0.");
+  let shallow = false;
+  let sawShallowProbe = false;
+  try {
+    const probe = execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim();
+    sawShallowProbe = true;
+    shallow = probe === "true";
+  } catch {
+    shallow = true;
   }
-  const log = execFileSync("git", ["log", "--format=%cI", "--name-only"], {
-    cwd: root,
-    encoding: "utf8",
-    maxBuffer: 64 * 1024 * 1024,
-  });
+  let log = "";
+  try {
+    log = execFileSync("git", ["log", "--format=%cI", "--name-only"], {
+      cwd: root,
+      encoding: "utf8",
+      maxBuffer: 64 * 1024 * 1024,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
+  } catch (error) {
+    if (sawShallowProbe && !shallow) throw error;
+    shallow = true;
+    log = "";
+  }
+  if (shallow) {
+    console.warn(
+      "sitemap lastmod: git history is shallow or unavailable. Files missing from this checkout fall back to the EPA snapshot date. actions/checkout fetch-depth: 0 keeps per-page dates accurate.",
+    );
+  }
   const dates = new Map();
   let current = "";
   for (const line of log.split("\n")) {
@@ -109,7 +177,13 @@ function gitFileDates() {
     if (!current || dates.has(file)) continue;
     dates.set(file, current);
   }
-  return dates;
+  return { dates, shallow };
+}
+
+function isIgnoredInput(rel) {
+  if (!rel || rel.endsWith(".css")) return true;
+  if (IGNORED_FILES.has(rel)) return true;
+  return IGNORED_PREFIXES.some((prefix) => rel.startsWith(prefix));
 }
 
 function importedSpecs(source) {
@@ -120,16 +194,54 @@ function importedSpecs(source) {
   return specs;
 }
 
-function resolveSpec(fromRel, spec) {
-  const base = join(root, dirname(fromRel), spec);
+function namedImports(source, filename) {
+  const names = [];
+  let saw = false;
+  const pattern = /import\s+([\s\S]*?)\s+from\s+["']([^"']+)["']/g;
+  for (const match of source.matchAll(pattern)) {
+    const spec = match[2];
+    if (spec !== filename && !spec.endsWith(`/${filename}`)) continue;
+    saw = true;
+    const brace = match[1].match(/\{([^}]*)\}/);
+    if (!brace) {
+      names.push("*");
+      continue;
+    }
+    for (const part of brace[1].split(",")) {
+      let name = part.trim().replace(/^type\s+/, "");
+      if (!name) continue;
+      name = name.split(/\s+as\s+/)[0].trim();
+      if (name) names.push(name);
+    }
+  }
+  return saw ? names : null;
+}
+
+function listsImportIsNavOnly(source, spec) {
+  if (spec !== "lists.js" && !spec.endsWith("/lists.js")) return false;
+  const names = namedImports(source, "lists.js");
+  return Boolean(names?.length) && names.every((name) => NAV_ONLY_LIST_EXPORTS.has(name));
+}
+
+function scriptAssets(source) {
+  const assets = [];
+  for (const match of source.matchAll(/\ssrc=["'](\/scripts\/[^"']+)["']/g)) {
+    assets.push(`public${match[1]}`);
+  }
+  return assets;
+}
+
+function resolveSpec(fromRel, spec, exists) {
+  if (!spec.startsWith(".")) return null;
+  const base = normalize(join(dirname(fromRel), spec)).replaceAll("\\", "/");
   const candidates = [base, `${base}.js`, `${base}.mjs`, `${base}.astro`, `${base}.json`];
   for (const candidate of candidates) {
-    if (existsSync(candidate) && statSync(candidate).isFile()) return relative(root, candidate).replaceAll("\\", "/");
+    if (exists(candidate)) return candidate;
   }
   return null;
 }
 
-function contentInputs(entryRel) {
+function contentInputs(entryRel, env) {
   const files = new Set();
   let useSnapshot = false;
   let useChangelog = false;
@@ -137,21 +249,28 @@ function contentInputs(entryRel) {
   const stack = [entryRel];
   while (stack.length) {
     const rel = stack.pop();
-    if (!rel || seen.has(rel) || CHROME.has(rel) || rel.endsWith(".css")) continue;
+    if (!rel || seen.has(rel) || isIgnoredInput(rel)) continue;
     seen.add(rel);
     if (rel === "src/lib/catalog.js") continue;
     files.add(rel);
     if (rel === "src/lib/epa-snapshots.js") useChangelog = true;
     if (rel.endsWith(".json") || rel.endsWith(".csv")) continue;
-    const source = readFileSync(join(root, rel), "utf8");
+    const source = env.readFile(rel);
     if (/from\s+["'][^"']*\/catalog\.js["']/.test(source)) {
       if (/catalog\.meta\b/.test(source)) useSnapshot = true;
       for (const rule of CATALOG_DATA) {
-        if (rule.pattern.test(source)) files.add(rule.file);
+        if (!rule.pattern.test(source)) continue;
+        for (const file of rule.files) {
+          if (env.exists(file)) files.add(file);
+        }
       }
     }
+    for (const asset of scriptAssets(source)) {
+      if (!isIgnoredInput(asset) && env.exists(asset)) files.add(asset);
+    }
     for (const spec of importedSpecs(source)) {
-      const resolved = resolveSpec(rel, spec);
+      if (listsImportIsNavOnly(source, spec)) continue;
+      const resolved = resolveSpec(rel, spec, env.exists);
       if (resolved) stack.push(resolved);
     }
   }
@@ -169,21 +288,29 @@ function isChangelogInput(file) {
 function changelogDates(fileDates) {
   const dates = [];
   for (const [file, date] of fileDates) {
-    if (isChangelogInput(file)) dates.push(date);
+    if (date && isChangelogInput(file)) dates.push(date);
   }
   return dates;
 }
 
-function lastmodFor(entryRel, fileDates, snapshotDate) {
-  const inputs = contentInputs(entryRel);
-  const dates = [];
-  for (const file of inputs.files) {
-    const date = fileDates.get(file);
-    if (!date) throw new Error(`No git commit date for ${file}. Checkout needs fetch-depth: 0.`);
-    dates.push(date);
+function dateFor(file, env) {
+  const date = env.fileDates.get(file);
+  if (date) return date;
+  if (env.shallow) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(env.snapshotDate)) {
+      throw new Error(`EPA snapshot date is not YYYY-MM-DD: ${env.snapshotDate}`);
+    }
+    return env.snapshotDate;
   }
-  if (inputs.useSnapshot) dates.push(snapshotDate);
-  if (inputs.useChangelog) dates.push(...changelogDates(fileDates));
+  throw new Error(`No git commit date for ${file}. Checkout needs fetch-depth: 0.`);
+}
+
+function lastmodFor(entryRel, env) {
+  const inputs = contentInputs(entryRel, env);
+  const dates = [];
+  for (const file of inputs.files) dates.push(dateFor(file, env));
+  if (inputs.useSnapshot) dates.push(env.snapshotDate);
+  if (inputs.useChangelog) dates.push(...changelogDates(env.fileDates));
   return chooseLastmod(dates);
 }
 
@@ -209,26 +336,60 @@ function assign(map, pathname, lastmod) {
   map.set(pathname, lastmod);
 }
 
-export function buildSitemapLastmods() {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(meta.snapshotDate)) {
-    throw new Error(`EPA snapshot date is not YYYY-MM-DD: ${meta.snapshotDate}`);
-  }
-  const fileDates = gitFileDates();
-  const map = new Map();
+function discoverEntries() {
+  const entries = [];
   for (const rel of walkPages(join(root, "src/pages"))) {
     if (rel.includes("[") || rel.endsWith("/404.astro")) continue;
-    assign(map, pathnameForPage(rel), lastmodFor(rel, fileDates, meta.snapshotDate));
+    entries.push({ rel, paths: [pathnameForPage(rel)] });
   }
-  const stoveLastmod = lastmodFor(STOVE_TEMPLATE, fileDates, meta.snapshotDate);
-  for (const stove of stoves) assign(map, stove.url, stoveLastmod);
-  const brandLastmod = lastmodFor(BRAND_TEMPLATE, fileDates, meta.snapshotDate);
-  for (const brand of brands) assign(map, brand.url, brandLastmod);
-  for (const redirect of redirects) assign(map, redirect.url, brandLastmod);
-  const compareLastmod = lastmodFor(COMPARE_TEMPLATE, fileDates, meta.snapshotDate);
+  entries.push({ rel: STOVE_TEMPLATE, paths: stoves.map((stove) => stove.url) });
+  const brandPaths = brands.map((brand) => brand.url);
+  for (const redirect of redirects) brandPaths.push(redirect.url);
+  entries.push({ rel: BRAND_TEMPLATE, paths: brandPaths });
   const pairs = selectComparePairs(stoves, { brandBySlug: new Map(brands.map((brand) => [brand.slug, brand])) });
-  for (const pair of pairs) assign(map, pair.url, compareLastmod);
-  for (const redirect of compareRedirects(pairs)) assign(map, redirect.url, compareLastmod);
+  const comparePaths = pairs.map((pair) => pair.url);
+  for (const redirect of compareRedirects(pairs)) comparePaths.push(redirect.url);
+  entries.push({ rel: COMPARE_TEMPLATE, paths: comparePaths });
+  return entries;
+}
+
+function repoEnv(fileDates, options) {
+  return {
+    fileDates,
+    snapshotDate: options.snapshotDate || meta.snapshotDate,
+    shallow: options.shallow === true,
+    readFile: (rel) => readFileSync(join(root, rel), "utf8"),
+    exists: (rel) => {
+      const full = join(root, rel);
+      return existsSync(full) && statSync(full).isFile();
+    },
+  };
+}
+
+export function lastmodsFromEntries(entries, env) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(env.snapshotDate)) {
+    throw new Error(`EPA snapshot date is not YYYY-MM-DD: ${env.snapshotDate}`);
+  }
+  const map = new Map();
+  const cache = new Map();
+  for (const entry of entries) {
+    let lastmod = cache.get(entry.rel);
+    if (!lastmod) {
+      lastmod = lastmodFor(entry.rel, env);
+      cache.set(entry.rel, lastmod);
+    }
+    for (const pathname of entry.paths) assign(map, pathname, lastmod);
+  }
   return map;
+}
+
+export function buildSitemapLastmodsFromDates(fileDates, options = {}) {
+  return lastmodsFromEntries(discoverEntries(), repoEnv(fileDates, options));
+}
+
+export function buildSitemapLastmods() {
+  const { dates, shallow } = gitFileDates();
+  return buildSitemapLastmodsFromDates(dates, { shallow });
 }
 
 export function rewriteSitemapLastmods(distDir, lastmods) {
