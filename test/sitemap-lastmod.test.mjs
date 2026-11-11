@@ -21,7 +21,7 @@ const PAGE_COMMIT = "2026-11-09T02:27:14-06:00";
 const DATA_COMMIT = "2026-11-01T15:00:00Z";
 const SNAPSHOT = "2026-10-23";
 const SITEMAP_URLS = 1111;
-const SITEMAP_URL_HASH = "a40092cdc9653f29c0bf54cea73f14500c980ccd4082321766b94763fe26ee8e";
+const SITEMAP_URL_HASH = "d106f63a753be8a0de9c965330cd233524c885c865aea41fbb2c068a1a17ab1a";
 
 class FallbackDates extends Map {
   constructor(fallback, entries) {
