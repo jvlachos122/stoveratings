@@ -1,0 +1,78 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import SmallWoodTable from "../components/SmallWoodTable.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import { articleLd, faqLd } from "../lib/schema.js";
+import {
+  SIZING_CAVEAT,
+  currentCaption,
+  currentTableLead,
+  pelletExclusionSentence,
+  previousCaption,
+  previousLead,
+  smallWoodFaqs,
+  smallWoodNotes,
+  smallWoodSentences,
+  splitSmallWoodRows,
+} from "../lib/small-wood-stoves.js";
+
+const date = catalog.meta.snapshotDate;
+const groups = splitSmallWoodRows(catalog.stoves);
+const sentences = smallWoodSentences(catalog.stoves, date);
+const faqs = smallWoodFaqs(catalog.stoves, date);
+const notes = smallWoodNotes(catalog.stoves, date);
+const description = metaDescription(sentences);
+const historyLead = previousLead(catalog.stoves);
+---
+
+<Base title="Small wood stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/small-wood-stoves/", label: "Small wood stoves" }]} jsonLd={[articleLd("Wood stoves with a listed firebox of 1 cubic foot or less", description, "/small-wood-stoves/", date), faqLd(faqs)]}>
+  <div class="wrap">
+    <h1>Wood stoves with a listed firebox of 1 cubic foot or less</h1>
+    <Answer sentences={sentences} />
+    <p>
+      {pelletExclusionSentence(catalog.stoves, date)}
+      {" "}
+      <a href="/pellet-stoves/">Pellet stoves</a> are a separate list.
+    </p>
+    <p>
+      People look this up as a small wood stove, a tiny-house wood stove, or a wood stove for a small cabin.
+      {" "}
+      {SIZING_CAVEAT}
+      {" "}
+      The <a href="/tools/stove-size-calculator/">stove size calculator</a> compares a planning BTU/hr range with the heat output EPA listed.
+    </p>
+    <h2>Currently certified</h2>
+    <p>{currentTableLead()}</p>
+    {groups.current.length ? (
+      <SmallWoodTable rows={groups.current} caption={currentCaption()} />
+    ) : (
+      <p>EPA lists no currently certified wood-stove row with a firebox volume in this range.</p>
+    )}
+    <h2>Not currently certified</h2>
+    <p>{historyLead}</p>
+    {groups.previous.length ? (
+      <SmallWoodTable rows={groups.previous} caption={previousCaption()} />
+    ) : (
+      <p>EPA lists no wood-stove row in this firebox range that is not currently certified.</p>
+    )}
+    <h2>Questions</h2>
+    {faqs.map((faq) => (
+      <section>
+        <h3>{faq.question}</h3>
+        <p>{faq.answer}</p>
+      </section>
+    ))}
+    <p>
+      Other EPA orders:
+      <a href="/most-efficient-wood-stoves/">wood stoves by HHV efficiency</a>,
+      <a href="/cleanest-burning-wood-stoves/">wood stoves by emission rate</a>,
+      <a href="/catalytic-wood-stoves/">catalytic wood stoves</a>,
+      <a href="/non-catalytic-wood-stoves/">non-catalytic wood stoves</a>,
+      and <a href="/hybrid-wood-stoves/">hybrid wood stoves</a>.
+    </p>
+    <DataNote items={notes} />
+  </div>
+</Base>

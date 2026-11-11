@@ -30,6 +30,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Highest HHV efficiency, wood: https://stoveratings.com/most-efficient-wood-stoves/
 - Highest HHV efficiency, pellet: https://stoveratings.com/most-efficient-pellet-stoves/
 - Lowest wood-stove emission rates: https://stoveratings.com/cleanest-burning-wood-stoves/
+- Small firebox wood stoves (room-heater wood-stove rows with a listed firebox of 1 cubic foot or less; pellet rows excluded because EPA does not list a cordwood firebox on them): https://stoveratings.com/small-wood-stoves/
 - Lowest pellet-stove emission rates: https://stoveratings.com/cleanest-burning-pellet-stoves/
 - Catalytic, non-catalytic, and hybrid (EPA subtype labels, currently certified room-heater counts, and median g/hr and HHV efficiency): https://stoveratings.com/catalytic-vs-non-catalytic/
 - Inserts named in the model text: https://stoveratings.com/wood-stove-inserts/ and https://stoveratings.com/pellet-stove-inserts/
