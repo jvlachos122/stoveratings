@@ -20,7 +20,7 @@ const FOOTER_COMMIT = "2026-11-08T02:24:44-06:00";
 const PAGE_COMMIT = "2026-11-09T02:27:14-06:00";
 const DATA_COMMIT = "2026-11-01T15:00:00Z";
 const SNAPSHOT = "2026-10-23";
-const SITEMAP_URLS = 1110;
+const SITEMAP_URLS = 1111;
 const SITEMAP_URL_HASH = "a40092cdc9653f29c0bf54cea73f14500c980ccd4082321766b94763fe26ee8e";
 
 class FallbackDates extends Map {
@@ -94,11 +94,12 @@ test("page lastmods follow content commits and not one shared clock", () => {
   assert.ok(distinct.size >= 4, [...distinct].join(" | "));
 });
 
-test("sitemap URL set is unchanged and every lastmod is a past W3C date", () => {
+test("sitemap URL set is the prior indexable set plus the small wood stoves page", () => {
   const hidden = new Set(noindex);
   const lastmods = buildSitemapLastmods();
   const urls = [...lastmods.keys()].filter((path) => !hidden.has(path) && !path.includes("404")).sort();
   assert.equal(urls.length, SITEMAP_URLS);
+  assert.equal(urls.includes("/small-wood-stoves/"), true);
   assert.equal(createHash("sha256").update(urls.join("\n")).digest("hex"), SITEMAP_URL_HASH);
   const now = Date.now() + 60_000;
   for (const path of urls) {

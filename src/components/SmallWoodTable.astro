@@ -1,0 +1,41 @@
+---
+import { smallWoodRowView } from "../lib/small-wood-stoves.js";
+
+const { rows = [], caption } = Astro.props;
+---
+
+<div class="table-wrap">
+  <table>
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Model line</th>
+        <th scope="col">EPA manufacturer</th>
+        <th scope="col" class="num">Firebox (cu ft)</th>
+        <th scope="col" class="num">Heat output (BTU/hr)</th>
+        <th scope="col" class="num">Emission (g/hr)</th>
+        <th scope="col" class="num">HHV efficiency</th>
+        <th scope="col">Catalytic, non-catalytic, or hybrid</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => {
+        const view = smallWoodRowView(row);
+        return (
+          <tr>
+            <th scope="row">
+              <a href={view.href}>{view.model}</a>
+              {view.insert ? <div class="small">Name indicates insert</div> : null}
+            </th>
+            <td>{view.manufacturer}</td>
+            <td class="num">{view.firebox}</td>
+            <td class="num">{view.heat}</td>
+            <td class="num">{view.emission}</td>
+            <td class="num">{view.efficiency}</td>
+            <td>{view.subtype}</td>
+          </tr>
+        );
+      })}
+    </tbody>
+  </table>
+</div>
