@@ -85,6 +85,100 @@ export function costsForFuel({ price, btuLow, btuHigh, efficiencyPercent, delive
   };
 }
 
+/**
+ * Fuel units for a delivered heat load.
+ * unitsLow uses the higher BTU per unit (fewer units). A blank or non-positive
+ * efficiency returns no numeric count and is not treated as zero.
+ */
+export function fuelUnits({ deliveredMmbtu, btuLow, btuHigh, efficiencyPercent }) {
+  const efficiency = readNumber(efficiencyPercent);
+  const heat = readNumber(deliveredMmbtu);
+  const low = readNumber(btuLow);
+  const high = readNumber(btuHigh == null ? btuLow : btuHigh);
+  const empty = { ok: false, fuelMmbtu: null, unitsLow: null, unitsHigh: null };
+  if (efficiency == null || !(efficiency > 0)) return { ...empty, reason: "efficiency" };
+  if (low == null || high == null || !(low > 0) || high < low) return { ...empty, reason: "heat" };
+  if (heat == null || !(heat > 0)) return { ...empty, reason: "season" };
+  const fuelMmbtu = heat / (efficiency / 100);
+  return {
+    ok: true,
+    reason: null,
+    fuelMmbtu,
+    unitsLow: fuelMmbtu / (high / 1_000_000),
+    unitsHigh: fuelMmbtu / (low / 1_000_000),
+  };
+}
+
+function searchParamsFrom(search) {
+  if (search instanceof URLSearchParams) return search;
+  let text = String(search ?? "");
+  const query = text.indexOf("?");
+  if (query >= 0) text = text.slice(query + 1);
+  return new URLSearchParams(text);
+}
+
+/** A positive amount, or null. Zero and a blank are not a price or an efficiency. */
+export function positiveAmountText(raw) {
+  if (raw == null) return null;
+  const value = readNumber(raw);
+  if (value == null || !(value > 0)) return null;
+  return String(raw).trim().replace(/[$,]/g, "").replace(/%$/, "").trim();
+}
+
+/**
+ * Query string for the heating cost calculator.
+ * A complete size query (sqft, band, end, hours) wins over a direct heat figure.
+ * Prices and efficiencies are omitted when blank, zero, or negative.
+ */
+export function readHeatingCostQuery(search) {
+  const params = searchParamsFrom(search);
+  const band = String(params.get("band") || "").trim();
+  const end = String(params.get("end") || "").trim();
+  const sqftText = positiveAmountText(params.get("sqft"));
+  const hoursText = positiveAmountText(params.get("hours"));
+  const heatText = positiveAmountText(params.get("heat"));
+  const bandOk = SIZE_BANDS.some((item) => item.id === band);
+  const endOk = end === "low" || end === "high";
+  const sizeOk = sqftText != null && hoursText != null && bandOk && endOk;
+  const mode = sizeOk ? "size" : heatText != null ? "direct" : null;
+  return {
+    mode,
+    sqftText: sizeOk ? sqftText : null,
+    hoursText: sizeOk ? hoursText : null,
+    band: sizeOk ? band : null,
+    end: sizeOk ? end : null,
+    heatText: mode === "direct" ? heatText : null,
+    species: String(params.get("species") || "").trim(),
+    woodPriceText: positiveAmountText(params.get("wood")),
+    woodEffText: positiveAmountText(params.get("weff")),
+    region: String(params.get("region") || "").trim(),
+    pelletPriceText: positiveAmountText(params.get("pellet")),
+    pelletEffText: positiveAmountText(params.get("peff")),
+    model: String(params.get("model") || "").trim(),
+  };
+}
+
+export function heatingCostSearch(fields) {
+  const params = new URLSearchParams();
+  const set = (key, value) => {
+    if (value == null || value === "") return;
+    params.set(key, String(value));
+  };
+  set("sqft", fields.sqft);
+  set("band", fields.band);
+  set("end", fields.end);
+  set("hours", fields.hours);
+  set("heat", fields.heat);
+  set("species", fields.species);
+  set("wood", fields.woodPriceText);
+  set("weff", fields.woodEffText);
+  set("region", fields.region);
+  set("pellet", fields.pelletPriceText);
+  set("peff", fields.pelletEffText);
+  set("model", fields.model);
+  return params.toString();
+}
+
 export function formatPlainNumber(value, maxDigits = 3) {
   return Number(value).toLocaleString("en-US", { maximumFractionDigits: maxDigits });
 }

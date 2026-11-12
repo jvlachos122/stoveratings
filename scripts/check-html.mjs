@@ -4,6 +4,13 @@ import { fileURLToPath } from "node:url";
 import { HtmlValidate } from "html-validate";
 import { formatCount } from "../src/lib/format.js";
 import {
+  COST_CAVEAT,
+  SEASON_FORMULA,
+  seasonComparison,
+  seasonCostFaqs,
+  seasonCostNotes,
+} from "../src/lib/pellet-wood-cost.js";
+import {
   COMMON_SIZES,
   SIZE_TABLE_CAPTION,
   commonSizeRows,
@@ -158,6 +165,91 @@ else {
       const app = graph.find((node) => node["@type"] === "WebApplication");
       if (!app || app.creator?.["@type"] !== "Organization" || app.publisher?.["@type"] !== "Organization") {
         errors.push("heating cost: WebApplication creator and publisher must be Organization");
+      }
+    }
+  }
+  if (!html.includes('href="/pellet-stove-vs-wood-stove/#cost-per-season"')) {
+    errors.push("heating cost: season comparison link");
+  }
+}
+
+function decodeHtml(text) {
+  return text
+    .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCodePoint(Number.parseInt(code, 16)))
+    .replaceAll("&quot;", '"')
+    .replaceAll("&lt;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&amp;", "&");
+}
+
+const seasonPage = files.find((file) => file.endsWith("/pellet-stove-vs-wood-stove/index.html"));
+if (!seasonPage) errors.push("missing pellet and wood page");
+else if (files.some((file) => file.includes("/tools/pellet-vs-wood-cost/"))) {
+  errors.push("pellet vs wood cost: duplicate tool page");
+} else {
+  const html = decodeHtml(readFileSync(seasonPage, "utf8"));
+  const meta = JSON.parse(readFileSync(join(root, "data/meta.json"), "utf8"));
+  const stats = JSON.parse(readFileSync(join(root, "data/stats.json"), "utf8"));
+  const view = seasonComparison({
+    firewood: JSON.parse(readFileSync(join(root, "data/firewood.json"), "utf8")),
+    heat: JSON.parse(readFileSync(join(root, "data/fuel-heat.json"), "utf8")),
+    prices: JSON.parse(readFileSync(join(root, "data/fuel-prices.json"), "utf8")),
+    woodMedian: stats.medians.currentWood,
+    pelletMedian: stats.medians.currentPellet,
+    snapshotDate: meta.snapshotDate,
+  });
+  const faqs = seasonCostFaqs(view);
+  const notes = seasonCostNotes(view);
+  if (!html.includes('class="answer"')) errors.push("pellet vs wood: answer box");
+  if (!html.includes('id="cost-per-season"')) errors.push("pellet vs wood: cost section");
+  if (!html.includes(view.caption)) errors.push("pellet vs wood: worked example caption");
+  if (!html.includes(SEASON_FORMULA)) errors.push("pellet vs wood: formula");
+  if (!html.includes(COST_CAVEAT)) errors.push("pellet vs wood: caveat");
+  if (!html.includes(view.href)) errors.push("pellet vs wood: calculator link");
+  if (!html.includes(`Last updated ${view.lastUpdated}`)) errors.push("pellet vs wood: last updated");
+  for (const sentence of view.sentences) {
+    if (!html.includes(sentence)) errors.push("pellet vs wood: worked sentence missing");
+  }
+  for (const row of view.rows) {
+    if (!html.includes(row.wood) || !html.includes(row.pellet)) errors.push(`pellet vs wood: missing ${row.label}`);
+  }
+  for (const faq of faqs) {
+    if (!html.includes(faq.question) || !html.includes(faq.answer)) errors.push(`pellet vs wood: FAQ missing ${faq.question}`);
+  }
+  for (const note of notes) {
+    if (!html.includes(note)) errors.push("pellet vs wood: data note missing");
+  }
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd) : "";
+  if (/\b(best|top-rated|recommend\w*)\b/i.test(main)) errors.push("pellet vs wood: banned wording");
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`pellet vs wood: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("pellet vs wood: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "FAQPage"]) {
+        if (!types.has(required)) errors.push(`pellet vs wood: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "WebApplication"]) {
+        if (types.has(banned)) errors.push(`pellet vs wood: forbidden ${banned}`);
+      }
+      const graph = Array.isArray(data["@graph"]) ? data["@graph"] : [];
+      const faq = graph.find((node) => node["@type"] === "FAQPage");
+      const questions = faq?.mainEntity || [];
+      if (questions.length !== faqs.length) errors.push("pellet vs wood: FAQ count");
+      for (const item of faqs) {
+        const match = questions.find((question) => question.name === item.question);
+        if (!match || match.acceptedAnswer?.text !== item.answer) errors.push(`pellet vs wood: FAQ JSON-LD ${item.question}`);
       }
     }
   }

@@ -11,6 +11,7 @@ import {
   heatContentText,
   pelletBtuPerShortTon,
   perMmbtuText,
+  readHeatingCostQuery,
   readNumber,
   seasonText,
 } from "./heating-cost.js";
@@ -230,7 +231,35 @@ export async function mountHeatingCost(doc, dataUrl = "/data/heating-cost.json")
     calculate();
   });
 
-  const requested = new URLSearchParams(doc.defaultView.location.search).get("model");
+  const query = readHeatingCostQuery(doc.defaultView?.location?.search || "");
+  if (query.mode === "size") {
+    const sizeRadio = form.querySelector('input[name="heat-mode"][value="size"]');
+    const directRadio = form.querySelector('input[name="heat-mode"][value="direct"]');
+    if (sizeRadio) sizeRadio.checked = true;
+    if (directRadio) directRadio.checked = false;
+    doc.getElementById("size-sqft").value = query.sqftText;
+    doc.getElementById("size-band").value = query.band;
+    doc.getElementById("size-end").value = query.end;
+    doc.getElementById("size-hours").value = query.hoursText;
+  } else if (query.mode === "direct") {
+    const sizeRadio = form.querySelector('input[name="heat-mode"][value="size"]');
+    const directRadio = form.querySelector('input[name="heat-mode"][value="direct"]');
+    if (directRadio) directRadio.checked = true;
+    if (sizeRadio) sizeRadio.checked = false;
+    doc.getElementById("heat-mmbtu").value = query.heatText;
+  }
+  if (query.species && data.firewood.some((row) => row.species === query.species)) {
+    doc.getElementById("wood-species").value = query.species;
+  }
+  if (query.woodPriceText) doc.getElementById("wood-price").value = query.woodPriceText;
+  if (query.woodEffText) doc.getElementById("wood-eff").value = query.woodEffText;
+  if (query.region.startsWith("pellets-") && heatById.has(query.region)) {
+    doc.getElementById("pellet-region").value = query.region;
+  }
+  if (query.pelletPriceText) doc.getElementById("pellet-price").value = query.pelletPriceText;
+  if (query.pelletEffText) doc.getElementById("pellet-eff").value = query.pelletEffText;
+
+  const requested = query.model;
   if (requested) {
     const model = models.find((item) => item.id === requested);
     if (model) {

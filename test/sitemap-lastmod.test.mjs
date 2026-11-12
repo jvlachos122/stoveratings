@@ -283,6 +283,7 @@ test("real pages ignore chrome and a related-list edit, and follow their own dat
   const firewoodChanges = changedPaths(baseline, firewoodData);
   assert.deepEqual(firewoodChanges, [
     "/firewood-btu-chart/",
+    "/pellet-stove-vs-wood-stove/",
     "/tools/heating-cost-calculator/",
   ]);
 
