@@ -42,6 +42,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Heating cost calculator (cord wood, pellets, and other fuels; prices and heat contents are committed files): https://stoveratings.com/tools/heating-cost-calculator/
 - Pellet and wood figures: https://stoveratings.com/pellet-stove-vs-wood-stove/
 - Tax credit status: https://stoveratings.com/wood-stove-tax-credit/
+- Certified before 2020 (what the 2020 NSPS Step 2 limit changed, and what a Yes or No in the NSPS Compliance 2020 cell means): https://stoveratings.com/certified-before-2020/
 - Methodology: https://stoveratings.com/methodology/
 - Data changelog (committed EPA snapshots): https://stoveratings.com/data/changelog/
 - Example comparisons (not a ranking; no sales data): https://stoveratings.com/compare/

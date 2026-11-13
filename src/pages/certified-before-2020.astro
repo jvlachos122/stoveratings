@@ -1,0 +1,106 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import NspsCountTable from "../components/NspsCountTable.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import {
+  NSPS_CAPTIONS,
+  NSPS_HEADINGS,
+  NSPS_PAGE,
+  NSPS_SOURCES,
+  assertNspsCopy,
+  mixedValueText,
+  nspsCopyParts,
+  nspsReport,
+  nspsVisibleText,
+} from "../lib/nsps-2020.js";
+import { articleLd, faqLd } from "../lib/schema.js";
+
+const date = catalog.meta.snapshotDate;
+const report = nspsReport(catalog.stoves);
+const parts = nspsCopyParts(report, date);
+const sentences = parts.sentences;
+const faqs = parts.faqs;
+const noLead = parts.noLead;
+const description = metaDescription(sentences);
+assertNspsCopy(nspsVisibleText(parts));
+---
+
+<Base title="Certified before 2020" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: NSPS_PAGE, label: "Certified before 2020" }]} jsonLd={[articleLd("What certified before 2020 means in the EPA wood heater list", description, NSPS_PAGE, date), faqLd(faqs)]}>
+  <div class="wrap">
+    <div class="prose">
+      <h1>Certified before 2020</h1>
+      <Answer sentences={sentences} />
+      <h2>{NSPS_HEADINGS.limit}</h2>
+      {parts.standard.map((paragraph) => <p>{paragraph}</p>)}
+      <h2>{NSPS_HEADINGS.cell}</h2>
+      {parts.cell.map((paragraph) => <p>{paragraph}</p>)}
+      {noLead.kind === "one" ? (
+        <p>{noLead.before}<a href={noLead.href}>{noLead.label}</a>{noLead.after}</p>
+      ) : (
+        <p>{noLead.text}</p>
+      )}
+      {noLead.kind === "many" ? (
+        <ul>
+          {noLead.rows.map((row) => (
+            <li><a href={row.url}>{row.model}</a></li>
+          ))}
+        </ul>
+      ) : null}
+      <h2>{NSPS_HEADINGS.counts}</h2>
+      {parts.counts.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+    <NspsCountTable rows={report.currentByType} caption={NSPS_CAPTIONS.currentType} />
+    <NspsCountTable rows={report.allByType} caption={NSPS_CAPTIONS.allType} />
+    <NspsCountTable rows={report.currentCross} caption={NSPS_CAPTIONS.currentCross} cross />
+    <NspsCountTable rows={report.allCross} caption={NSPS_CAPTIONS.allCross} cross />
+    {report.mixed.length ? (
+      <div class="table-wrap">
+        <table>
+          <caption>{NSPS_CAPTIONS.mixed}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Model line</th>
+              <th scope="col">EPA manufacturer</th>
+              <th scope="col">2020 NSPS on each test row</th>
+            </tr>
+          </thead>
+          <tbody>
+            {report.mixed.map((line) => (
+              <tr>
+                <th scope="row"><a href={line.url}>{line.model}</a></th>
+                <td>{line.manufacturer}</td>
+                <td>{mixedValueText(line)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    ) : null}
+    <div class="prose">
+      <h2>{NSPS_HEADINGS.lookup}</h2>
+      {parts.links.map((part) => (
+        <p>
+          {part.before}
+          {part.href ? <a href={part.href}>{part.label}</a> : null}
+          {part.after}
+        </p>
+      ))}
+      {faqs.map((faq) => (
+        <section>
+          <h2>{faq.question}</h2>
+          <p>{faq.answer}</p>
+        </section>
+      ))}
+      <h2>{NSPS_HEADINGS.sources}</h2>
+      <ul>
+        {NSPS_SOURCES.map((source) => (
+          <li><a href={source.href}>{source.label}</a>{`. Retrieved ${source.retrieved}.`}</li>
+        ))}
+      </ul>
+      <DataNote items={parts.notes} />
+    </div>
+  </div>
+</Base>

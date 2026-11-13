@@ -1,0 +1,34 @@
+---
+import { formatCount } from "../lib/format.js";
+import { BLANK_COLUMN, blankCountText } from "../lib/nsps-2020.js";
+
+const { rows, caption, cross = false } = Astro.props;
+---
+
+<div class="table-wrap">
+  <table>
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        {cross ? <th scope="col">EPA type</th> : null}
+        <th scope="col">{cross ? "EPA subtype" : "EPA type"}</th>
+        <th scope="col" class="num">Yes</th>
+        <th scope="col" class="num">No</th>
+        <th scope="col" class="num">{BLANK_COLUMN}</th>
+        <th scope="col" class="num">Rows</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr>
+          {cross ? <td>{row.typeLabel}</td> : null}
+          <th scope="row">{cross ? row.subtypeLabel : row.label}</th>
+          <td class="num">{formatCount(row.yes)}</td>
+          <td class="num">{formatCount(row.no)}</td>
+          <td class="num">{blankCountText(row.blank)}</td>
+          <td class="num">{formatCount(row.rows)}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

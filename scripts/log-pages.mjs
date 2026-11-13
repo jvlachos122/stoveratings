@@ -58,7 +58,7 @@ const buckets = {
   firewood: count((file) => file === "/firewood-btu-chart/index.html"),
   calculator: count((file) => file === "/tools/stove-size-calculator/index.html"),
   heatingCost: count((file) => file === "/tools/heating-cost-calculator/index.html"),
-  explainers: count((file) => ["/pellet-stove-vs-wood-stove/index.html", "/wood-stove-tax-credit/index.html"].includes(file)),
+  explainers: count((file) => ["/pellet-stove-vs-wood-stove/index.html", "/wood-stove-tax-credit/index.html", "/certified-before-2020/index.html"].includes(file)),
   changelog: count((file) => file === "/data/changelog/index.html"),
 };
 const named = Object.values(buckets).reduce((sum, value) => sum + value, 0);
@@ -102,6 +102,7 @@ if (buckets.other) {
         "/tools/heating-cost-calculator/index.html",
         "/pellet-stove-vs-wood-stove/index.html",
         "/wood-stove-tax-credit/index.html",
+        "/certified-before-2020/index.html",
         "/data/changelog/index.html",
       ].includes(file),
   );
