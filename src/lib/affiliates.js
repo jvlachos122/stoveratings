@@ -171,17 +171,17 @@ function attrs(tag) {
 
 export function affiliateMarkupProblems(html) {
   const problems = [];
-  const asideRe = /<aside\b[^>]*class="[^"]*\baffiliate-note\b[^"]*"[^>]*>[\s\S]*?<\/aside>/gi;
-  const asides = [...html.matchAll(asideRe)];
+  const blockRe = /<div\b[^>]*class="[^"]*\baffiliate-note\b[^"]*"[^>]*>[\s\S]*?<\/div>/gi;
+  const blocks = [...html.matchAll(blockRe)];
   const covered = [];
-  for (const match of asides) {
+  for (const match of blocks) {
     const block = match[0];
     covered.push([match.index, match.index + block.length]);
-    const open = block.match(/^<aside\b[^>]*>/i)?.[0] || "";
-    if (!/\bdata-affiliate="logox"/.test(open)) problems.push("affiliate aside is missing data-affiliate");
+    const open = block.match(/^<div\b[^>]*>/i)?.[0] || "";
+    if (!/\bdata-affiliate="logox"/.test(open)) problems.push("affiliate block is missing data-affiliate");
     const anchors = [...block.matchAll(/<a\b[^>]*>/gi)];
     if (anchors.length !== 1) {
-      problems.push(`affiliate aside has ${anchors.length} links`);
+      problems.push(`affiliate block has ${anchors.length} links`);
       continue;
     }
     const tag = anchors[0][0];
@@ -219,7 +219,7 @@ export function affiliateMarkupProblems(html) {
     if (inside) continue;
     const href = attrs(match[0]).href || "";
     if (/awin1\.com|thelogox\.com|awinmid=|awinaffid=/i.test(href)) {
-      problems.push(`LogOX link outside an affiliate aside: ${href}`);
+      problems.push(`LogOX link outside an affiliate block: ${href}`);
     }
   }
   return problems;

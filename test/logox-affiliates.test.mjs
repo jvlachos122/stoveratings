@@ -36,7 +36,7 @@ function walk(dir, out = []) {
 
 function renderedNote(note) {
   const href = note.href.replaceAll("&", "&amp;");
-  return `<aside class="affiliate-note" data-affiliate="logox">\n  <p><a href="${href}" rel="${note.rel}">${note.label}</a></p>\n  <p class="affiliate-disclosure">${note.disclosure}</p>\n</aside>`;
+  return `<div class="affiliate-note" data-affiliate="logox">\n  <p><a href="${href}" rel="${note.rel}">${note.label}</a></p>\n  <p class="affiliate-disclosure">${note.disclosure}</p>\n</div>`;
 }
 
 test("every LogOX link is an Awin deep link beside the disclosure", () => {
@@ -49,7 +49,7 @@ test("every LogOX link is an Awin deep link beside the disclosure", () => {
   const component = read("src/components/LogoxNote.astro");
   assert.match(
     component,
-    /<aside class="affiliate-note" data-affiliate="logox">\s*<p><a href=\{note\.href\} rel=\{note\.rel\}>\{note\.label\}<\/a><\/p>\s*<p class="affiliate-disclosure">\{note\.disclosure\}<\/p>\s*<\/aside>/,
+    /<div class="affiliate-note" data-affiliate="logox">\s*<p><a href=\{note\.href\} rel=\{note\.rel\}>\{note\.label\}<\/a><\/p>\s*<p class="affiliate-disclosure">\{note\.disclosure\}<\/p>\s*<\/div>/,
   );
   assert.doesNotMatch(component, /\btarget=/);
 
@@ -126,12 +126,12 @@ test("LogOX merchant URLs stay in the helper, and the disclosure names Awin and 
   }
 });
 
-test("a LogOX anchor outside the disclosed aside is rejected", () => {
+test("a LogOX anchor outside the disclosed block is rejected", () => {
   const bare = '<a href="https://www.thelogox.com/collections/tools">Firewood tools from LogOX</a>';
   const problems = affiliateMarkupProblems(bare);
   assert.equal(problems.length > 0, true);
   const note = logoxNote("/firewood-btu-chart/");
   const href = note.href.replaceAll("&", "&amp;");
-  const missingRel = `<aside class="affiliate-note" data-affiliate="logox"><p><a href="${href}">${note.label}</a></p><p class="affiliate-disclosure">${note.disclosure}</p></aside>`;
+  const missingRel = `<div class="affiliate-note" data-affiliate="logox"><p><a href="${href}">${note.label}</a></p><p class="affiliate-disclosure">${note.disclosure}</p></div>`;
   assert.equal(affiliateMarkupProblems(missingRel).some((problem) => /sponsored|rel/.test(problem)), true);
 });

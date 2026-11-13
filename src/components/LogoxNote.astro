@@ -5,8 +5,8 @@ const note = logoxNote(Astro.props.path);
 ---
 
 {note ? (
-  <aside class="affiliate-note" data-affiliate="logox">
+  <div class="affiliate-note" data-affiliate="logox">
     <p><a href={note.href} rel={note.rel}>{note.label}</a></p>
     <p class="affiliate-disclosure">{note.disclosure}</p>
-  </aside>
+  </div>
 ) : null}
