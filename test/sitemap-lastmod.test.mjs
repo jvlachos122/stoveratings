@@ -20,8 +20,8 @@ const FOOTER_COMMIT = "2026-11-08T02:24:44-06:00";
 const PAGE_COMMIT = "2026-11-09T02:27:14-06:00";
 const DATA_COMMIT = "2026-11-01T15:00:00Z";
 const SNAPSHOT = "2026-10-23";
-const SITEMAP_URLS = 1111;
-const SITEMAP_URL_HASH = "d106f63a753be8a0de9c965330cd233524c885c865aea41fbb2c068a1a17ab1a";
+const SITEMAP_URLS = 1112;
+const SITEMAP_URL_HASH = "8c3c95f07a19ad3181591aa4f860ab81622dae16294b3ac003e0db33f643018e";
 
 class FallbackDates extends Map {
   constructor(fallback, entries) {
@@ -94,12 +94,13 @@ test("page lastmods follow content commits and not one shared clock", () => {
   assert.ok(distinct.size >= 4, [...distinct].join(" | "));
 });
 
-test("sitemap URL set is the prior indexable set plus the small wood stoves page", () => {
+test("sitemap URL set is the prior indexable set plus the certified-before-2020 page", () => {
   const hidden = new Set(noindex);
   const lastmods = buildSitemapLastmods();
   const urls = [...lastmods.keys()].filter((path) => !hidden.has(path) && !path.includes("404")).sort();
   assert.equal(urls.length, SITEMAP_URLS);
   assert.equal(urls.includes("/small-wood-stoves/"), true);
+  assert.equal(urls.includes("/certified-before-2020/"), true);
   assert.equal(createHash("sha256").update(urls.join("\n")).digest("hex"), SITEMAP_URL_HASH);
   const now = Date.now() + 60_000;
   for (const path of urls) {

@@ -156,8 +156,8 @@ const notes = [
             {stove.tests.map((test) => <td>{test.testMethod || "Not listed"}</td>)}
           </tr>
           <tr>
-            <th scope="row">2020 NSPS</th>
-            {stove.tests.map((test) => <td>{test.nsps2020 || "Not listed"}</td>)}
+            <th scope="row"><a href="/certified-before-2020/">2020 NSPS</a></th>
+            {stove.tests.map((test) => <td>{test.nsps2020 || "Not listed by EPA"}</td>)}
           </tr>
           {stove.category === "central" ? (
             <tr>
