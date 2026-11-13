@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
@@ -36,5 +37,6 @@ const description = metaDescription(sentences);
       { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified hydronic heaters that do not list wood pellets" },
     ]} />
     <DataNote items={["Emission rates for central heaters are annual averages in pounds per million BTU, not the grams-per-hour unit used for room heaters.", "Do not compare a lb/mmBTU figure with a g/hr figure as if they were the same measurement."]} />
+    <LogoxNote path="/outdoor-wood-boilers/" />
   </div>
 </Base>

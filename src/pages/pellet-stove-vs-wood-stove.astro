@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import LogoxNote from "../components/LogoxNote.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
 import { formatNumber, metaDescription } from "../lib/format.js";
@@ -114,6 +115,7 @@ const description = metaDescription(sentences);
       Efficiencies are the median Overall Efficiency-HHV (%) of currently certified wood-stove rows and pellet-stove rows in the EPA Certified Wood Heater Database, snapshot {date}.
       Last updated {comparison.lastUpdated}.
     </p>
+    <LogoxNote path="/pellet-stove-vs-wood-stove/" />
     <h2>Questions</h2>
     {faqs.map((faq) => (
       <section>

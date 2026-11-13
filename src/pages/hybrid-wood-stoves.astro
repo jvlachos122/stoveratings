@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
@@ -31,5 +32,6 @@ const description = metaDescription(sentences);
       { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified hybrid wood-stove model lines" },
     ]} />
     <DataNote items={["Hybrid is the EPA subtype on the row. This page does not reclassify stoves.", "Medians are for wood-stove rows only."]} />
+    <LogoxNote path="/hybrid-wood-stoves/" />
   </div>
 </Base>

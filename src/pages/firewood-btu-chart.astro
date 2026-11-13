@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import LogoxNote from "../components/LogoxNote.astro";
 import Base from "../layouts/Base.astro";
 import { firewoodSentences } from "../lib/answers.js";
 import { catalog } from "../lib/catalog.js";
@@ -50,6 +51,7 @@ const payload = JSON.stringify(rows).replace(/</g, "\\u003c");
     </div>
     <p>Source for every row: <a href={source}>University of Arkansas Division of Agriculture Cooperative Extension Service</a>. The page says the heat values were compiled from USDA Forest Service Leaflet No. 559. Retrieved 2026-10-23.</p>
     <p>These cord values are the heat contents in the <a href="/tools/heating-cost-calculator/">heating cost calculator</a>. That page does not set a cord price.</p>
+    <LogoxNote path="/firewood-btu-chart/" />
     <h2>Compare two species</h2>
     <form id="wood-form">
       <div class="filters">

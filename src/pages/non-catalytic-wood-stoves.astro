@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
@@ -30,5 +31,6 @@ const description = metaDescription(sentences);
       { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified non-catalytic wood-stove model lines" },
     ]} />
     <DataNote items={["Medians use currently certified wood-stove rows whose subtype is Non-Catalytic Stove.", "A blank cell is Not listed, not zero."]} />
+    <LogoxNote path="/non-catalytic-wood-stoves/" />
   </div>
 </Base>
