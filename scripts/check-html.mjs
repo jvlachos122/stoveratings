@@ -2,6 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { HtmlValidate } from "html-validate";
+import { LOGOX, LOGOX_DESTINATIONS, LOGOX_PLACEMENTS, affiliateMarkupProblems } from "../src/lib/affiliates.js";
 import { formatCount } from "../src/lib/format.js";
 import {
   COST_CAVEAT,
@@ -84,6 +85,7 @@ const validator = new HtmlValidate({
 });
 
 const files = walk(dist);
+let logoxBlocks = 0;
 for (const file of files) {
   const html = readFileSync(file, "utf8");
   const rel = file.slice(dist.length);
@@ -110,6 +112,24 @@ for (const file of files) {
   if (!shouldHide && noindex) errors.push(`${rel}: unexpected noindex`);
   if (/<(?:script|link)\b[^>]*(?:src|href)="https?:\/\/(?!stoveratings\.com)/.test(html)) {
     errors.push(`${rel}: off-site script or stylesheet`);
+  }
+  for (const problem of affiliateMarkupProblems(html)) errors.push(`${rel}: ${problem}`);
+  logoxBlocks += (html.match(/data-affiliate="logox"/g) || []).length;
+}
+const expectedLogoxBlocks = LOGOX.enabled ? LOGOX_PLACEMENTS.length : 0;
+if (logoxBlocks !== expectedLogoxBlocks) errors.push(`LogOX blocks ${logoxBlocks} != ${expectedLogoxBlocks}`);
+if (LOGOX.enabled) {
+  const disclosureHtml = readFileSync(join(dist, "disclosure/index.html"), "utf8");
+  const aboutHtml = readFileSync(join(dist, "about/index.html"), "utf8");
+  if (!disclosureHtml.includes("Awin") || !disclosureHtml.includes("LogOX") || !disclosureHtml.includes(LOGOX.disclosure)) {
+    errors.push("disclosure: missing Awin, LogOX, or the on-page disclosure sentence");
+  }
+  if (!aboutHtml.includes("Awin") || !aboutHtml.includes("LogOX")) errors.push("about: missing Awin or LogOX");
+  for (const placement of LOGOX_PLACEMENTS) {
+    const destination = LOGOX_DESTINATIONS[placement.destinationId].url;
+    if (!disclosureHtml.includes(placement.path) || !disclosureHtml.includes(destination)) {
+      errors.push(`disclosure: missing ${placement.path}`);
+    }
   }
 }
 

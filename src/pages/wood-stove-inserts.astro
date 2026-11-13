@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
 import { insertDataNotes } from "../lib/answers.js";
@@ -35,5 +36,6 @@ const description = metaDescription(sentences);
       { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified wood-stove model lines whose names indicate an insert" },
     ]} />
     <DataNote items={insertDataNotes} />
+    <LogoxNote path="/wood-stove-inserts/" />
   </div>
 </Base>
