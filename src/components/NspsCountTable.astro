@@ -10,11 +10,11 @@ const { rows, caption, cross = false } = Astro.props;
     <caption>{caption}</caption>
     <thead>
       <tr>
-        {cross ? <th scope="col">EPA type</th> : null}
-        <th scope="col">{cross ? "EPA subtype" : "EPA type"}</th>
-        <th scope="col" class="num">Yes</th>
-        <th scope="col" class="num">No</th>
-        <th scope="col" class="num">{BLANK_COLUMN}</th>
+        {cross ? <th scope="col"><a href="/glossary/#epa-type">EPA type</a></th> : null}
+        <th scope="col">{cross ? <a href="/glossary/#epa-subtype">EPA subtype</a> : <a href="/glossary/#epa-type">EPA type</a>}</th>
+        <th scope="col" class="num"><a href="/glossary/#nsps-2020">Yes</a></th>
+        <th scope="col" class="num"><a href="/glossary/#nsps-2020">No</a></th>
+        <th scope="col" class="num"><a href="/glossary/#not-listed">{BLANK_COLUMN}</a></th>
         <th scope="col" class="num">Rows</th>
       </tr>
     </thead>

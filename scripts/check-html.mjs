@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { HtmlValidate } from "html-validate";
 import { LOGOX, LOGOX_DESTINATIONS, LOGOX_PLACEMENTS, affiliateMarkupProblems } from "../src/lib/affiliates.js";
 import { formatCount } from "../src/lib/format.js";
+import { glossaryParts, glossaryVisibleText, assertGlossaryCopy } from "../src/lib/glossary.js";
 import {
   COST_CAVEAT,
   SEASON_FORMULA,
@@ -359,6 +360,70 @@ else {
       errors.push("stove size: json heat output");
     }
   }
+}
+
+const glossaryFile = files.find((file) => file.endsWith("/glossary/index.html"));
+if (!glossaryFile) errors.push("missing glossary page");
+else {
+  const html = decodeHtml(readFileSync(glossaryFile, "utf8"));
+  const meta = JSON.parse(readFileSync(join(root, "data/meta.json"), "utf8"));
+  const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
+  const glossary = glossaryParts(stoves, meta.snapshotDate);
+  try {
+    assertGlossaryCopy(glossaryVisibleText(glossary));
+  } catch (error) {
+    errors.push(`glossary: ${error.message}`);
+  }
+  if (!html.includes('class="answer"')) errors.push("glossary: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("glossary: answer box sentences");
+  for (const sentence of glossary.sentences) {
+    if (!html.includes(sentence)) errors.push("glossary: answer sentence missing");
+  }
+  for (const item of glossary.terms) {
+    if (!html.includes(`id="${item.id}"`)) errors.push(`glossary: missing #${item.id}`);
+    for (const sentence of item.sentences) {
+      if (!html.includes(sentence)) errors.push(`glossary: missing sentence for ${item.id}`);
+    }
+  }
+  for (const group of glossary.groups) {
+    if (!html.includes(`id="${group.id}"`)) errors.push(`glossary: missing #${group.id}`);
+  }
+  for (const faq of glossary.faqs) {
+    if (!html.includes(faq.question) || !html.includes(faq.answer)) errors.push(`glossary: FAQ missing ${faq.question}`);
+  }
+  for (const source of glossary.sources) {
+    if (!html.includes(source.href) || !html.includes(`Retrieved ${source.retrieved}`)) {
+      errors.push(`glossary: citation ${source.href}`);
+    }
+  }
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`glossary: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("glossary: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "FAQPage"]) {
+        if (!types.has(required)) errors.push(`glossary: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "DefinedTerm", "DefinedTermSet", "WebApplication"]) {
+        if (types.has(banned)) errors.push(`glossary: forbidden ${banned}`);
+      }
+    }
+  }
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd).replace(/href="[^"]*"/g, "") : "";
+  if (/\bbest\b/i.test(main)) errors.push("glossary: banned wording");
+  if (main.includes("cfpub.epa.gov")) errors.push("glossary: EPA application host");
 }
 
 let reported = 0;

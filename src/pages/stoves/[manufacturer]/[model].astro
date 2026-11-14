@@ -110,49 +110,49 @@ const notes = [
         </thead>
         <tbody>
           <tr>
-            <th scope="row">Status</th>
+            <th scope="row"><a href="/glossary/#currently-certified">Status</a></th>
             {stove.tests.map((test) => <td>{statusLabel(test.current)}</td>)}
           </tr>
           <tr>
-            <th scope="row">Type</th>
+            <th scope="row"><a href="/glossary/#epa-type">Type</a></th>
             {stove.tests.map((test) => <td>{test.type || "Not listed"}</td>)}
           </tr>
           <tr>
-            <th scope="row">Subtype</th>
+            <th scope="row"><a href="/glossary/#epa-subtype">Subtype</a></th>
             {stove.tests.map((test) => <td>{test.subtype || "Not listed"}</td>)}
           </tr>
           <tr>
-            <th scope="row">Emission</th>
+            <th scope="row"><a href={stove.category === "central" ? "/glossary/#lb-mmbtu" : "/glossary/#g-hr"}>Emission</a></th>
             {stove.tests.map((test) => <td class="num">{emissionText(test.emission, test.emissionUnit) || "Not listed"}</td>)}
           </tr>
           <tr>
-            <th scope="row">HHV efficiency</th>
+            <th scope="row"><a href="/glossary/#hhv">HHV efficiency</a></th>
             {stove.tests.map((test) => <td class="num">{test.efficiency == null ? "Not listed" : efficiencyText(test.efficiency)}</td>)}
           </tr>
           <tr>
-            <th scope="row">Heat output</th>
+            <th scope="row"><a href="/glossary/#btu-hr">Heat output</a></th>
             {stove.tests.map((test) => <td class="num">{heatText(test)}</td>)}
           </tr>
           {stove.category === "central" ? (
             <tr>
-              <th scope="row">Heat output maximum</th>
+              <th scope="row"><a href="/glossary/#btu-hr">Heat output maximum</a></th>
               {stove.tests.map((test) => <td class="num">{test.btuMax == null ? "Not listed" : `${formatBtu(test.btuMax)} BTU/hr`}</td>)}
             </tr>
           ) : null}
           <tr>
-            <th scope="row">Firebox</th>
+            <th scope="row"><a href="/glossary/#firebox-volume">Firebox</a></th>
             {stove.tests.map((test) => <td class="num">{fireboxText(test)}</td>)}
           </tr>
           <tr>
-            <th scope="row">CO</th>
+            <th scope="row"><a href="/glossary/#co">CO</a></th>
             {stove.tests.map((test) => <td class="num">{test.co == null ? "Not listed" : `${formatNumber(test.co, 3)} g/min`}</td>)}
           </tr>
           <tr>
-            <th scope="row">Certified fuel</th>
+            <th scope="row"><a href="/glossary/#certified-fuel">Certified fuel</a></th>
             {stove.tests.map((test) => <td>{test.fuel || "Not listed"}</td>)}
           </tr>
           <tr>
-            <th scope="row">Test method</th>
+            <th scope="row"><a href="/glossary/#test-method">Test method</a></th>
             {stove.tests.map((test) => <td>{test.testMethod || "Not listed"}</td>)}
           </tr>
           <tr>
@@ -161,7 +161,7 @@ const notes = [
           </tr>
           {stove.category === "central" ? (
             <tr>
-              <th scope="row">Thermal storage</th>
+              <th scope="row"><a href="/glossary/#thermal-storage">Thermal storage</a></th>
               {stove.tests.map((test) => <td>{test.thermalStorage || "Not listed"}</td>)}
             </tr>
           ) : null}

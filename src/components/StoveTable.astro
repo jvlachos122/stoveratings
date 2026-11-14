@@ -3,6 +3,7 @@ import { emissionUnitShort, fireboxText, formatNumber, heatText, statusLabel } f
 
 const { stoves = [], caption, showManufacturer = true } = Astro.props;
 const unit = stoves[0]?.emissionUnit || "g/hr";
+const emissionHref = unit === "lb/mmBTU" ? "/glossary/#lb-mmbtu" : "/glossary/#g-hr";
 ---
 
 <div class="table-wrap">
@@ -10,14 +11,14 @@ const unit = stoves[0]?.emissionUnit || "g/hr";
     <caption>{caption}</caption>
     <thead>
       <tr>
-        <th scope="col">Model line</th>
-        {showManufacturer ? <th scope="col">EPA manufacturer</th> : null}
-        <th scope="col">Status</th>
-        <th scope="col" class="num">Emission ({emissionUnitShort(unit)})</th>
-        <th scope="col" class="num">HHV efficiency</th>
-        <th scope="col" class="num">Heat output</th>
-        <th scope="col" class="num">Firebox</th>
-        <th scope="col">Fuel</th>
+        <th scope="col"><a href="/glossary/#model-line">Model line</a></th>
+        {showManufacturer ? <th scope="col"><a href="/glossary/#epa-manufacturer">EPA manufacturer</a></th> : null}
+        <th scope="col"><a href="/glossary/#currently-certified">Status</a></th>
+        <th scope="col" class="num"><a href={emissionHref}>Emission ({emissionUnitShort(unit)})</a></th>
+        <th scope="col" class="num"><a href="/glossary/#hhv">HHV efficiency</a></th>
+        <th scope="col" class="num"><a href="/glossary/#btu-hr">Heat output</a></th>
+        <th scope="col" class="num"><a href="/glossary/#firebox-volume">Firebox</a></th>
+        <th scope="col"><a href="/glossary/#certified-fuel">Fuel</a></th>
       </tr>
     </thead>
     <tbody>
