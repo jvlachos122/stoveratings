@@ -44,6 +44,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Tax credit status: https://stoveratings.com/wood-stove-tax-credit/
 - Certified before 2020 (what the 2020 NSPS Step 2 limit changed, and what a Yes or No in the NSPS Compliance 2020 cell means): https://stoveratings.com/certified-before-2020/
 - Methodology: https://stoveratings.com/methodology/
+- Glossary (g/hr, HHV and LHV, NSPS, catalytic combustor, and the other column labels): https://stoveratings.com/glossary/
 - Data changelog (committed EPA snapshots): https://stoveratings.com/data/changelog/
 - Example comparisons (not a ranking; no sales data): https://stoveratings.com/compare/
 - One example pair: https://stoveratings.com/compare/enerco-ws110-vs-sbi-solution-2-5/

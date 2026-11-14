@@ -1,0 +1,87 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import {
+  GLOSSARY_PAGE,
+  GLOSSARY_RETRIEVED,
+  assertGlossaryCopy,
+  glossaryParts,
+  glossaryVisibleText,
+} from "../lib/glossary.js";
+import { articleLd, faqLd } from "../lib/schema.js";
+
+const date = catalog.meta.snapshotDate;
+const parts = glossaryParts(catalog.stoves, date);
+const sentences = parts.sentences;
+const faqs = parts.faqs;
+const description = metaDescription(sentences);
+assertGlossaryCopy(glossaryVisibleText(parts));
+---
+
+<Base title="Glossary" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: GLOSSARY_PAGE, label: "Glossary" }]} jsonLd={[articleLd("Glossary of EPA wood heater terms", description, GLOSSARY_PAGE, date), faqLd(faqs)]}>
+  <div class="wrap">
+    <div class="prose">
+      <h1>Glossary</h1>
+      <Answer sentences={sentences} />
+      <p>EPA snapshot {date}. Regulatory pages retrieved {GLOSSARY_RETRIEVED}.</p>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <caption>{parts.caption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Term</th>
+            <th scope="col">What the label means on this site</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.terms.map((item) => (
+            <tr>
+              <th scope="row"><a href={`#${item.id}`}>{item.term}</a></th>
+              <td>{item.label}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="prose">
+      {parts.groups.map((group) => (
+        <section>
+          <h2 id={group.id}>{group.heading}</h2>
+          {group.terms.map((item) => (
+            <section>
+              <h3 id={item.id}>{item.term}</h3>
+              {item.sentences.map((sentence) => <p>{sentence}</p>)}
+              <p>
+                {item.links.map((link, index) => (
+                  <>
+                    {index === 0 ? "More detail: " : index === item.links.length - 1 ? (item.links.length === 2 ? " and " : ", and ") : ", "}
+                    <a href={link.href}>{link.label}</a>
+                    {index === item.links.length - 1 ? "." : ""}
+                  </>
+                ))}
+              </p>
+            </section>
+          ))}
+        </section>
+      ))}
+      <h2>Common questions</h2>
+      {faqs.map((faq) => (
+        <section>
+          <h3>{faq.question}</h3>
+          <p>{faq.answer}</p>
+        </section>
+      ))}
+      <h2>Sources</h2>
+      <ul>
+        {parts.sources.map((source) => (
+          <li><a href={source.href}>{source.label}</a>{`. Retrieved ${source.retrieved}.`}</li>
+        ))}
+      </ul>
+      <DataNote items={parts.notes} />
+    </div>
+  </div>
+</Base>
