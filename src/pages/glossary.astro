@@ -55,15 +55,7 @@ assertGlossaryCopy(glossaryVisibleText(parts));
             <section>
               <h3 id={item.id}>{item.term}</h3>
               {item.sentences.map((sentence) => <p>{sentence}</p>)}
-              <p>
-                {item.links.map((link, index) => (
-                  <>
-                    {index === 0 ? "More detail: " : index === item.links.length - 1 ? (item.links.length === 2 ? " and " : ", and ") : ", "}
-                    <a href={link.href}>{link.label}</a>
-                    {index === item.links.length - 1 ? "." : ""}
-                  </>
-                ))}
-              </p>
+              <p>More detail: {item.links.map((link, index) => <>{index === 0 ? "" : index === item.links.length - 1 ? (item.links.length === 2 ? " and " : ", and ") : ", "}<a href={link.href}>{link.label}</a></>)}.</p>
             </section>
           ))}
         </section>
