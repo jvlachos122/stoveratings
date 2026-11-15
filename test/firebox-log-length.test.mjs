@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import test from "node:test";
@@ -44,6 +44,51 @@ import { modelLineCount, splitSmallWoodRows } from "../src/lib/small-wood-stoves
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const banned = /\b(best|top-rated|recommend\w*|scores?)\b/i;
+
+// 1bc4d4a is the commit before the log-length page. Deploy checks out main at
+// the merged commit, and a depth-1 checkout has no parent, so `git show` and
+// `git ls-tree` of origin/main read the tree under test.
+const AFFILIATES_SHA256_BEFORE_LOG_LENGTH = "bdd081b2fb089d0ec6cb59e10ad67ff5d56c3160ce714b79ea5823ee15cea618";
+const PAGES_BEFORE_LOG_LENGTH = [
+  "404.astro",
+  "about.astro",
+  "brands/[brand].astro",
+  "brands/index.astro",
+  "catalytic-vs-non-catalytic.astro",
+  "catalytic-wood-stoves.astro",
+  "certified-before-2020.astro",
+  "cleanest-burning-pellet-stoves.astro",
+  "cleanest-burning-wood-stoves.astro",
+  "compare/[pair].astro",
+  "compare/index.astro",
+  "compare/tool.astro",
+  "contact.astro",
+  "data/changelog.astro",
+  "disclosure.astro",
+  "finder.astro",
+  "firewood-btu-chart.astro",
+  "glossary.astro",
+  "hybrid-wood-stoves.astro",
+  "index.astro",
+  "lookup.astro",
+  "methodology.astro",
+  "most-efficient-pellet-stoves.astro",
+  "most-efficient-wood-stoves.astro",
+  "non-catalytic-wood-stoves.astro",
+  "outdoor-wood-boilers.astro",
+  "pellet-boilers.astro",
+  "pellet-stove-inserts.astro",
+  "pellet-stove-vs-wood-stove.astro",
+  "pellet-stoves.astro",
+  "privacy.astro",
+  "small-wood-stoves.astro",
+  "stoves/[manufacturer]/[model].astro",
+  "tools/heating-cost-calculator.astro",
+  "tools/stove-size-calculator.astro",
+  "wood-furnaces.astro",
+  "wood-stove-inserts.astro",
+  "wood-stove-tax-credit.astro",
+];
 
 function read(path) {
   return readFileSync(join(root, path), "utf8");
@@ -323,8 +368,7 @@ test("citations have a URL and a retrieved date, and the copy does not say best"
   const noindex = readJson("data/noindex-paths.json");
   assert.equal(noindex.includes(LOG_PAGE), false);
   const affiliates = read("src/lib/affiliates.js");
-  const committed = execFileSync("git", ["show", "origin/main:src/lib/affiliates.js"], { cwd: root, encoding: "utf8" });
-  assert.equal(affiliates, committed);
+  assert.equal(createHash("sha256").update(affiliates).digest("hex"), AFFILIATES_SHA256_BEFORE_LOG_LENGTH);
 });
 
 test("the form script rejects empty and negative sides and the sitemap gains one page", () => {
@@ -390,12 +434,8 @@ test("the form script rejects empty and negative sides and the sitemap gains one
   assert.match(output.textContent, /14 inches/);
 
   const current = listPages(join(root, "src/pages"));
-  const main = execFileSync("git", ["ls-tree", "-r", "--name-only", "origin/main", "src/pages"], {
-    cwd: root,
-    encoding: "utf8",
-  }).trim().split("\n").map((file) => file.slice("src/pages/".length)).sort();
-  assert.deepEqual(current.filter((file) => !main.includes(file)), ["tools/firebox-log-length.astro"]);
-  assert.deepEqual(main.filter((file) => !current.includes(file)), []);
+  assert.deepEqual(current.filter((file) => !PAGES_BEFORE_LOG_LENGTH.includes(file)), ["tools/firebox-log-length.astro"]);
+  assert.deepEqual(PAGES_BEFORE_LOG_LENGTH.filter((file) => !current.includes(file)), []);
   assert.equal(currentWoodLines(stoves).length, volumeSummary(stoves).lines);
   assert.equal(formatCount(volumeSummary(stoves).lines).includes(","), volumeSummary(stoves).lines >= 1000);
 });
