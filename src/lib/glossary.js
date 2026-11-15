@@ -442,6 +442,20 @@ export function glossaryParts(stoves, snapshotDate) {
       ],
       links: [
         { href: "/small-wood-stoves/", label: "Small firebox wood stoves" },
+        { href: "/tools/firebox-log-length/", label: "Firebox and log length" },
+      ],
+    }),
+    term({
+      id: "log-length",
+      term: "Log length",
+      label: "A measured firebox side, not an EPA column",
+      sentences: [
+        "Log length is not an EPA column, and the export used here lists firebox size only as Firebox Volume (Cubic Feet), with no inside width, depth, or height.",
+        "A blank firebox volume is not listed by EPA and is not zero, and a cubic-foot volume on this site is not converted into a log length.",
+      ],
+      links: [
+        { href: "/tools/firebox-log-length/", label: "Firebox and log length" },
+        { href: "/small-wood-stoves/", label: "Small firebox wood stoves" },
       ],
     }),
     term({
@@ -600,7 +614,7 @@ export function glossaryParts(stoves, snapshotDate) {
     {
       id: "measurements",
       heading: "Emission, efficiency, and heat output",
-      ids: ["g-hr", "lb-mmbtu", "hhv", "lhv", "btu-hr", "co", "firebox-volume"],
+      ids: ["g-hr", "lb-mmbtu", "hhv", "lhv", "btu-hr", "co", "firebox-volume", "log-length"],
     },
     {
       id: "standards",

@@ -52,6 +52,7 @@ const payload = JSON.stringify(rows).replace(/</g, "\\u003c");
     <p>Source for every row: <a href={source}>University of Arkansas Division of Agriculture Cooperative Extension Service</a>. The page says the heat values were compiled from USDA Forest Service Leaflet No. 559. Retrieved 2026-10-23.</p>
     <p>These cord values are the heat contents in the <a href="/tools/heating-cost-calculator/">heating cost calculator</a>. That page does not set a cord price.</p>
     <LogoxNote path="/firewood-btu-chart/" />
+    <p>Piece length is separate from heat per cord. The <a href="/tools/firebox-log-length/">firebox and log length</a> page uses a measured firebox side. The EPA export on this site lists firebox volume, not that length.</p>
     <h2>Compare two species</h2>
     <form id="wood-form">
       <div class="filters">

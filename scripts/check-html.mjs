@@ -26,6 +26,17 @@ import {
   bandById,
   EXAMPLE_SQFT,
 } from "../src/lib/stove-size.js";
+import {
+  LENGTH_TABLE_CAPTION,
+  VOLUME_TABLE_CAPTION,
+  exampleCaption,
+  exampleRows,
+  logAnswer,
+  logFaqs,
+  logSources,
+  standardLengthRows,
+  volumeTableRows,
+} from "../src/lib/firebox-log-length.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -359,6 +370,84 @@ else {
     if (!Array.isArray(payload.models) || payload.models.some((model) => model.lo == null || model.hi == null)) {
       errors.push("stove size: json heat output");
     }
+  }
+}
+
+const logLength = files.find((file) => file.endsWith("/tools/firebox-log-length/index.html"));
+if (!logLength) errors.push("missing firebox log length page");
+else {
+  const html = decodeHtml(readFileSync(logLength, "utf8"));
+  const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
+  const meta = JSON.parse(readFileSync(join(root, "data/meta.json"), "utf8"));
+  if (!html.includes('class="answer"')) errors.push("log length: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("log length: answer box sentences");
+  for (const sentence of logAnswer(stoves, meta.snapshotDate)) {
+    if (!html.includes(sentence)) errors.push("log length: answer sentence missing");
+  }
+  if (!html.includes(exampleCaption())) errors.push("log length: example caption");
+  for (const row of exampleRows()) {
+    if (!html.includes(row.measured) || !html.includes(row.log)) errors.push(`log length: example ${row.side}`);
+  }
+  if (!html.includes(LENGTH_TABLE_CAPTION)) errors.push("log length: measures caption");
+  for (const row of standardLengthRows()) {
+    if (!html.includes(row.statement)) errors.push(`log length: measure ${row.measure}`);
+  }
+  const tableMatch = html.match(/<table id="volume-bands">[\s\S]*?<\/table>/);
+  if (!tableMatch) errors.push("log length: volume table");
+  else if (!tableMatch[0].includes(VOLUME_TABLE_CAPTION)) errors.push("log length: volume caption");
+  else {
+    for (const row of volumeTableRows(stoves)) {
+      if (!tableMatch[0].includes(`id="band-${row.id}"`)) errors.push(`log length: missing #band-${row.id}`);
+      if (!tableMatch[0].includes(`>${formatCount(row.count)}<`)) errors.push(`log length: count ${row.id}`);
+      if (!tableMatch[0].includes(`href="${row.href}"`)) errors.push(`log length: link ${row.id}`);
+    }
+  }
+  for (const faq of logFaqs(stoves, meta.snapshotDate)) {
+    if (!html.includes(faq.question) || !html.includes(faq.answer)) errors.push(`log length: FAQ missing ${faq.question}`);
+  }
+  for (const source of logSources(meta.snapshotDate)) {
+    if (!html.includes(source.href) || !html.includes(`Retrieved ${source.retrieved}`)) {
+      errors.push(`log length: citation ${source.href}`);
+    }
+    if (source.href.includes("cfpub.epa.gov")) errors.push("log length: EPA application host");
+  }
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`log length: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("log length: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "WebApplication", "FAQPage"]) {
+        if (!types.has(required)) errors.push(`log length: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating"]) {
+        if (types.has(banned)) errors.push(`log length: forbidden ${banned}`);
+      }
+      const faqs = logFaqs(stoves, meta.snapshotDate);
+      const questions = data["@graph"]?.find((item) => item["@type"] === "FAQPage")?.mainEntity || [];
+      if (questions.length !== faqs.length) errors.push("log length: FAQ count");
+      for (const item of faqs) {
+        const match = questions.find((question) => question.name === item.question);
+        if (!match || match.acceptedAnswer?.text !== item.answer) errors.push(`log length: FAQ JSON-LD ${item.question}`);
+      }
+    }
+  }
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd) : "";
+  if (/\bbest\b/i.test(main)) errors.push("log length: banned wording");
+  if (main.includes("cfpub.epa.gov")) errors.push("log length: EPA application host");
+  if (!html.includes('href="/small-wood-stoves/"') || !html.includes('href="/tools/stove-size-calculator/"')) {
+    errors.push("log length: missing related links");
   }
 }
 
