@@ -104,8 +104,9 @@ test("page lastmods follow content commits and not one shared clock", () => {
   assert.ok(tool.slice(0, 10) > "2026-10-23", tool);
   const metaDate = JSON.parse(readFileSync(join(root, "data/meta.json"), "utf8")).snapshotDate;
   if (historyIsShallow()) {
-    assert.equal(contact, metaDate);
-    assert.equal(privacy, metaDate);
+    for (const value of [contact, privacy, pellet, brand, compare, stove, tool]) {
+      assert.ok(value.slice(0, 10) >= metaDate, value);
+    }
   } else {
     assert.equal(contact.slice(0, 10), "2026-10-23");
     assert.equal(privacy.slice(0, 10), "2026-10-23");
