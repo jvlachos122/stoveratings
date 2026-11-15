@@ -133,7 +133,7 @@ export function fitSentence(side, value) {
   if (!result.ok) return "";
   const measured = inchesPhrase(result.inches);
   if (result.fit == null) {
-    return `The measured ${side} is ${measured}, which is not longer than the ${inchesPhrase(LOG_ALLOWANCE_INCHES)} allowance, so this page does not report a positive log length along that side.`;
+    return `The measured ${side} is ${measured}, which is not longer than ${inchesPhrase(LOG_ALLOWANCE_INCHES)}, so this page does not report a positive log length along that side.`;
   }
   return `The measured ${side} is ${measured}. The longest log this page reports along that side is ${inchesPhrase(result.fit)}, which is ${inchesPhrase(LOG_ALLOWANCE_INCHES)} shorter.`;
 }
