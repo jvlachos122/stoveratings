@@ -147,7 +147,7 @@ const bandMatch = smallBandSentence(catalog.stoves);
         <tbody>
           {bands.map((row) => (
             <tr>
-              <th id={row.id} scope="row">{row.label}</th>
+              <th id={`band-${row.id}`} scope="row">{row.label}</th>
               <td class="num">{formatCount(row.count)}</td>
               <td><a href={row.href}>{row.linkLabel}</a></td>
             </tr>

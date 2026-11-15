@@ -399,7 +399,7 @@ else {
   else if (!tableMatch[0].includes(VOLUME_TABLE_CAPTION)) errors.push("log length: volume caption");
   else {
     for (const row of volumeTableRows(stoves)) {
-      if (!tableMatch[0].includes(`id="${row.id}"`)) errors.push(`log length: missing #${row.id}`);
+      if (!tableMatch[0].includes(`id="band-${row.id}"`)) errors.push(`log length: missing #band-${row.id}`);
       if (!tableMatch[0].includes(`>${formatCount(row.count)}<`)) errors.push(`log length: count ${row.id}`);
       if (!tableMatch[0].includes(`href="${row.href}"`)) errors.push(`log length: link ${row.id}`);
     }
