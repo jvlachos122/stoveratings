@@ -100,7 +100,7 @@ test("2020 NSPS room-heater counts match an independent recompute of the snapsho
   assert.equal(report.current.yes, stats.nsps.roomCurrentYes);
   assert.equal(report.current.no, stats.nsps.roomCurrentNo);
   assert.equal(report.all.yes, stats.nsps.roomAllYes);
-  assert.equal(meta.snapshotDate, "2026-10-23");
+  assert.equal(meta.snapshotDate, "2026-11-15");
 
   for (const [blocks, expected] of [
     [report.currentByType, again.currentByType],

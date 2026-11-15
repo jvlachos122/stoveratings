@@ -1,5 +1,5 @@
 {
-  "snapshotDate": "2026-10-23",
+  "snapshotDate": "2026-11-15",
   "source": "EPA Certified Wood Heater Database",
   "sourceUrl": "https://www.epa.gov/compliance/epa-certified-wood-heater-database",
   "license": "Public domain (U.S. government work)",
@@ -10,6 +10,6 @@
     "centralAll": 192,
     "centralCurrent": 41
   },
-  "contentHash": "fbfde966c6b60790bf7a2134108ff7d5df2ded51f1a19382b30a989151cf907e",
+  "contentHash": "c65906bdbb5bc0c7cdde7594f6f7196678bb297857d73f3d764e98ccd434bfcb",
   "note": "Parsed from files committed in data/raw. This build did not contact cfpub.epa.gov."
 }

@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 import noindex from "../data/noindex-paths.json" with { type: "json" };
 import {
@@ -17,11 +19,24 @@ import {
 
 const BASE = "2026-01-01T00:00:00Z";
 const FOOTER_COMMIT = "2026-11-08T02:24:44-06:00";
-const PAGE_COMMIT = "2026-11-09T02:27:14-06:00";
-const DATA_COMMIT = "2026-11-01T15:00:00Z";
+const PAGE_COMMIT = "2026-11-21T15:00:00Z";
+const DATA_COMMIT = "2026-11-20T15:00:00Z";
 const SNAPSHOT = "2026-10-23";
 const SITEMAP_URLS = 1114;
 const SITEMAP_URL_HASH = "31f892cfe78ef2a0069603bdf95920c50715d07ea4d36f9e6faa7f0abb95ec4c";
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
+
+function historyIsShallow() {
+  try {
+    return execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+      cwd: root,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    }).trim() === "true";
+  } catch {
+    return true;
+  }
+}
 
 class FallbackDates extends Map {
   constructor(fallback, entries) {
@@ -85,13 +100,22 @@ test("page lastmods follow content commits and not one shared clock", () => {
     assert.ok(Date.parse(value.length === 10 ? `${value}T00:00:00Z` : value) <= Date.now() + 60_000, value);
   }
   assert.ok(pellet.slice(0, 10) > "2026-10-23", pellet);
-  assert.equal(contact.slice(0, 10), "2026-10-23");
-  assert.equal(privacy.slice(0, 10), "2026-10-23");
-  assert.notEqual(pellet, contact);
   assert.notEqual(stove.slice(0, 10), "2026-11-08", stove);
   assert.ok(tool.slice(0, 10) > "2026-10-23", tool);
-  const distinct = new Set([contact, brand, compare, stove, tool]);
-  assert.ok(distinct.size >= 4, [...distinct].join(" | "));
+  const metaDate = JSON.parse(readFileSync(join(root, "data/meta.json"), "utf8")).snapshotDate;
+  if (historyIsShallow()) {
+    for (const value of [contact, privacy, pellet, brand, compare, stove, tool]) {
+      assert.ok(value.slice(0, 10) >= metaDate, value);
+    }
+  } else {
+    assert.equal(contact.slice(0, 10), "2026-10-23");
+    assert.equal(privacy.slice(0, 10), "2026-10-23");
+    assert.notEqual(pellet, contact);
+    assert.notEqual(stove, contact);
+    assert.notEqual(brand, contact);
+    assert.notEqual(compare, contact);
+    assert.notEqual(tool, contact);
+  }
 });
 
 test("sitemap URL set is the prior indexable set plus the log length page", () => {

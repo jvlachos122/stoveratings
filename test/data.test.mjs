@@ -21,7 +21,7 @@ function csvRows(name) {
 test("launch snapshot row counts match the committed exports", () => {
   const stats = readJson("stats.json");
   const meta = readJson("meta.json");
-  assert.equal(meta.snapshotDate, "2026-10-23");
+  assert.equal(meta.snapshotDate, "2026-11-15");
   assert.equal(stats.rows.roomAll, 1444);
   assert.equal(stats.rows.roomCurrent, 265);
   assert.equal(stats.rows.centralAll, 192);
@@ -30,7 +30,7 @@ test("launch snapshot row counts match the committed exports", () => {
   assert.equal(stats.rows.roomCurrent, csvRows("rh_inprod.csv"));
   assert.equal(stats.rows.centralAll, csvRows("wh_all.csv"));
   assert.equal(stats.rows.centralCurrent, csvRows("wh_inprod.csv"));
-  assert.equal(readFileSync(join(root, "data/raw/SNAPSHOT_DATE"), "utf8").trim(), "2026-10-23");
+  assert.equal(readFileSync(join(root, "data/raw/SNAPSHOT_DATE"), "utf8").trim(), "2026-11-15");
 });
 
 test("blank EPA cells stay null and current rows use the right units", () => {

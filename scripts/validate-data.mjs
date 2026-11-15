@@ -26,7 +26,7 @@ assert.equal(stats.rows.roomCurrent, 265);
 assert.equal(stats.rows.centralAll, 192);
 assert.equal(stats.rows.centralCurrent, 41);
 assert.equal(meta.rows.roomAll, 1444);
-assert.equal(meta.snapshotDate, "2026-10-23");
+assert.equal(meta.snapshotDate, "2026-11-15");
 assert.equal(stoves.filter((stove) => stove.category === "room").reduce((sum, stove) => sum + stove.rowCount, 0), 1444);
 assert.equal(stoves.filter((stove) => stove.category === "central").reduce((sum, stove) => sum + stove.rowCount, 0), 192);
 assert.equal(stoves.flatMap((stove) => stove.tests).filter((test) => test.current && test.emissionUnit === "g/hr").length, 265);
