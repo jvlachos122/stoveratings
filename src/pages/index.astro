@@ -46,7 +46,7 @@ const aliases = selectRetailAliases(catalog.stoves, catalog.brands);
     <Finder />
     <h2>Recently added or no longer current</h2>
     {
-      added.length || dropped.length ? (
+      changes.previousSnapshotDate && changes.previousSnapshotDate !== catalog.meta.snapshotDate ? (
         <>
           <p>{changes.note}</p>
           {added.length ? (

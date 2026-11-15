@@ -2,7 +2,7 @@
 
 Independent pages for the emission rates and HHV efficiencies in the U.S. EPA Certified Wood Heater Database. StoveRatings does not score stoves, does not sell them, and is not affiliated with EPA. Operated by Three Pines Company LLC.
 
-The launch snapshot is dated **2026-10-23**: 1,444 room-heater rows (265 currently certified) and 192 central-heater rows (41 currently certified).
+The current snapshot is dated **2026-11-15**: 1,444 room-heater rows (265 currently certified) and 192 central-heater rows (41 currently certified). The 2026-10-23 launch export is in `data/snapshots/2026-10-23/`.
 
 ## Build
 

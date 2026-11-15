@@ -32,7 +32,7 @@ New,Model,Manufacturer,Firebox Volume (Cubic Feet),Emission Rate (grams/hr),Heat
 ,"1900 series (Napoleon 1900), S9",,,2.9,11800-34000,,Wood Stove,Non-Catalytic Stove,Crib Wood,,,No
 ,"2.1 Series (Destination 1.9, Matrix 1900, CW2100, Green Mountain Insert 50, HEI90, Archway 1500, Blue Ridge 150-I)","Stove Builder International, Inc.",1.030,1.5,8500-31700,75,Wood Stove,Non-Catalytic Stove,Cord Wood,,0.600,Yes
 ,"2.3 Series (Archway 2300, FW2900, Gateway 2300, Green Mountain Insert 70, Escape 1800, Inspire 2000, Inspire 2000-I, Matrix, Escape 1800-I, Osburn 2000, Osburn 2000-I, Harmony 2.3, Solution 2.3, Solution 2.3-I, CW2900, Destination 2.3-I, Matrix-I, HES240, HEI240, Heritage, Deco Alto, Harmony 2.3-I, Blue Ridge 300P, Blue Ridge 300L, and Blue Ridge 300-I)","Stove Builder International, Inc.",1.950,2.3,14200-44500,72,Wood Stove,Non-Catalytic Stove,Cord Wood,,1.100,Yes
-New!,"2.3H Series: Archway 2300 H, FW2900 H, Gateway 2300 H, Green Mountain Insert 70 (8451), Escape 1800 H, Inspire 2000 H, Inspire 2000-I H, Matrix H, Escape 1800-I H, Osburn 2000 H, Osburn 2000-I H, Harmony 2.3 H, Solution 2.3 H, Solution 2.3-I H, CW2900 H, Destination 2.3 H, Destination 2.3-I H, Matrix-I H, HES240 H, HEI240H, Heritage H, Deco Alto H, Blue Ridge 300P H, Blue Ridge 300L H, Blue Ridge 00-I H, Origin 2000 H, Origin 2000-I H, Evasion 2.3 H, Evasion 2.3-I H","Stove Builder International, Inc.",2.115,0.7,14698-30938,80,Wood Stove,Catalytic Stove,Crib Wood,,0.500,Yes
+,"2.3H Series: Archway 2300 H, FW2900 H, Gateway 2300 H, Green Mountain Insert 70 (8451), Escape 1800 H, Inspire 2000 H, Inspire 2000-I H, Matrix H, Escape 1800-I H, Osburn 2000 H, Osburn 2000-I H, Harmony 2.3 H, Solution 2.3 H, Solution 2.3-I H, CW2900 H, Destination 2.3 H, Destination 2.3-I H, Matrix-I H, HES240 H, HEI240H, Heritage H, Deco Alto H, Blue Ridge 300P H, Blue Ridge 300L H, Blue Ridge 00-I H, Origin 2000 H, Origin 2000-I H, Evasion 2.3 H, Evasion 2.3-I H","Stove Builder International, Inc.",2.115,0.7,14698-30938,80,Wood Stove,Catalytic Stove,Crib Wood,,0.500,Yes
 ,"2.5 Series, Solution 2.5 ZC II, Stratford II, FP10 Lafayette II, FP12 Mundo II, Monaco II, HE250R, Destination 2.7, Matrix 2700, WFP-75 8411, FP10 Lafayette IIS, HE275, HE275CF","Stove Builder International, Inc.",1.690,1.1,14222-48185,68,Wood Stove,Non-Catalytic Stove,Cord Wood,,0.880,Yes
 ,"2.5 ZC Series (2008) (Monaco, Stratford, Solution 2.5ZC, FP-10, Lafayette, WFP75, HE250, FP-12 Mundo)","Stove Builder International, Inc.",,4.4,11500-30500,,Wood Stove,Non-Catalytic Stove,Crib Wood,,,No
 ,"2.5R Series (Solution 2.5 ZC II, Stratford II, FP10 Lafayette II, FP12 Mundo II, HE250R, Destination 2.7, Matrix 2700, FP10 Lafayette IIS, WFP-75 8411, HE275, HE275CF, Green Mountain Insert 90 8460, St. Clair 2500)","Stove Builder International, Inc.",1.940,1.2,12700-60700,64,Wood Stove,Non-Catalytic Stove,Cord Wood,,1.600,Yes
@@ -142,7 +142,7 @@ New!,"2.3H Series: Archway 2300 H, FW2900 H, Gateway 2300 H, Green Mountain Inse
 ,"5660E, AP5660, AP5660L, AP5660PE, DNMP566",United States Stove Company,Not Applicable,1.9,11155-24361,62,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0,Yes
 ,5700 ACT/ Step Top,Hearth and Home Technologies,,4.2,11800-45900,,Wood Stove,Non-Catalytic Stove,,,,No
 ,"5710, AP5710, VG5710, 5501S, AP5501S, VG5501S, 5710-XH, and US513M",United States Stove Company,Not Applicable,1,13281-27492,69,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0.100,Yes
-New!,"5710E, AP5710E, VG5710E, 5501SE, AP5501SE, VG5501SE, 5710-XHE, US513ME, Breckwell SP600, Comfort Glow CGPS2050",United States Stove Company,Not Applicable,1.6,12251-28413,83,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0.260,Yes
+,"5710E, AP5710E, VG5710E, 5501SE, AP5501SE, VG5501SE, 5710-XHE, US513ME, Breckwell SP600, Comfort Glow CGPS2050",United States Stove Company,Not Applicable,1.6,12251-28413,83,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0.260,Yes
 ,"5770, 5770i, VG5770, VG5770i, AP5770, AP5770i, DNMP577, DNMP577i, 5790, VG5790, AP5790, DNMP579, Comfort Glow CGPS2100, CGPS2200, DuraHeat DHPS2100, DuraHeat DHPS2200",United States Stove Company,Not Applicable,0.85,8830-18619,70,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0.410,Yes
 ,"5770E, AP5770E, VG5770E, US5770E, KP5770E, KP5770E-W, CGPS2100, DH3000, BHPS30",United States Stove Company,Not Applicable,1.1,10300-23449,78,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0.100,Yes
 ,"5780, AP5780, VG5780, SP5780, and SP58",United States Stove Company,Not Applicable,1.3,12293-26386,72,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0.210,Yes
@@ -166,7 +166,7 @@ New!,"5710E, AP5710E, VG5710E, 5501SE, AP5501SE, VG5501SE, 5710-XHE, US513ME, Br
 ,81/85,New Buck Corporation (Buck Stove Corp.),,4.3,11900-45400,,Wood Stove,Non-Catalytic Stove,Crib Wood,,,No
 ,"8140, 8142, 8143, 8145, 8147, 8150, 8151, and 8190",Morso Jernstoberi A/S,,4.5,10900-25400,,Wood Stove,Non-Catalytic Stove,Crib Wood,,,No
 ,8180,Morso Jernstoberi A/S,,5.1,9300-28500,,Wood Stove,Non-Catalytic Stove,,,,No
-New!,"81C, Carolina 82C",New Buck Corporation (Buck Stove Corp.),2.250,1.7,13290-27721,80,Wood Stove,Catalytic Stove,Crib Wood,,0.250,Yes
+,"81C, Carolina 82C",New Buck Corporation (Buck Stove Corp.),2.250,1.7,13290-27721,80,Wood Stove,Catalytic Stove,Crib Wood,,0.250,Yes
 ,904,Gruppo Piazzetta S.P.A.,,7.5,6700-28300,,Wood Stove,Non-Catalytic Stove,,,,No
 ,905,Gruppo Piazzetta S.P.A.,,6.8,11600-30300,,Wood Stove,Non-Catalytic Stove,,,,No
 ,"917HF, HF917UA","Horse Flame Metal USA, Inc.",,7.2,11800-30300,,Wood Stove,Non-Catalytic Stove,,,,No
@@ -674,7 +674,7 @@ New!,"81C, Carolina 82C",New Buck Corporation (Buck Stove Corp.),2.250,1.7,13290
 ,"Grecale, Grecale Glass, Round, Round Glass, Ethesia, Ethesia Glass",Dielle SpA,Not Applicable,1,13655-35644,75,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0.214,Yes
 ,"Green Mountain 40 Series: Green Mountain 40 (8640), Craftsbury 2 (8392), Hipster 14 (AMB8240)",Hearthstone Quality Home Heating Products Inc.,1.320,1.1,13876-31581,79,Wood Stove,Hybrid,Crib Wood,,0.520,Yes
 ,"Green Mountain 60 8660, Hipster 20 AMB8260, Shelburne 8372",Hearthstone Quality Home Heating Products Inc.,2.030,0.6,12608-33576,79,Wood Stove,Hybrid,Crib Wood,,0.490,Yes
-New!,"Green Mountain 60-1 (Model 8661), Shelburne 3 (Model 8373), Hipster 20-1 (Model 8261)",Hearthstone Quality Home Heating Products Inc.,2.040,0.51,14533-35571,81,Wood Stove,Hybrid,Crib Wood,,0.510,Yes
+,"Green Mountain 60-1 (Model 8661), Shelburne 3 (Model 8373), Hipster 20-1 (Model 8261)",Hearthstone Quality Home Heating Products Inc.,2.040,0.51,14533-35571,81,Wood Stove,Hybrid,Crib Wood,,0.510,Yes
 ,Green Mountain 80 8680,Hearthstone Quality Home Heating Products Inc.,3.160,0.67,15069-33396,81,Wood Stove,Hybrid,Crib Wood,,0.230,Yes
 ,"Green Mountain 80-1 (Model 8681), Okemo (Model 8380), Hipster 30 (Model 8280)",Hearthstone Quality Home Heating Products Inc.,3.160,0.53,14846-33424,80,Wood Stove,Hybrid,Crib Wood,,0.200,Yes
 ,"Greenfire GF55, GFI55","Sherwood Industries, Ltd.",Not Applicable,2,6500-40000,,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,,No
@@ -797,7 +797,7 @@ New!,"Green Mountain 60-1 (Model 8661), Shelburne 3 (Model 8373), Hipster 20-1 (
 ,"I2450M, HI2450M",FPI/Regency Fireplace Products,2.240,1.4,14169-34612,67,Wood Stove,Non-Catalytic Stove,Cord Wood,,1.430,Yes
 ,I2500,FPI/Regency Fireplace Products,2.240,1,17178-42995,76,Wood Stove,Catalytic Stove,Cord Wood,,0.340,Yes
 ,Ideal Steel Hybrid 210,"Woodstock Soapstone Company, Inc.",,1,12300-57000,82,Wood Stove,Hybrid,Crib Wood,,,No
-New!,Ideal Steel Hybrid 210b,"Woodstock Soapstone Company, Inc.",3.220,0.7,10409-55662,76,Wood Stove,Catalytic Stove,Crib Wood,,0.330,Yes
+,Ideal Steel Hybrid 210b,"Woodstock Soapstone Company, Inc.",3.220,0.7,10409-55662,76,Wood Stove,Catalytic Stove,Crib Wood,,0.330,Yes
 ,Ilaria / Serena,Ravelli /EcoTeck,Not Applicable,4.4,8500-44000,,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,,No
 ,"Imperial MKII, MKII Insert, Goldenaire","Osburn Manufacturing, Inc.",,7,10700-51600,,Wood Stove,Non-Catalytic Stove,,,,No
 ,Independence,HeatWorx LLC (United States Stove Company),,3.6,11400-34300,,Wood Stove,Non-Catalytic Stove,,,,No
@@ -1205,7 +1205,7 @@ New!,Ideal Steel Hybrid 210b,"Woodstock Soapstone Company, Inc.",3.220,0.7,10409
 ,"STUV 1668IN, STUV 1668 CUBE, STUV 1668H, STUV 1668-Z",STUV AMERICA Inc.,1.940,1.9,20480-24818,61,Wood Stove,Non-Catalytic Stove,Crib Wood,,3.110,Yes
 ,"STUV 1668IN, STUV 1668 CUBE, STUV 1668H, STUV 1668-Z",STUV AMERICA Inc.,1.940,1.7,22179-23727,66,Wood Stove,Non-Catalytic Stove,Crib Wood,,1.700,Yes
 ,"STUV 1678IN, STUV 1678CUBE, STUV 1678H, STUV 1678-Z",STUV AMERICA Inc.,,3.1,23256-28765,67,Wood Stove,Non-Catalytic Stove,Crib Wood,,3.100,No
-New!,"STUV 6 IN 66x50 (26), STUV 6 H 66x50 (26)",STUV AMERICA Inc.,1.080,1.8,19089-19316,67,Wood Stove,Non-Catalytic Stove,Crib Wood,,1.700,Yes
+,"STUV 6 IN 66x50 (26), STUV 6 H 66x50 (26)",STUV AMERICA Inc.,1.080,1.8,19089-19316,67,Wood Stove,Non-Catalytic Stove,Crib Wood,,1.700,Yes
 ,STUV SIX 76-55,STUV AMERICA Inc.,1.550,1.86,20473-22732,68,Wood Stove,Non-Catalytic Stove,Crib Wood,,1.420,Yes
 ,STUV SIX 76-60,STUV AMERICA Inc.,1.580,1.9,22079-23388,68,Wood Stove,Non-Catalytic Stove,Crib Wood,,1.430,Yes
 ,"Sabrina 2.0, Sally 2.0, Solange 2.0, Sveva 2.0",Gruppo Piazzetta S.P.A.,Not Applicable,1.15,12096-37238,82,Pellet Stove,Non-Catalytic Stove,Wood Pellets,,0,Yes
@@ -1231,7 +1231,7 @@ New!,"STUV 6 IN 66x50 (26), STUV 6 H 66x50 (26)",STUV AMERICA Inc.,1.080,1.8,190
 ,Seefire 1600 S,"Frantech, Inc.",,7,11700-23100,,Wood Stove,Non-Catalytic Stove,,,,No
 ,Seefire 2100 S,"Frantech, Inc.",,3.2,11000-31100,,Wood Stove,Non-Catalytic Stove,,,,No
 ,Seefire 900 S,"Frantech, Inc.",,6.5,10200-30800,,Wood Stove,Non-Catalytic Stove,,,,No
-New!,Sentry S14,"Blaze King Industries, Inc.",1.460,1.4,8699-24453,78,Wood Stove,Catalytic Stove,Crib Wood,,0.688,Yes
+,Sentry S14,"Blaze King Industries, Inc.",1.460,1.4,8699-24453,78,Wood Stove,Catalytic Stove,Crib Wood,,0.688,Yes
 ,Series 8,"Jotul North America (Jotul U.S.A., Inc.)",,3.1,12600-33000,,Wood Stove,Catalytic Stove,,,,No
 ,Seville 1630,"CFM Corporation (Vermont Castings, Inc.)",,6.3,12000-27300,,Wood Stove,Non-Catalytic Stove,,,,No
 ,"Seville 1630, Stratton",Vermont Castings,,6.3,12000-27300,,Wood Stove,Non-Catalytic Stove,,,,No

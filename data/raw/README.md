@@ -4,7 +4,7 @@
 https://www.epa.gov/compliance/epa-certified-wood-heater-database
 (database application: cfpub.epa.gov). EPA content is U.S. government work and is in the public domain.
 
-**Retrieval date:** 2026-10-23.
+**Retrieval date:** 2026-11-15.
 
 **Files in this folder:**
 
@@ -14,9 +14,11 @@ https://www.epa.gov/compliance/epa-certified-wood-heater-database
 | `rh_inprod.csv` | Room heaters, currently certified only (`z_outofproduction=0`) | 265 |
 | `wh_all.csv` | Central heaters (hydronic and forced-air), including previously certified | 192 |
 | `wh_inprod.csv` | Central heaters, currently certified only | 41 |
-| `SNAPSHOT_DATE` | Date these files were saved | 2026-10-23 |
+| `SNAPSHOT_DATE` | Date of the latest save represented by this folder | 2026-11-15 |
 
-These CSVs were parsed from EPA "show all" result pages with `scripts/parse_epa.py`. The parser reads a local HTML file. It does not contact EPA.
+`rh_inprod.csv` is the 2026-11-15 spreadsheet export of currently certified room heaters (one sheet, 265 rows). That workbook has no central-heater sheet and no previously certified room-heater rows. `wh_all.csv`, `wh_inprod.csv`, and the previously certified rows in `rh_all.csv` are the 2026-10-23 save, carried forward. The seven currently certified room-heater rows whose New cell said `New!` on 2026-10-23 are blank in the 2026-11-15 export; those same cells were cleared in `rh_all.csv` so each in-production row is still present in the all-rows file. Row counts are unchanged. Emission rates, HHV efficiency, and heat output are unchanged.
+
+The 2026-10-23 files were parsed from EPA "show all" result pages with `scripts/parse_epa.py`. The parser reads a local HTML file. It does not contact EPA. The 2026-11-15 room-heater file was saved in a browser with Export as Excel Spreadsheet and aligned to these column names. Nothing in the build fetches cfpub.epa.gov.
 
 ## Refresh
 

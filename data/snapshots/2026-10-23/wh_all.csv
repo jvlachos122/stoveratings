@@ -1,0 +1,193 @@
+New,Model,Manufacturer,Firebox Volume (Cubic Feet),Emission Rate Annual Avg (lb/mmBTU),Heat Output Maximum (BTUs),Heat Output (Upper),Heat Output (Lower),Overall Efficiency-HHV (%),Type,Subtype,Certified Fuel Type,CO (g/min),Thermal Storage,NSPS Compliance 2020
+,Pellematic Smart XS (Condensing Mode),"Maine Energy Systems, LLC",Not Applicable,0.05,,64851,20357,90,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.027,No,Yes
+,P50,"Evoworld, Inc.",Not Applicable,0.01,163000,,,90,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+New!,BIO200,Greentech Manufacturing Inc.,Not Applicable,0.08,,772085,94396,89,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.080,No,Yes
+,Maxim M255 PE,Central Boiler Inc.- WoodMaster Inc.,Not Applicable,0.03,182504,182504,27846,89,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.129,No,Yes
+,Autopellet Air,"Maine Energy Systems, LLC",Not Applicable,0.06,,92178,29509,89,Forced Air Furnace,Non-Catalytic Stove,Wood Pellets,0.020,No,No
+,CP 1700,"Advanced Climate Technologies, LLC",Not Applicable,0.01,1650000,,,89,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,AutoPellet Air 28kW,"Maine Energy Systems, LLC",Not Applicable,0.06,,98472,45600,89,Forced Air Furnace,Non-Catalytic Stove,Wood Pellets,0.029,No,Yes
+,HP 14,"Evoworld, Inc.",Not Applicable,0.01,47800,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 8,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.04,35800,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 100,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.03,341000,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P 100,"Evoworld, Inc.",Not Applicable,0.02,360000,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,CP 500,"Advanced Climate Technologies, LLC",Not Applicable,0.03,532000,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,CP 850,"Advanced Climate Technologies, LLC",Not Applicable,0.02,840000,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,BioWin 102,Windhager Zentralheizung Technik GmbH,Not Applicable,0.02,36900,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Pyrot 540,Viessmann Holzheiztechnik GmbH,Not Applicable,0.02,1700000,,,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,G Series G10000,"HeatMaster Furnaces, Inc.",23.600,0.05,300000,280451,41551,88,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.770,No,Yes
+,ECO-HK 120 Multifuel,Hargassner GmbH,Not Applicable,0.04,409500,416833,53054,88,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.031,No,Yes
+,G Series G10000,Heatmaster Furnaces Inc. (SteelTech Inc.),23.600,0.05,300000,280451,41551,88,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.770,No,Yes
+,PE64,"Maine Energy Systems, LLC",Not Applicable,0.02,229000,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 15,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.03,50800,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 20,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.03,68200,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 25,"Tarm USA, Inc./ Fröling Heizkessel- und Behälterbau Ges.m.b.H",Not Applicable,0.03,85300,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 32,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.03,109000,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 80,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.03,273000,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,ECO-HK 70 Multifuel,Hargassner GmbH,Not Applicable,0.07,239000,250794,35228,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.090,No,Yes
+,CP 1000,"Advanced Climate Technologies, LLC",Not Applicable,0.03,1030000,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,BioWin 152,Windhager Zentralheizung Technik GmbH,Not Applicable,0.02,55000,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,BioWin 262,Windhager Zentralheizung Technik GmbH,Not Applicable,0.02,94500,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Pyrotec 530,Viessmann Holzheiztechnik GmbH,Not Applicable,0.06,1860000,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,"Smart PK32, Nano PK32",Hargassner GmbH,Not Applicable,0.05,115000,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.023,No,Yes
+,BioWin 100,"Windhager, North America, LLC/ Windhager Zentralheizung Technik GmbH",Not Applicable,0.02,34800,,,87,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Komplett III LIGHT 25 KW,Effecta Energy Solutions,Not Applicable,0.02,85000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,"Central Boiler Classic Edge 960, WoodMaster CleanFire 900",Central Boiler Inc.- WoodMaster Inc.,32.000,0.06,400000,378339,47368,86,Hydronic Heater,Non-Catalytic Stove,Cord Wood,2.940,No,Yes
+,PE/PES 36-56,"Maine Energy Systems, LLC",Not Applicable,0.07,199408,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,Alpha-60,"Pellergy, LLC/ Windhager Zentralheizung Technik GmbH",Not Applicable,0.02,51900,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Alpha-100,"Pellergy, LLC/ Windhager Zentralheizung Technik GmbH",Not Applicable,0.01,88400,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 38,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.02,130000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 48,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.03,164000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P4 Unit 60,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.03,200000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,BioWin 150,"Windhager, North America, LLC/ Windhager Zentralheizung Technik GmbH",Not Applicable,0.02,51900,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,BioWin 260,"Windhager, North America, LLC/ Windhager Zentralheizung Technik GmbH",Not Applicable,0.01,88400,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P 200,"Evoworld, Inc.",Not Applicable,0.02,699000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,RHK AK 30,"Heizomat Canada, Inc.",Not Applicable,0.04,142000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Pyrotec 390,Viessmann Holzheiztechnik GmbH,Not Applicable,0.04,1430000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,RTB170(TS),NBE Production,Not Applicable,0.04,156000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,G Series G4000,Heatmaster Furnaces Inc. (SteelTech Inc.),8.500,0.10,110000,99840,16203,86,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.600,No,Yes
+,G Series G4000,"HeatMaster Furnaces, Inc.",8.500,0.10,110000,99840,16203,86,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.600,No,Yes
+,Pellematic 56,"Maine Energy Systems, LLC",Not Applicable,0.05,191000,191203,36343,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.027,No,Yes
+,PE16,"Maine Energy Systems, LLC",Not Applicable,0.02,57000,,,86,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Komplett III LIGHT 20 KW,Effecta Energy Solutions,Not Applicable,0.02,68000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Komplett III LIGHT 35 KW,Effecta Energy Solutions,Not Applicable,0.02,120000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,PE32,"Maine Energy Systems, LLC",Not Applicable,0.02,109000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Pellmax 200 UB,"Värmebaronen AB/Smokeless Heat, LLC",Not Applicable,0.03,83100,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,T4-130,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.02,444000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,T4-150,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.02,512000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,RTB102(TS),NBE Production,Not Applicable,0.04,86000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,BioWin 600,"Windhager, North America, LLC/ Windhager Zentralheizung Technik GmbH",Not Applicable,0.02,202000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,P28,"Evoworld, Inc.",Not Applicable,0.02,94200,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Pyrot 150,Viessmann Holzheiztechnik GmbH,Not Applicable,0.01,494000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Pyrotec 720,Viessmann Holzheiztechnik GmbH,Not Applicable,0.06,2470000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,RTB54 (TS),NBE Production,Not Applicable,0.03,58000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,BioWin 350,"Windhager, North America, LLC/ Windhager Zentralheizung Technik GmbH",Not Applicable,0.02,119000,,,85,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,Yes,No
+,Pellematic 56,"Maine Energy Systems, LLC",Not Applicable,0.04,191000,191203,28020,84,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.047,No,Yes
+,"Central Boiler Classic Edge 560, WoodMaster– CleanFire 500",Central Boiler Inc.- WoodMaster Inc.,13.760,0.14,194724,194724,25386,84,Hydronic Heater,Non-Catalytic Stove,Cord Wood,3.250,No,Yes
+,Smart 55,Effecta Energy Solutions,,0.04,183573,,,83,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.640,Yes,No
+,Crown Royal Stoves 7400E,Greentech Manufacturing Inc.,18.440,0.06,325000,310495,43236,83,Hydronic Heater,Non-Catalytic Stove,Cord Wood,3.500,No,Yes
+,"Classic Edge 760.1, CleanFire 700.1",Central Boiler Inc.- WoodMaster Inc.,22.090,0.05,,256550,36488,83,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.930,No,Yes
+,"Classic Edge 865, CleanFire 1800",Central Boiler Inc.- WoodMaster Inc.,22.680,0.07,245000,237755,33629,83,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.540,No,Yes
+,"Central Boiler Classic Edge 760, WoodMaster– CleanFire 700",Central Boiler Inc.- WoodMaster Inc.,23.200,0.10,235938,235938,34411,83,Hydronic Heater,Non-Catalytic Stove,Cord Wood,5.553,No,Yes
+,"Classic Edge 560.1, CleanFire 500.1",Central Boiler Inc.- WoodMaster Inc.,13.720,0.07,,171956,24564,83,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.830,No,Yes
+,Maxim M255P/M255PE,Central Boiler Inc.- WoodMaster Inc.,Not Applicable,0.04,165215,,,82,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,P4000,"HeatMaster Furnaces, Inc.",Not Applicable,0.05,,147388,17944,82,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.210,No,Yes
+,"Central Boiler Classic Edge 360, WoodMaster– CleanFire 300",Central Boiler Inc.- WoodMaster Inc.,9.980,0.12,148625,148625,20293,82,Hydronic Heater,Non-Catalytic Stove,Cord Wood,4.350,No,Yes
+,CleanFire 300 (Central Boiler Classic Edge 360),WoodMaster Inc.,9.980,0.12,148625,148625,20293,82,Hydronic Heater,Non-Catalytic Stove,Cord Wood,4.350,No,Yes
+,Pellematic 22,"Maine Energy Systems, LLC",Not Applicable,0.05,68300,,,82,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.017,No,Yes
+,PES 25-32,"Maine Energy Systems, LLC",Not Applicable,0.06,99797,,,81,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,G-Class G2Plus,Polar Furnace Manufacturing Inc.,9.270,0.07,183307,183307,34835,81,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.700,No,Yes
+,P4 Pellet 60,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.07,,212443,31808,81,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.170,Yes,Yes
+,G Series G7000,"HeatMaster Furnaces, Inc.",16.300,0.06,210000,195502,28262,81,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.550,No,Yes
+,G Series G7000,Heatmaster Furnaces Inc. (SteelTech Inc.),16.300,0.06,210000,195502,28262,81,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.550,No,Yes
+,PE1 Pellet 35,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.05,121300,121300,17255,80,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.740,No,Yes
+,Classic Edge 350,Central Boiler Inc.- WoodMaster Inc.,,0.18,177802,,,79,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Kedel RTB 170,NBE Production,Not Applicable,0.08,162000,,,79,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,E-Classic 1450,Central Boiler Inc.- WoodMaster Inc.,,0.18,214000,,,78,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,P7000,Heatmaster Furnaces Inc. (SteelTech Inc.),Not Applicable,0.07,,255301,20162,78,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.600,No,Yes
+,P7000,"HeatMaster Furnaces, Inc.",Not Applicable,0.07,0,255301,20162,78,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.600,No,Yes
+,PE1 Pellet 20,Fröling Heizkessel und Behälterbau Ges.m.b.H,Not Applicable,0.05,67744,67744,9656,78,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.730,No,Yes
+,Max Caddy and HeatPro,"Stove Builder International, Inc.",,0.75,,51203,15112,77,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,2.100,No,No
+,"Caddy, Heatmax II, Tundra II","Stove Builder International, Inc.",,0.65,,44857,12635,77,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,1.800,No,No
+,GARN WHS-1000H and WHS1000V,DECTRA (GARN),,0.20,160000,,,77,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.470,No,No
+,G Class G3,Polar Furnace Manufacturing Inc.,12.700,0.06,,182387,26235,77,Hydronic Heater,Non-Catalytic Stove,Cord Wood,3.288,No,Yes
+,"GARN WHS-1000H, GARN WHS-1000V",DECTRA (GARN),8.830,0.20,,160000,24000,77,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.470,No,Yes
+,S3 Turbo 30,Fröling Heizkessel und Behälterbau Ges.m.b.H,4.450,0.09,,99594,12997,77,Hydronic Heater,Non-Catalytic Stove,Cord Wood,2.500,Yes,Yes
+,Pellematic 20,"Maine Energy Systems, LLC",Not Applicable,0.02,68300,70418,9323,77,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.025,No,Yes
+,"Heat Commander II, Caddy Advanced CR II, Caddy Advanced II, Caddy Advanced L, FC2500, SF2500","Stove Builder International, Inc.",3.600,0.09,,64073,19851,77,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,1.300,No,Yes
+,"SR-3.6 Series Heat Commander, Caddy Advanced, Caddy Advanced CR","Stove Builder International, Inc.",3.600,0.10,,42234,13297,77,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,1.540,No,Yes
+,Crown Royal Stoves 7200E,Greentech Manufacturing Inc.,6.110,0.08,125000,123247,18091,77,Hydronic Heater,Non-Catalytic Stove,Cord Wood,2.800,No,Yes
+,Pellematic 32,"Maine Energy Systems, LLC",Not Applicable,0.02,109000,106996,14771,77,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.025,No,Yes
+,400-4S,Heatmor Manufacturing,,0.28,400000,,,76,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,7000,United States Stove Company,,0.42,,72449,22177,76,Forced Air Furnace,Non-Catalytic Stove,Crib Wood,,No,No
+,Vapor Fire 100 (VF100),"Lamppa Manufacturing, Inc.",3.900,0.10,,33691,21465,76,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,1.460,No,Yes
+,EasyPell,"Maine Energy Systems, LLC",Not Applicable,0.10,68000,,,75,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,G Series G200-2/G200s,"Steel Tech, Inc.",,0.07,232000,,,75,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,PE/PES 12-20,"Maine Energy Systems, LLC",Not Applicable,0.07,67694,,,75,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,Crown Royal Stoves 7300E,Greentech Manufacturing Inc.,12.830,0.08,199000,199057,29773,75,Hydronic Heater,Non-Catalytic Stove,Cord Wood,3.100,No,Yes
+,Smart 40,Effecta Energy Solutions,,0.07,142600,,,75,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.400,Yes,No
+,Vedolux 450,Varmebaronen AB,5.190,0.04,130731,,,75,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.040,Yes,Yes
+,AirBilo Plus,LS Bilodeau Inc.,5.230,0.13,,88496,24748,75,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,2.960,No,Yes
+,EasyPell 16-20KW,"Maine Energy Systems, LLC",Not Applicable,0.01,68000,,,75,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,G Series G400G400s,"Steel Tech, Inc.",,0.23,350000,,,74,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Mini-Caddy & Heatpack,"Stove Builder International, Inc.",,0.84,,37053,11319,74,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,0.260,No,No
+,GARN WHS-2000H,DECTRA (GARN),,0.07,200000,,,74,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,AirBilo,LS Bilodeau Inc.,3.470,0.11,,64412,19258,74,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,2.100,No,Yes
+,Vedolux 350,Varmebaronen AB,3.710,0.08,118724,,,74,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.070,Yes,Yes
+,7700,United States Stove Company,,0.36,,61900,20330,74,Forced Air Furnace,Non-Catalytic Stove,Crib Wood,,No,No
+,GARN WHS-2000V,DECTRA (GARN),,0.07,200000,,,74,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,GT Series GT-6000,Nature's Comfort LLC,,0.22,250000,,,73,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Kedel RTB102,NBE Production,Not Applicable,0.07,87379,,,73,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,SMART HV23,Hargassner GmbH,3.530,0.11,,78335,10166,73,Hydronic Heater,Non-Catalytic Stove,Cord Wood,1.632,No,Yes
+,Vedolux 650,Varmebaronen AB,7.420,0.08,201743,,,73,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.460,Yes,Yes
+,S3 Turbo 50,Fröling Heizkessel und Behälterbau Ges.m.b.H,6.780,0.12,83097,83097,24929,73,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,Yes,Yes
+,ENVIRO CHIP-500,Piney Manufacturing,,0.19,280000,,,73,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Classic Edge 750,Central Boiler Inc.- WoodMaster Inc.,,0.18,240362,,,72,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,"28-4000, 50-SHW40, and 50-TRW40","Englands Stove Works, Inc.",,0.73,,31373,11665,72,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,3.400,No,No
+,Woodpecker,"WEbiomass, Inc.",Not Applicable,0.19,153000,,,72,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,G3-G3,Polar Furnace Manufacturing Inc.,,0.08,200000,,,72,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,AF700 and CF700M,United States Stove Company,,0.41,,64116,20568,71,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,7.930,No,No
+,BioWIN 262,Windhager Zentralheizung Technik GmbH,Not Applicable,0.04,88400,,,71,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.040,Yes,Yes
+,BioWIN 332,HIDU GmbH,Not Applicable,0.04,110900,0,0,71,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.040,Yes,Yes
+,SE210,Alternate Heating Systems,8.430,0.12,155802,,,71,Hydronic Heater,Non-Catalytic Stove,Cord Wood,4.490,No,Yes
+,BioWIN 262,HIDU GmbH,Not Applicable,0.04,88400,,,71,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.040,Yes,Yes
+,BioWIN 332,Windhager Zentralheizung Technik GmbH,Not Applicable,0.04,110900,,,71,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.040,Yes,Yes
+,Classic Edge 550,Central Boiler Inc.- WoodMaster Inc.,,0.31,162170,,,70,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,GX Series GX15,Hawken Energy,,0.18,176116,,,70,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,"US1520, HB1520, VG1520, WC1520, N35, C2235, SWF1035, SWF1035K, King KWF1520, Comfort Glow CGWF4000, DuraHeat DHWF4000",United States Stove Company,3.950,0.12,,53042,15997,70,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,4.600,No,Yes
+,NEO HV60,Hargassner GmbH,7.480,0.08,,213941,26340,70,Hydronic Heater,Non-Catalytic Stove,Cord Wood,2.470,No,Yes
+,"SF1000E, FC1000E, X1020, L1020","HY-C Company, LLC",3.400,0.14,,46435,15727,70,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,1.730,No,Yes
+,Kedel RTB54,NBE Production,Not Applicable,0.08,60000,,,70,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,E-Classic 3250 IR,Central Boiler Inc.- WoodMaster Inc.,,0.18,245000,,,69,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,FHG 20/30,Fröling Heizkessel und Behälterbau Ges.m.b.H,,0.18,70000,,,69,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,Yes,No
+,Vedolux 37,Varmebaronen AB,3.460,0.11,132119,,,69,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.100,Yes,Yes
+,Fire Chief FC1000 and Shelter SF1000,Fire Chief Industries/Shelter Furnace/HY-C Company,,0.19,,45000,16691,69,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,2.000,No,No
+,Caddy Alterna II,"Stove Builder International, Inc.",Not Applicable,0.44,,64737,22537,69,Forced Air Furnace,Non-Catalytic Stove,Wood Pellets,3.100,No,No
+,200 SSP,Heatmor Manufacturing,,0.32,180000,,,69,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,G Series G100/G100s,"Steel Tech, Inc.",,0.07,125000,,,68,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Pellet Burner Easy 35,Wood Boiler USA,Not Applicable,0.04,429452,,,67,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,Yes
+,GX Series GX30,Hawken Energy,,0.17,242090,,,67,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,G2-G2,Polar Furnace Manufacturing Inc.,,0.19,200000,,,67,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,SE110,Alternate Heating Systems,5.420,0.08,,121291,16286,67,Hydronic Heater,Non-Catalytic Stove,Cord Wood,2.000,No,Yes
+,Woodmaster CleanFire 400,Northwest Manufacturing Inc,,0.07,102408,,,67,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,Yes
+,Pellet Burner Easy 35,Wood Boiler USA,,0,,429452,38666,67,Hydronic Heater,Non-Catalytic Stove,Crib Wood,,No,Yes
+,Vedolux 55,Varmebaronen AB,5.300,0.11,170418,,,67,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.120,Yes,Yes
+,GARN WHS-1500H,DECTRA (GARN),,0.14,177000,,,65,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,GARN WHS-1500V,DECTRA (GARN),,0.14,177000,,,65,Hydronic Heater,,Cord Wood,,No,No
+,Optimizer 350,Piney Manufacturing,,0.30,400000,,,65,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,BioWIN 152,HIDU GmbH,Not Applicable,0.04,51200,0,0,65,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.030,Yes,Yes
+,620-9 and 620-10,AC Component Specialists,Not Applicable,0.20,,112434,37722,65,Forced Air Furnace,Non-Catalytic Stove,Wood Pellets,1.100,No,No
+,BioWIN 152,Windhager Zentralheizung Technik GmbH,Not Applicable,0.04,51200,,,65,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.030,Yes,Yes
+,Woodmaster Mini Boiler,Northwest Manufacturing Inc,Not Applicable,0.11,101577,,,65,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,"Fire Chief FC1700, FC1900 and Shelter Furnace SF3100, SF4200",Fire Chief Industries/Shelter Furnace/HY-C Company,,0.26,,67337,25586,64,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,2.300,No,No
+,GX Series GX 10,Hawken Energy,,0.14,144870,,,64,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,"1400E, 1440E, AF1440E, CF1440E, BK1440E, NM1440E, GE1440E, CH1440E, VG1440E, HC1440E, HB1440E, VG1501E, 1551E, AF1500E",United States Stove Company,,0.39,,56399,18888,63,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,5.200,No,No
+,Fire Chief FC1500 and Shelter Furnace SF2600,Fire Chief Industries/Shelter Furnace/HY-C Company,,0.37,,74178,23905,63,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,4.600,No,No
+,X Series 200X,Heatmor Manufacturing,,0.30,184459,,,62,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,"1660E, AF1660E, CF1660E, SF1660E, BK1660E, NM1660E, GE1660E, CH1660E, VG1660E, HC1660E, and HB1660E",United States Stove Company,,0.30,,185536,72455,62,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,0.200,No,No
+,Vedolux 30,Varmebaronen AB,,0.19,109529,,,62,Hydronic Heater,Non-Catalytic Stove,Cord Wood,0.130,Yes,No
+,KB-125,"Hardy Manufacturing Co., Inc.",,0.30,119457,,,61,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,USV 100GS,ESIM,,0.20,350367,,,61,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,E4,Wood Boiler USA,,0,161455,,,61,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,E4,Wood Boiler USA,,0.25,161455,,,61,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Crown Royal RS7400E,Greentech Manufacturing Inc.,,0.24,296192,,,61,Hydronic Heater,Non-Catalytic Stove,Crib Wood,,No,No
+,Empire Elite 200/XT200,Profab Industries,,0.31,185983,,,61,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,EBW 200-170,Econoburn Boilers,,0.16,171638,,,60,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Crown Royal RS7200E,Greentech Manufacturing Inc.,,0.13,184508,,,60,Hydronic Heater,Non-Catalytic Stove,Crib Wood,,No,No
+,Drummer-35,"Hydronic Specialty Supply, Inc.",,0.32,115000,,,60,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,Yes,No
+,Woodmaster Ultra 30,Northwest Manufacturing Inc,Not Applicable,0.09,102716,,,59,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,,No,No
+,350X,Heatmor Manufacturing,,0.31,255582,,,58,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Blaze HE,Wood Boiler USA,,0.27,166109,,,58,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,BioWIN 212,HIDU GmbH,Not Applicable,0.06,71700,0,0,58,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.040,Yes,Yes
+,BioWIN 212,Windhager Zentralheizung Technik GmbH,Not Applicable,0.06,71700,,,58,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.040,Yes,Yes
+,Blaze HE,Wood Boiler USA,,0,166109,,,58,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,"1660EFE, AF1660EFE, CF1660EFE, NM1660EFE, VG1660EFE, HB1660EFE",United States Stove Company,,0.59,,73849,27875,58,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,10.300,No,No
+,KB-165,"Hardy Manufacturing Co., Inc.",,0.31,150000,,,57,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Mahoning Skye Series V,Mahoning Outdoor Furnace,,0.18,110000,,,54,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,AHB-170P,LMF Manufacturing Ltd.,Not Applicable,0.99,77771,,,54,Hydronic Heater,Non-Catalytic Stove,Wood Pellets,0.470,No,No
+,Crown Royal RS7300E,Greentech Manufacturing Inc.,,0.29,189599,,,54,Hydronic Heater,Non-Catalytic Stove,Crib Wood,,No,No
+,Wood Gun E155,Alternate Heating Systems,,0.32,147632,,,53,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Fire Chief FC1000E and Shelter SF1000E,"HY-C Company, LLC",,0.12,,34536,20776,52,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,2.470,No,Yes
+,8500 and SP8500,United States Stove Company,Not Applicable,0.53,,47014,9001,48,Forced Air Furnace,Non-Catalytic Stove,Wood Pellets,0.460,No,No
+,Klear Sky 400,"Earth Manufacturing, LLC",,0.30,70770,,,47,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,Phase 2-200,Marway Welding,,0.26,139576,,,39,Hydronic Heater,Non-Catalytic Stove,Cord Wood,,No,No
+,"1330E, AF1330E, CF1330E, BK1330E, NM1330E, GE1330E, CH1330E, VG1330E, HC1330E, HB1330E, VG1301E, 1331E, AF1300E",United States Stove Company,,0.51,,48184,14917,33,Forced Air Furnace,Non-Catalytic Stove,Cord Wood,9.740,No,No

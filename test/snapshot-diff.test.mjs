@@ -316,22 +316,27 @@ test("recorded hub merges come only from slugs in the history file", () => {
   assert.equal(merges[0].recordedName, "Old Name");
 });
 
-test("the committed EPA files are one snapshot and match stoves.json", () => {
+test("the committed EPA files match stoves.json and keep the 2026-10-23 export", () => {
   const snapshots = loadCommittedSnapshots(root);
-  assert.equal(snapshots.length, 1);
+  assert.equal(snapshots.length, 2);
   assert.equal(snapshots[0].date, "2026-10-23");
-  const rows = Object.fromEntries(snapshots[0].files.map((file) => [file.name, file.rows]));
-  assert.deepEqual(rows, {
+  assert.equal(snapshots[1].date, "2026-11-15");
+  const expectedRows = {
     "rh_all.csv": 1444,
     "rh_inprod.csv": 265,
     "wh_all.csv": 192,
     "wh_inprod.csv": 41,
-  });
+  };
+  for (const snapshot of snapshots) {
+    const rows = Object.fromEntries(snapshot.files.map((file) => [file.name, file.rows]));
+    assert.deepEqual(rows, expectedRows);
+  }
 
   const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
-  const byKey = new Map(snapshots[0].lines.map((line) => [`${line.category}\0${line.manufacturer}\0${line.model}`, line]));
+  const latest = snapshots[1];
+  const byKey = new Map(latest.lines.map((line) => [`${line.category}\0${line.manufacturer}\0${line.model}`, line]));
   assert.equal(byKey.size, stoves.length);
-  assert.equal(snapshots[0].modelLines, 1602);
+  assert.equal(latest.modelLines, 1602);
   for (const stove of stoves) {
     const line = byKey.get(`${stove.category}\0${stove.manufacturer}\0${stove.model}`);
     assert.ok(line, stove.id);
@@ -345,25 +350,36 @@ test("the committed EPA files are one snapshot and match stoves.json", () => {
     const stoveEfficiency = stove.tests.map((row) => row.efficiency).sort((left, right) => (left ?? 999) - (right ?? 999));
     assert.deepEqual(lineEfficiency, stoveEfficiency);
   }
-  assert.deepEqual(snapshots[0].counts, {
+  assert.deepEqual(latest.counts, {
     current: { wood: 177, pellet: 128 },
     previous: { wood: 1043, pellet: 254 },
   });
-  const chips = snapshots[0].lines.find((line) => line.model === "Farrington 12");
+  assert.deepEqual(snapshots[0].counts, latest.counts);
+  const chips = latest.lines.find((line) => line.model === "Farrington 12");
   assert.equal(chips.fuel, "Wood Chips");
   assert.equal(chips.fuelClass, "wood");
 
   const report = loadChangelog(root);
-  assert.equal(report.comparable, false);
-  assert.equal(report.intervals.length, 0);
+  assert.equal(report.comparable, true);
+  assert.equal(report.firstSnapshot, false);
+  assert.equal(report.intervals.length, 1);
+  assert.equal(report.intervals[0].fromDate, "2026-10-23");
+  assert.equal(report.intervals[0].toDate, "2026-11-15");
+  assert.equal(report.intervals[0].added.length, 0);
+  assert.equal(report.intervals[0].newlyCurrent.length, 0);
+  assert.equal(report.intervals[0].movedToPrevious.length, 0);
+  assert.equal(report.intervals[0].disappeared.length, 0);
+  assert.equal(report.intervals[0].fieldChanges.length, 0);
   assert.equal(report.answer.length, 3);
-  assert.equal(report.answer[0], "This is the first snapshot, 2026-10-23; no earlier snapshot to compare.");
+  assert.equal(
+    report.answer[0],
+    "The latest snapshot is 2026-11-15. EPA lists 305 model lines as currently certified on 2026-11-15 (177 wood and 128 pellet, room and central heaters together).",
+  );
   assert.equal(
     report.answer[1],
-    "EPA lists 305 model lines as currently certified on 2026-10-23 (177 wood and 128 pellet, room and central heaters together) and lists 1,297 model lines as previously listed (1,043 wood and 254 pellet).",
+    "Compared with 2026-10-23, 0 model lines were added, 0 moved from currently certified to previously listed, and 0 have a changed emission, efficiency, or manufacturer string.",
   );
-  assert.match(report.answer[2], /snapshot 2026-10-23/);
-  assert.match(report.answer[2], /rh_all\.csv/);
+  assert.equal(report.answer[2], "Source: EPA Certified Wood Heater Database, snapshots 2026-10-23 and 2026-11-15.");
   assert.equal(report.merges.length, 10);
   assert.equal(report.merges.every((merge) => merge.recordedName === merge.fromName), true);
 });

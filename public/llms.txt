@@ -2,7 +2,7 @@
 
 > EPA test numbers for certified wood and pellet stoves. StoveRatings does not score stoves.
 
-StoveRatings is an independent site operated by Three Pines Company LLC. It is not affiliated with the U.S. Environmental Protection Agency and does not use EPA logos. The certification figures are a U.S. government work, public domain, from a snapshot of the EPA Certified Wood Heater Database saved on 2026-10-23.
+StoveRatings is an independent site operated by Three Pines Company LLC. It is not affiliated with the U.S. Environmental Protection Agency and does not use EPA logos. The certification figures are a U.S. government work, public domain, from a snapshot of the EPA Certified Wood Heater Database saved on 2026-11-15.
 
 The build does not fetch cfpub.epa.gov. That host asks automated clients not to crawl it. Refreshes are manual saves of the result pages.
 
