@@ -1,0 +1,185 @@
+---
+import Answer from "../../components/Answer.astro";
+import DataNote from "../../components/DataNote.astro";
+import Base from "../../layouts/Base.astro";
+import { catalog } from "../../lib/catalog.js";
+import {
+  ALLOWANCE_SENTENCE,
+  FIELD_SENTENCE,
+  LENGTH_TABLE_CAPTION,
+  LOG_PAGE,
+  LINE_PLACEHOLDER,
+  RESULT_PLACEHOLDER,
+  VOLUME_TABLE_CAPTION,
+  exampleCaption,
+  exampleRows,
+  logAnswer,
+  logFaqs,
+  logNotes,
+  logSources,
+  smallBandSentence,
+  standardLengthRows,
+  volumeTableRows,
+  woodLineOptions,
+} from "../../lib/firebox-log-length.js";
+import { formatCount, metaDescription } from "../../lib/format.js";
+import { faqLd, webAppLd } from "../../lib/schema.js";
+
+const date = catalog.meta.snapshotDate;
+const sentences = logAnswer(catalog.stoves, date);
+const faqs = logFaqs(catalog.stoves, date);
+const notes = logNotes(catalog.stoves, date);
+const sources = logSources(date);
+const description = metaDescription(sentences);
+const examples = exampleRows();
+const measures = standardLengthRows();
+const bands = volumeTableRows(catalog.stoves);
+const options = woodLineOptions(catalog.stoves);
+const bandMatch = smallBandSentence(catalog.stoves);
+---
+
+<Base title="Firebox and log length" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: LOG_PAGE, label: "Firebox and log length" }]} jsonLd={[webAppLd("Firebox and log length", description, LOG_PAGE), faqLd(faqs)]}>
+  <div class="wrap">
+    <h1>Firebox size and log length</h1>
+    <Answer sentences={sentences} />
+    <p>{FIELD_SENTENCE} Measure the inside depth and the inside width, or check the stove manual. {ALLOWANCE_SENTENCE}</p>
+    <h2>Longest log from a measured side</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>{exampleCaption()}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Side</th>
+            <th scope="col">Measured</th>
+            <th scope="col">Longest log reported</th>
+          </tr>
+        </thead>
+        <tbody>
+          {examples.map((row) => (
+            <tr>
+              <th scope="row">{row.side}</th>
+              <td>{row.measured}</td>
+              <td>{row.log}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <form id="log-form">
+      <div class="filters">
+        <label>Inside depth (inches)
+          <input id="depth" name="depth" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+        <label>Inside width (inches)
+          <input id="width" name="width" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      </div>
+      <button type="submit">Show log length</button>
+    </form>
+    <p id="log-result" class="result" aria-live="polite">{RESULT_PLACEHOLDER}</p>
+    <noscript>
+      <p>The length result uses the page script. Without that script, the example table above stays as printed, each model-line option below still shows the EPA volume, and the band table is in the page HTML.</p>
+    </noscript>
+    <h2>EPA volume for a model line</h2>
+    <p>
+      The list is currently certified room-heater model lines with a wood-stove row in the {date} snapshot.
+      Each option ends with the firebox volume EPA listed on that wood-stove row, or says when the cell is blank or not applicable.
+      Picking a line does not produce a log length, because the export has no inside depth or width.
+    </p>
+    <label>Currently certified wood-stove model line
+      <select id="stove-line">
+        <option value="">Select a model line</option>
+        {options.map((option) => (
+          <option
+            value={option.id}
+            data-manufacturer={option.manufacturer}
+            data-model={option.model}
+            data-volumes={option.volumes.join(",")}
+            data-status={option.status}
+            data-url={option.url}
+          >{option.label}</option>
+        ))}
+      </select>
+    </label>
+    <p id="line-result" class="result" aria-live="polite">{LINE_PLACEHOLDER}</p>
+    <h2>Standard firewood measures</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>{LENGTH_TABLE_CAPTION}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Measure</th>
+            <th scope="col">What the source says</th>
+            <th scope="col">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          {measures.map((row) => (
+            <tr>
+              <th scope="row">{row.measure}</th>
+              <td>{row.statement}</td>
+              <td>{row.source}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p>A 16-inch piece is a firewood measure from those pages. It is not the length that fits every stove. Use the measured side minus 4 inches, and follow the stove manual.</p>
+    <h2>Firebox volume bands</h2>
+    <p>
+      {bandMatch}
+      {" "}
+      <a href="/small-wood-stoves/">Wood stoves with a listed firebox of 1 cubic foot or less</a>
+      {" "}
+      list the rows in that band.
+      The <a href="/tools/stove-size-calculator/">stove size calculator</a> compares a planning BTU/hr range with the heat output EPA listed. It does not use firebox volume.
+    </p>
+    <div class="table-wrap">
+      <table id="volume-bands">
+        <caption>{VOLUME_TABLE_CAPTION}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Listed firebox volume</th>
+            <th scope="col" class="num">Model lines</th>
+            <th scope="col">Related page</th>
+          </tr>
+        </thead>
+        <tbody>
+          {bands.map((row) => (
+            <tr>
+              <th id={row.id} scope="row">{row.label}</th>
+              <td class="num">{formatCount(row.count)}</td>
+              <td><a href={row.href}>{row.linkLabel}</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h2>Questions</h2>
+    {faqs.map((faq) => (
+      <section>
+        <h3>{faq.question}</h3>
+        <p>{faq.answer}</p>
+      </section>
+    ))}
+    <p>
+      Related pages:
+      <a href="/firewood-btu-chart/">firewood heat values</a>,
+      <a href="/tools/heating-cost-calculator/">heating cost calculator</a>,
+      <a href="/glossary/#firebox-volume">firebox volume</a>,
+      and <a href="/glossary/#log-length">log length</a>.
+    </p>
+    <h2>Sources</h2>
+    <ul>
+      {sources.map((source) => (
+        <li><a href={source.href}>{source.label}</a>. Retrieved {source.retrieved}.</li>
+      ))}
+    </ul>
+    <p>Volume counts are copied from the snapshot dated {date} saved on this site. Extension and Forest Service pages were retrieved {sources.find((source) => source.id === "ne-g1554").retrieved}.</p>
+    <DataNote items={notes} />
+  </div>
+</Base>
+<script>
+  import { mountFireboxLog } from "../../lib/firebox-log-ui.js";
+  mountFireboxLog(document);
+</script>
