@@ -109,7 +109,7 @@ test("the glossary anchor resolves and the new page adds no affiliate placement"
   const noindex = JSON.parse(read("data/noindex-paths.json"));
   assert.equal(noindex.includes(MOISTURE_PAGE), false);
   assert.equal(LOGOX_PLACEMENTS.some((item) => item.path === MOISTURE_PAGE), false);
-  assert.equal(page.includes("LogoxNote"), false);
+  assert.equal(page.includes(["Logox", "Note"].join("")), false);
   assert.equal(page.includes("sponsored"), false);
   assert.equal(lib.includes("sponsored"), false);
   const faq = faqLd(parts.faqs);
