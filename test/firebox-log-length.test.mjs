@@ -434,7 +434,10 @@ test("the form script rejects empty and negative sides and the sitemap gains one
   assert.match(output.textContent, /14 inches/);
 
   const current = listPages(join(root, "src/pages"));
-  assert.deepEqual(current.filter((file) => !PAGES_BEFORE_LOG_LENGTH.includes(file)), ["tools/firebox-log-length.astro"]);
+  assert.deepEqual(current.filter((file) => !PAGES_BEFORE_LOG_LENGTH.includes(file)), [
+    "firewood-moisture.astro",
+    "tools/firebox-log-length.astro",
+  ]);
   assert.deepEqual(PAGES_BEFORE_LOG_LENGTH.filter((file) => !current.includes(file)), []);
   assert.equal(currentWoodLines(stoves).length, volumeSummary(stoves).lines);
   assert.equal(formatCount(volumeSummary(stoves).lines).includes(","), volumeSummary(stoves).lines >= 1000);

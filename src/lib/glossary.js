@@ -459,6 +459,19 @@ export function glossaryParts(stoves, snapshotDate) {
       ],
     }),
     term({
+      id: "moisture-content",
+      term: "Moisture content",
+      label: "Water in firewood, not an EPA column",
+      sentences: [
+        "Moisture content is the water in a piece of firewood, expressed as a percent of either the ovendry wood or the total weight.",
+        "It is not a column in the EPA export, and each cited burn target is on the firewood moisture page.",
+      ],
+      links: [
+        { href: "/firewood-moisture/", label: "Firewood moisture" },
+        { href: "/firewood-btu-chart/", label: "Firewood heat values" },
+      ],
+    }),
+    term({
       id: "currently-certified",
       term: "Currently certified",
       label: "The row was in the in-production result on the snapshot date",
@@ -614,7 +627,7 @@ export function glossaryParts(stoves, snapshotDate) {
     {
       id: "measurements",
       heading: "Emission, efficiency, and heat output",
-      ids: ["g-hr", "lb-mmbtu", "hhv", "lhv", "btu-hr", "co", "firebox-volume", "log-length"],
+      ids: ["g-hr", "lb-mmbtu", "hhv", "lhv", "btu-hr", "co", "firebox-volume", "log-length", "moisture-content"],
     },
     {
       id: "standards",

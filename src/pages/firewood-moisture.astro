@@ -1,0 +1,125 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { metaDescription } from "../lib/format.js";
+import {
+  MOISTURE_PAGE,
+  MOISTURE_RETRIEVED,
+  assertMoistureCopy,
+  moistureParts,
+  moistureVisibleText,
+} from "../lib/firewood-moisture.js";
+import { articleLd, faqLd } from "../lib/schema.js";
+
+const parts = moistureParts();
+const sentences = parts.sentences;
+const faqs = parts.faqs;
+const description = metaDescription(sentences);
+assertMoistureCopy(moistureVisibleText(parts));
+---
+
+<Base title="Firewood moisture" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: MOISTURE_PAGE, label: "Firewood moisture" }]} jsonLd={[articleLd("Firewood moisture content from cited EPA, Forest Service, and extension pages", description, MOISTURE_PAGE, MOISTURE_RETRIEVED), faqLd(faqs)]}>
+  <div class="wrap">
+    <h1>Firewood moisture</h1>
+    <Answer sentences={sentences} />
+    <p>Sources retrieved {MOISTURE_RETRIEVED}. A short definition is at <a href="/glossary/#moisture-content">moisture content</a> in the glossary. This page does not name a meter brand or a seller.</p>
+    <h2>Moisture figures</h2>
+    <p>Where the cited pages do not use the same percent, each figure is listed with the page it came from. A basis of "Not stated" means that page does not say whether the percent is oven-dry basis or wet basis.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>{parts.targetCaption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Source</th>
+            <th scope="col">Moisture the source states</th>
+            <th scope="col">Basis</th>
+            <th scope="col">Retrieved</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.targets.map((row) => (
+            <tr>
+              <th scope="row"><a href={row.href}>{row.source}</a></th>
+              <td>{row.moisture}</td>
+              <td>{row.basis}</td>
+              <td>{row.retrieved}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h2>What the percent means</h2>
+    {parts.basis.map((paragraph) => <p>{paragraph}</p>)}
+    <h2>How to check a piece</h2>
+    {parts.check.map((paragraph) => <p>{paragraph}</p>)}
+    <div class="table-wrap">
+      <table>
+        <caption>{parts.signCaption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Sign</th>
+            <th scope="col">What the source says</th>
+            <th scope="col">Source</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.signs.map((row) => (
+            <tr>
+              <th scope="row">{row.sign}</th>
+              <td>{row.statement}</td>
+              <td><a href={row.href}>{row.source}</a>. Retrieved {row.retrieved}.</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h2>Why it matters on an EPA-certified stove</h2>
+    {parts.why.map((paragraph) => <p>{paragraph}</p>)}
+    <h2>The cord-heat table</h2>
+    {parts.chart.map((paragraph) => <p>{paragraph}</p>)}
+    <p>
+      Related pages: <a href="/firewood-btu-chart/">firewood heat values</a>,
+      the <a href="/tools/heating-cost-calculator/">heating cost calculator</a>,
+      and <a href="/tools/firebox-log-length/">firebox and log length</a>.
+    </p>
+    <h2>Seasoning time</h2>
+    <div class="table-wrap">
+      <table>
+        <caption>{parts.seasonCaption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Source</th>
+            <th scope="col">Time the source states</th>
+            <th scope="col">Caveat the source states</th>
+            <th scope="col">Retrieved</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.seasons.map((row) => (
+            <tr>
+              <th scope="row"><a href={row.href}>{row.source}</a></th>
+              <td>{row.time}</td>
+              <td>{row.caveat}</td>
+              <td>{row.retrieved}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h2>Questions</h2>
+    {faqs.map((faq) => (
+      <section>
+        <h3>{faq.question}</h3>
+        <p>{faq.answer}</p>
+      </section>
+    ))}
+    <h2>Sources</h2>
+    <ul>
+      {parts.sources.map((item) => (
+        <li><a href={item.href}>{item.label}</a>. Retrieved {item.retrieved}.</li>
+      ))}
+    </ul>
+    <DataNote items={parts.notes} />
+  </div>
+</Base>
