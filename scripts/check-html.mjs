@@ -37,6 +37,17 @@ import {
   standardLengthRows,
   volumeTableRows,
 } from "../src/lib/firebox-log-length.js";
+import {
+  MOISTURE_RETRIEVED,
+  SIGN_CAPTION,
+  SEASON_CAPTION,
+  TARGET_CAPTION,
+  assertMoistureCopy,
+  moistureFaqs,
+  moistureParts,
+  moistureSources,
+  moistureVisibleText,
+} from "../src/lib/firewood-moisture.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -449,6 +460,84 @@ else {
   if (!html.includes('href="/small-wood-stoves/"') || !html.includes('href="/tools/stove-size-calculator/"')) {
     errors.push("log length: missing related links");
   }
+}
+
+const moistureFile = files.find((file) => file.endsWith("/firewood-moisture/index.html"));
+if (!moistureFile) errors.push("missing firewood moisture page");
+else {
+  const html = decodeHtml(readFileSync(moistureFile, "utf8"));
+  const parts = moistureParts();
+  try {
+    assertMoistureCopy(moistureVisibleText(parts));
+  } catch (error) {
+    errors.push(`firewood moisture: ${error.message}`);
+  }
+  if (!html.includes('class="answer"')) errors.push("firewood moisture: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("firewood moisture: answer box sentences");
+  const answerAt = html.indexOf('class="answer"');
+  const tableAt = html.indexOf("<table");
+  if (answerAt < 0 || tableAt < 0 || answerAt > tableAt) errors.push("firewood moisture: answer box is not before the tables");
+  for (const sentence of parts.sentences) {
+    if (!html.includes(sentence)) errors.push("firewood moisture: answer sentence missing");
+  }
+  if (!html.includes(TARGET_CAPTION)) errors.push("firewood moisture: target caption");
+  if (!html.includes(SEASON_CAPTION)) errors.push("firewood moisture: seasoning caption");
+  if (!html.includes(SIGN_CAPTION)) errors.push("firewood moisture: sign caption");
+  if (!html.includes(`Sources retrieved ${MOISTURE_RETRIEVED}`)) errors.push("firewood moisture: retrieved line");
+  for (const row of parts.targets) {
+    if (!html.includes(row.moisture) || !html.includes(row.basis) || !html.includes(row.retrieved)) {
+      errors.push(`firewood moisture: target row ${row.id}`);
+    }
+  }
+  for (const faq of moistureFaqs()) {
+    if (!html.includes(faq.question) || !html.includes(faq.answer)) errors.push(`firewood moisture: FAQ missing ${faq.question}`);
+  }
+  for (const source of moistureSources()) {
+    if (!html.includes(source.href) || !html.includes(`Retrieved ${source.retrieved}`)) {
+      errors.push(`firewood moisture: citation ${source.href}`);
+    }
+    if (source.href.includes(["cf", "pub.epa.gov"].join(""))) errors.push("firewood moisture: EPA application host");
+  }
+  if (!html.includes('href="/glossary/#moisture-content"')) errors.push("firewood moisture: glossary anchor");
+  if (!html.includes('href="/firewood-btu-chart/"')) errors.push("firewood moisture: heat chart link");
+  if (!html.includes('href="/tools/heating-cost-calculator/"')) errors.push("firewood moisture: heating cost link");
+  if (!html.includes('href="/tools/firebox-log-length/"')) errors.push("firewood moisture: log length link");
+  if (html.includes('rel="sponsored') || html.includes("data-affiliate=")) errors.push("firewood moisture: affiliate link");
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`firewood moisture: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("firewood moisture: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "FAQPage"]) {
+        if (!types.has(required)) errors.push(`firewood moisture: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "WebApplication", "Dataset"]) {
+        if (types.has(banned)) errors.push(`firewood moisture: forbidden ${banned}`);
+      }
+      const questions = data["@graph"]?.find((item) => item["@type"] === "FAQPage")?.mainEntity || [];
+      const faqs = moistureFaqs();
+      if (questions.length !== faqs.length) errors.push("firewood moisture: FAQ count");
+      for (const item of faqs) {
+        const match = questions.find((question) => question.name === item.question);
+        if (!match || match.acceptedAnswer?.text !== item.answer) errors.push(`firewood moisture: FAQ JSON-LD ${item.question}`);
+      }
+    }
+  }
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd).replace(/href="[^"]*"/g, "") : "";
+  if (/\bbest\b/i.test(main)) errors.push("firewood moisture: banned wording");
+  if (main.includes(["cf", "pub.epa.gov"].join(""))) errors.push("firewood moisture: EPA application host");
 }
 
 const glossaryFile = files.find((file) => file.endsWith("/glossary/index.html"));
