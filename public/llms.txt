@@ -33,7 +33,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 - Small firebox wood stoves (room-heater wood-stove rows with a listed firebox of 1 cubic foot or less; pellet rows excluded because EPA does not list a cordwood firebox on them): https://stoveratings.com/small-wood-stoves/
 - Lowest pellet-stove emission rates: https://stoveratings.com/cleanest-burning-pellet-stoves/
 - Catalytic, non-catalytic, and hybrid (EPA subtype labels, currently certified room-heater counts, and median g/hr and HHV efficiency): https://stoveratings.com/catalytic-vs-non-catalytic/
-- Inserts named in the model text: https://stoveratings.com/wood-stove-inserts/ and https://stoveratings.com/pellet-stove-inserts/
+- Inserts named in the model text. The wood page filters currently certified rows by heat output, firebox volume, and catalytic, non-catalytic, or hybrid: https://stoveratings.com/wood-stove-inserts/ and https://stoveratings.com/pellet-stove-inserts/
 - Hydronic heaters: https://stoveratings.com/outdoor-wood-boilers/
 - Forced-air furnaces: https://stoveratings.com/wood-furnaces/
 - Pellet hydronic heaters: https://stoveratings.com/pellet-boilers/

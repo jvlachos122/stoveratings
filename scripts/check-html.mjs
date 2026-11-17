@@ -48,6 +48,12 @@ import {
   moistureSources,
   moistureVisibleText,
 } from "../src/lib/firewood-moisture.js";
+import { catalog } from "../src/lib/catalog.js";
+import {
+  currentInsertRows,
+  insertFinderSentences,
+  insertRowView,
+} from "../src/lib/insert-finder.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -109,6 +115,7 @@ const validator = new HtmlValidate({
 
 const files = walk(dist);
 let logoxBlocks = 0;
+let sponsoredRels = 0;
 for (const file of files) {
   const html = readFileSync(file, "utf8");
   const rel = file.slice(dist.length);
@@ -138,9 +145,11 @@ for (const file of files) {
   }
   for (const problem of affiliateMarkupProblems(html)) errors.push(`${rel}: ${problem}`);
   logoxBlocks += (html.match(/data-affiliate="logox"/g) || []).length;
+  sponsoredRels += (html.match(/rel="sponsored/g) || []).length;
 }
 const expectedLogoxBlocks = LOGOX.enabled ? LOGOX_PLACEMENTS.length : 0;
 if (logoxBlocks !== expectedLogoxBlocks) errors.push(`LogOX blocks ${logoxBlocks} != ${expectedLogoxBlocks}`);
+if (sponsoredRels !== expectedLogoxBlocks) errors.push(`rel=sponsored ${sponsoredRels} != ${expectedLogoxBlocks}`);
 if (LOGOX.enabled) {
   const disclosureHtml = readFileSync(join(dist, "disclosure/index.html"), "utf8");
   const aboutHtml = readFileSync(join(dist, "about/index.html"), "utf8");
@@ -602,6 +611,84 @@ else {
   const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd).replace(/href="[^"]*"/g, "") : "";
   if (/\bbest\b/i.test(main)) errors.push("glossary: banned wording");
   if (main.includes("cfpub.epa.gov")) errors.push("glossary: EPA application host");
+}
+
+const insertsFile = files.find((file) => file.endsWith("/wood-stove-inserts/index.html"));
+if (!insertsFile) errors.push("missing wood stove inserts page");
+else {
+  const html = decodeHtml(readFileSync(insertsFile, "utf8"));
+  const rows = currentInsertRows(catalog.stoves, catalog.brandBySlug);
+  const sentences = insertFinderSentences(catalog.stoves, catalog.meta.snapshotDate);
+  if (!html.includes('class="answer"')) errors.push("inserts: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("inserts: answer box sentences");
+  for (const sentence of sentences) {
+    if (!html.includes(sentence)) errors.push("inserts: answer sentence missing");
+  }
+  const answerAt = html.indexOf('class="answer"');
+  const tableAt = html.indexOf('id="insert-finder-table"');
+  if (answerAt < 0 || tableAt < answerAt) errors.push("inserts: answer box is not before the finder table");
+  const table = html.match(/<table id="insert-finder-table">[\s\S]*?<\/table>/);
+  if (!table) errors.push("inserts: finder table missing");
+  else {
+    const body = table[0].match(/<tbody id="insert-finder-rows">([\s\S]*?)<\/tbody>/);
+    const rendered = body ? body[1].match(/<tr\b/g) || [] : [];
+    if (rendered.length !== rows.length) errors.push(`inserts: ${rendered.length} table rows != ${rows.length}`);
+    for (const row of rows) {
+      const view = insertRowView(row);
+      if (!table[0].includes(`href="${view.modelUrl}"`)) errors.push(`inserts: missing stove ${view.modelUrl}`);
+      if (view.brandUrl && !table[0].includes(`href="${view.brandUrl}"`)) errors.push(`inserts: missing brand ${view.brandUrl}`);
+      if (view.attrs["data-id"] && !table[0].includes(`data-id="${view.attrs["data-id"]}"`)) {
+        errors.push(`inserts: missing row ${view.attrs["data-id"]}`);
+      }
+    }
+  }
+  if (!html.includes('href="/tools/stove-size-calculator/"') || !html.includes('href="/tools/firebox-log-length/"')) {
+    errors.push("inserts: missing calculator links");
+  }
+  if (!html.includes('data-affiliate="logox"')) errors.push("inserts: LogOX block missing");
+  const expectedSponsored = LOGOX.enabled
+    ? LOGOX_PLACEMENTS.filter((item) => item.path === "/wood-stove-inserts/").length
+    : 0;
+  const sponsored = (html.match(/rel="sponsored/g) || []).length;
+  if (sponsored !== expectedSponsored) errors.push(`inserts: rel=sponsored ${sponsored} != ${expectedSponsored}`);
+  if ((html.match(/data-affiliate="logox"/g) || []).length !== expectedSponsored) {
+    errors.push("inserts: LogOX block count");
+  }
+  if (html.includes("cfpub.epa.gov")) errors.push("inserts: EPA application host");
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd) : "";
+  if (/\bbest\b/i.test(main) || /\brankings?\b/i.test(main) || /\bscores?\b/i.test(main)) {
+    errors.push("inserts: banned wording");
+  }
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`inserts: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("inserts: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "WebApplication"]) {
+        if (!types.has(required)) errors.push(`inserts: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "FAQPage"]) {
+        if (types.has(banned)) errors.push(`inserts: forbidden ${banned}`);
+      }
+    }
+  }
+  if (html.includes('content="noindex"')) errors.push("inserts: unexpected noindex");
+  const moduleScripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/gi)].map((match) => match[1]);
+  if (!moduleScripts.some((src) => src.startsWith("/_astro/") || src.startsWith("/scripts/"))) {
+    errors.push("inserts: missing first-party script");
+  }
 }
 
 let reported = 0;

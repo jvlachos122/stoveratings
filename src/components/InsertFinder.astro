@@ -1,0 +1,122 @@
+---
+import {
+  SORT_MODES,
+  filterHelp,
+  finderCaption,
+  finderStatusText,
+  insertRowView,
+  subtypeOptions,
+} from "../lib/insert-finder.js";
+
+const { rows = [], flags, emissionLabel = "Emission" } = Astro.props;
+const options = subtypeOptions(rows);
+const help = filterHelp(flags);
+const caption = finderCaption("emission-asc");
+const status = finderStatusText(rows.length, rows.length);
+---
+
+<section id="insert-finder-section" aria-labelledby="insert-finder-heading">
+  <h2 id="insert-finder-heading">Filter currently certified rows</h2>
+  <p id="insert-finder-help">{help}</p>
+  <form id="insert-finder" method="get" action="/wood-stove-inserts/" aria-describedby="insert-finder-help">
+    <div class="filters">
+      {flags?.subtype ? (
+        <label>Catalytic, non-catalytic, or hybrid
+          <select id="insert-subtype" name="subtype">
+            <option value="">Any</option>
+            {options.map((option) => <option value={option.value}>{option.label}</option>)}
+          </select>
+        </label>
+      ) : null}
+      {flags?.heat ? (
+        <label>Heat output minimum (BTU/hr)
+          <input id="insert-heat-min" name="heat-min" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      {flags?.heat ? (
+        <label>Heat output maximum (BTU/hr)
+          <input id="insert-heat-max" name="heat-max" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      {flags?.firebox ? (
+        <label>Firebox minimum (cu ft)
+          <input id="insert-firebox-min" name="firebox-min" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      {flags?.firebox ? (
+        <label>Firebox maximum (cu ft)
+          <input id="insert-firebox-max" name="firebox-max" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      <label>Sort
+        <select id="insert-sort" name="sort">
+          {SORT_MODES.map((mode) => <option value={mode.value} selected={mode.value === "emission-asc"}>{mode.label}</option>)}
+        </select>
+      </label>
+    </div>
+    <div class="actions">
+      <button type="submit">Apply filters</button>
+    </div>
+  </form>
+  <p id="insert-finder-status" class="small" aria-live="polite">{status}</p>
+  <p id="insert-finder-empty" hidden={rows.length > 0}>No currently certified row matches these filters.</p>
+  <noscript>
+    <p>The filter and the column sort run in your browser. The table lists every currently certified row without that script.</p>
+  </noscript>
+  <div class="table-wrap">
+    <table id="insert-finder-table">
+      <caption id="insert-finder-caption">{caption}</caption>
+      <thead>
+        <tr>
+          <th scope="col" data-sort-key="name" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="name" data-default="asc">Model line</button>
+          </th>
+          <th scope="col"><a href="/brands/">Brand</a></th>
+          <th scope="col" class="num" data-sort-key="emission" aria-sort="ascending">
+            <button type="button" class="sort-button" data-sort="emission" data-default="asc">{emissionLabel}</button>
+          </th>
+          <th scope="col" class="num" data-sort-key="efficiency" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="efficiency" data-default="desc">HHV efficiency</button>
+          </th>
+          <th scope="col" class="num" data-sort-key="heat" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="heat" data-default="desc">Heat output</button>
+          </th>
+          <th scope="col" class="num" data-sort-key="firebox" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="firebox" data-default="asc">Firebox</button>
+          </th>
+          <th scope="col">Catalytic, non-catalytic, or hybrid</th>
+        </tr>
+      </thead>
+      <tbody id="insert-finder-rows">
+        {rows.map((row) => {
+          const view = insertRowView(row);
+          return (
+            <tr {...view.attrs}>
+              <th scope="row"><a href={view.modelUrl}>{view.model}</a></th>
+              <td>{view.brandUrl ? <a href={view.brandUrl}>{view.brand}</a> : view.brand}</td>
+              <td class="num">{view.emission}</td>
+              <td class="num">{view.efficiency}</td>
+              <td class="num">{view.heat}</td>
+              <td class="num">{view.firebox}</td>
+              <td>{view.subtype}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+  <p class="small">
+    Column definitions:
+    <a href="/glossary/#model-line">model line</a>,
+    <a href="/glossary/#g-hr">emission rate</a>,
+    <a href="/glossary/#hhv">HHV efficiency</a>,
+    <a href="/glossary/#btu-hr">heat output</a>,
+    <a href="/glossary/#firebox-volume">firebox volume</a>,
+    and <a href="/glossary/#epa-subtype">EPA subtype</a>.
+  </p>
+</section>
+<script>
+  import { mountInsertFinder } from "../lib/insert-finder-ui.js";
+
+  mountInsertFinder(document);
+</script>
