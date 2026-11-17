@@ -54,6 +54,9 @@ const status = finderStatusText(rows.length, rows.length);
         </select>
       </label>
     </div>
+    <div class="actions">
+      <button type="submit">Apply filters</button>
+    </div>
   </form>
   <p id="insert-finder-status" class="small" aria-live="polite">{status}</p>
   <p id="insert-finder-empty" hidden={rows.length > 0}>No currently certified row matches these filters.</p>
