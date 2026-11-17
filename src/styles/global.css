@@ -239,6 +239,24 @@ caption { text-align: left; font-weight: 600; padding: 0.7rem 0.8rem; caption-si
 th, td { text-align: left; padding: 0.55rem 0.7rem; border-top: 1px solid var(--line); vertical-align: top; }
 th { font-size: 0.8125rem; }
 td.num, th.num { text-align: right; }
+table button.sort-button {
+  min-height: 2.4rem;
+  width: 100%;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  border-radius: 0;
+  padding: 0.15rem 0;
+  font-weight: 600;
+  text-align: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+table button.sort-button:hover,
+table button.sort-button:focus-visible {
+  background: transparent;
+  color: var(--ember-dark);
+}
 
 .filters, .tool-grid { display: grid; gap: 0.75rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 1rem; }
 label { display: grid; gap: 0.25rem; font-size: var(--text-sm); font-weight: 600; }

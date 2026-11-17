@@ -1,41 +1,48 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import InsertFinder from "../components/InsertFinder.astro";
 import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
 import { insertDataNotes } from "../lib/answers.js";
 import { catalog } from "../lib/catalog.js";
 import { metaDescription } from "../lib/format.js";
+import {
+  currentInsertRows,
+  emissionHeader,
+  filterFlags,
+  insertFinderNotes,
+  insertFinderSentences,
+  previousSectionLead,
+} from "../lib/insert-finder.js";
 import { inserts } from "../lib/lists.js";
-import { articleLd } from "../lib/schema.js";
+import { articleLd, webAppLd } from "../lib/schema.js";
 
-const groups = inserts(catalog.stoves, "Wood Stove");
 const date = catalog.meta.snapshotDate;
-const lines = groups.current.length + groups.previous.length;
-const currentRows = groups.current.reduce((sum, stove) => sum + stove.tests.filter((test) => test.current).length, 0);
-const previousRows = [...groups.current, ...groups.previous].reduce(
-  (sum, stove) => sum + stove.tests.filter((test) => !test.current).length,
-  0,
-);
-const sentences = [
-  `EPA lists ${groups.current.length} currently certified wood-stove model lines and ${groups.previous.length} previously certified wood-stove model lines whose names indicate an insert.`,
-  "EPA's export has no insert field. The label on each row is name indicates insert, based on the model name.",
-  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
-];
+const groups = inserts(catalog.stoves, "Wood Stove");
+const rows = currentInsertRows(catalog.stoves, catalog.brandBySlug);
+const flags = filterFlags(rows);
+const sentences = insertFinderSentences(catalog.stoves, date);
+const notes = [...insertDataNotes, ...insertFinderNotes(catalog.stoves)];
 const description = metaDescription(sentences);
+const lead = previousSectionLead(catalog.stoves);
 ---
 
-<Base title="Wood stove inserts in EPA model names" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/wood-stove-inserts/", label: "Wood inserts" }]} jsonLd={[articleLd("Wood stove inserts indicated by EPA model names", description, "/wood-stove-inserts/", date)]}>
+<Base title="Wood stove inserts in EPA model names" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/wood-stove-inserts/", label: "Wood inserts" }]} jsonLd={[articleLd("Wood stove inserts indicated by EPA model names", description, "/wood-stove-inserts/", date), webAppLd("Wood stove insert finder", description, "/wood-stove-inserts/")]}>
   <div class="wrap">
     <h1>Wood stove inserts named in the EPA list</h1>
     <Answer sentences={sentences} />
-    <p>These {lines} model lines cover {currentRows} currently certified EPA rows and {previousRows} previously certified EPA rows. Pellet names are on <a href="/pellet-stove-inserts/">pellet stove inserts</a>.</p>
+    <p>
+      The <a href="/tools/stove-size-calculator/">stove size calculator</a> compares a planning BTU/hr range with the heat output EPA listed.
+      The <a href="/tools/firebox-log-length/">firebox and log length</a> page does not turn a cubic-foot volume into a piece length.
+    </p>
+    <InsertFinder rows={rows} flags={flags} emissionLabel={emissionHeader(rows)} />
+    <p>{lead} Pellet names are on <a href="/pellet-stove-inserts/">pellet stove inserts</a>.</p>
     <Sections sections={[
-      { heading: "Currently certified", stoves: groups.current, caption: "Currently certified wood-stove model lines whose names indicate an insert" },
       { heading: "Previously certified", stoves: groups.previous, caption: "Previously certified wood-stove model lines whose names indicate an insert" },
     ]} />
-    <DataNote items={insertDataNotes} />
+    <DataNote items={notes} />
     <LogoxNote path="/wood-stove-inserts/" />
   </div>
 </Base>
