@@ -1,34 +1,38 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
-import StoveTable from "../components/StoveTable.astro";
+import EfficiencyFinder from "../components/EfficiencyFinder.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
-import { formatNumber, metaDescription, shortModel } from "../lib/format.js";
-import { excludedEfficiency, rankByEfficiency } from "../lib/lists.js";
-import { articleLd } from "../lib/schema.js";
+import {
+  efficiencyFinderNotes,
+  efficiencyFinderSentences,
+  efficiencyFlags,
+  efficiencyRows,
+} from "../lib/efficiency-finder.js";
+import { metaDescription } from "../lib/format.js";
+import { articleLd, webAppLd } from "../lib/schema.js";
 
-const ranked = rankByEfficiency(catalog.stoves, "Wood Stove");
-const excluded = excludedEfficiency(catalog.stoves, "Wood Stove");
-const top = ranked[0];
 const date = catalog.meta.snapshotDate;
-const sentences = [
-  `The highest HHV efficiency EPA lists on a currently certified wood-stove model line is ${formatNumber(top.efficiency, 2)} percent, on ${shortModel(top.model)}.`,
-  excluded === 0
-    ? `All ${ranked.length} currently certified wood-stove model lines list an HHV efficiency, so none were left out of this order.`
-    : `${excluded} currently certified wood-stove model lines have no HHV efficiency listed, so they are left out of this order.`,
-  "The table orders ties by a lower emission rate, then by model name. EPA does not break those ties, and this is not a StoveRatings score.",
-  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
-];
+const rows = efficiencyRows(catalog.stoves);
+const flags = efficiencyFlags(rows);
+const sentences = efficiencyFinderSentences(catalog.stoves, date);
+const notes = efficiencyFinderNotes();
 const description = metaDescription(sentences);
+const toolName = "Wood stove HHV efficiency filters";
 ---
 
-<Base title="Highest HHV efficiency wood stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/most-efficient-wood-stoves/", label: "Highest HHV efficiency" }]} jsonLd={[articleLd("Wood stoves ordered by EPA HHV efficiency", description, "/most-efficient-wood-stoves/", date)]}>
+<Base title="Highest HHV efficiency wood stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/most-efficient-wood-stoves/", label: "Highest HHV efficiency" }]} jsonLd={[articleLd("Wood stoves ordered by EPA HHV efficiency", description, "/most-efficient-wood-stoves/", date), webAppLd(toolName, description, "/most-efficient-wood-stoves/")]}>
   <div class="wrap">
     <h1>Wood stoves with the highest EPA HHV efficiency</h1>
     <Answer sentences={sentences} />
-    <StoveTable stoves={ranked} caption="Currently certified wood stoves ordered by HHV efficiency, highest first" />
+    <p>
+      <a href="/tools/stove-size-calculator/">Fits my space</a>
+      is the stove size calculator: it compares a planning BTU/hr range with the heat output EPA listed.
+      The <a href="/tools/firebox-log-length/">firebox and log length</a> page does not turn a cubic-foot volume into a piece length.
+    </p>
+    <EfficiencyFinder rows={rows} flags={flags} />
     <p>Pellet stoves are ordered separately on <a href="/most-efficient-pellet-stoves/">the pellet efficiency list</a>.</p>
-    <DataNote items={["The order uses the primary EPA row for each model line. A line with two rows keeps the current row with the lower emission rate as its primary row.", "Previously certified model lines are not in this table."]} />
+    <DataNote items={notes} />
   </div>
 </Base>
