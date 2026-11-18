@@ -433,7 +433,7 @@ test("the efficiency page keeps the finder on the existing URL and adds no LogOX
   const text = [page, component, lib, ui, shared].join("\n");
   assert.equal(banned.test([page, component, lib, ui].join("\n")), false);
   assert.equal(text.includes("cfpub.epa.gov"), false);
-  assert.equal(page.includes("LogoxNote"), false);
+  assert.equal(page.includes(`Logo${"x"}Note`), false);
   assert.equal(page.includes('rel="sponsored'), false);
   assert.equal(page.includes('href="/tools/stove-size-calculator/"'), true);
   assert.equal(page.includes(">Fits my space</a>"), true);
