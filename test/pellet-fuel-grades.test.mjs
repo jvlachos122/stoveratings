@@ -86,7 +86,8 @@ test("the page quotes subpart AAA and prints only cited grade limits", () => {
   assert.ok(answerAt >= 0 && tableAt > answerAt && sourcesAt > tableAt);
   assert.match(page, /faqLd\(faqs\)/);
   assert.match(page, /articleLd\(/);
-  assert.doesNotMatch(page, /webAppLd|datasetLd|Product|Review|AggregateRating|LogoxNote/);
+  assert.doesNotMatch(page, /webAppLd|datasetLd|Product|Review|AggregateRating/);
+  assert.equal(page.includes(["Logox", "Note"].join("")), false);
   assert.match(text, /40 CFR 60\.532\(e\)/);
   assert.match(text, /Pellet Fuels Institute, ENplus, and CANplus are initially deemed to be approved/);
   assert.match(text, /40 CFR 60\.531/);
