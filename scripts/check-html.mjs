@@ -54,6 +54,11 @@ import {
   insertFinderSentences,
   insertRowView,
 } from "../src/lib/insert-finder.js";
+import {
+  efficiencyFinderSentences,
+  efficiencyRowView,
+  efficiencyRows,
+} from "../src/lib/efficiency-finder.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -688,6 +693,91 @@ else {
   const moduleScripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/gi)].map((match) => match[1]);
   if (!moduleScripts.some((src) => src.startsWith("/_astro/") || src.startsWith("/scripts/"))) {
     errors.push("inserts: missing first-party script");
+  }
+}
+
+const efficiencyFile = files.find((file) => file.endsWith("/most-efficient-wood-stoves/index.html"));
+if (!efficiencyFile) errors.push("missing most efficient wood stoves page");
+else if (files.some((file) => file.includes("/tools/efficiency-finder/") || file.includes("/most-efficient-wood-stove-filters/"))) {
+  errors.push("efficiency: extra filter URL");
+} else {
+  const html = decodeHtml(readFileSync(efficiencyFile, "utf8"));
+  const rows = efficiencyRows(catalog.stoves);
+  const sentences = efficiencyFinderSentences(catalog.stoves, catalog.meta.snapshotDate);
+  if (!html.includes('class="answer"')) errors.push("efficiency: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("efficiency: answer box sentences");
+  for (const sentence of sentences) {
+    if (!html.includes(sentence)) errors.push("efficiency: answer sentence missing");
+  }
+  const answerAt = html.indexOf('class="answer"');
+  const tableAt = html.indexOf('id="efficiency-finder-table"');
+  if (answerAt < 0 || tableAt < answerAt) errors.push("efficiency: answer box is not before the finder table");
+  const table = html.match(/<table id="efficiency-finder-table">[\s\S]*?<\/table>/);
+  if (!table) errors.push("efficiency: finder table missing");
+  else {
+    const body = table[0].match(/<tbody id="efficiency-finder-rows">([\s\S]*?)<\/tbody>/);
+    const rendered = body ? body[1].match(/<tr\b/g) || [] : [];
+    if (rendered.length !== rows.length) errors.push(`efficiency: ${rendered.length} table rows != ${rows.length}`);
+    if (!rendered.length) errors.push("efficiency: no-JS list is empty");
+    for (const row of rows) {
+      const view = efficiencyRowView(row);
+      if (!table[0].includes(`href="${view.modelUrl}"`)) errors.push(`efficiency: missing stove ${view.modelUrl}`);
+      if (view.attrs["data-id"] && !table[0].includes(`data-id="${view.attrs["data-id"]}"`)) {
+        errors.push(`efficiency: missing row ${view.attrs["data-id"]}`);
+      }
+    }
+  }
+  const unreported = html.match(/<tbody id="efficiency-finder-unreported-rows">([\s\S]*?)<\/tbody>/);
+  const unreportedRows = unreported ? unreported[1].match(/<tr\b/g) || [] : [];
+  if (!unreported || unreportedRows.length !== 0) errors.push("efficiency: unreported table is not an empty no-JS bucket");
+  if (!html.includes(">Not reported<")) errors.push("efficiency: missing Not reported heading");
+  if (!html.includes('href="/tools/stove-size-calculator/">Fits my space</a>')) errors.push("efficiency: fits my space link");
+  if (!html.includes('href="/tools/firebox-log-length/"')) errors.push("efficiency: firebox log link");
+  if (!html.includes("<noscript>")) errors.push("efficiency: noscript");
+  const expectedSponsored = LOGOX.enabled
+    ? LOGOX_PLACEMENTS.filter((item) => item.path === "/most-efficient-wood-stoves/").length
+    : 0;
+  const sponsored = (html.match(/rel="sponsored/g) || []).length;
+  if (sponsored !== expectedSponsored) errors.push(`efficiency: rel=sponsored ${sponsored} != ${expectedSponsored}`);
+  if ((html.match(/data-affiliate="logox"/g) || []).length !== expectedSponsored) errors.push("efficiency: LogOX block count");
+  if (html.includes("cfpub.epa.gov")) errors.push("efficiency: EPA application host");
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd) : "";
+  const prose = main.replace(/<tbody[\s\S]*?<\/tbody>/g, "");
+  if (/\bbest\b/i.test(prose) || /\brankings?\b/i.test(prose) || /\bscores?\b/i.test(prose) || /\btop-rated\b/i.test(prose) || /\brecommend/i.test(prose)) {
+    errors.push("efficiency: banned wording");
+  }
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`efficiency: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("efficiency: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "WebApplication"]) {
+        if (!types.has(required)) errors.push(`efficiency: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "FAQPage"]) {
+        if (types.has(banned)) errors.push(`efficiency: forbidden ${banned}`);
+      }
+    }
+  }
+  if (html.includes('content="noindex"')) errors.push("efficiency: unexpected noindex");
+  const moduleScripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/gi)].map((match) => match[1]);
+  if (!moduleScripts.some((src) => src.startsWith("/_astro/") || src.startsWith("/scripts/"))) {
+    errors.push("efficiency: missing first-party script");
+  }
+  if (!moduleScripts.every((src) => src.startsWith("/") && !src.startsWith("//"))) {
+    errors.push("efficiency: off-site script");
   }
 }
 

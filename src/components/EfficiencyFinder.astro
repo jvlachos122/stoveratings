@@ -1,0 +1,157 @@
+---
+import { emissionHeader } from "../lib/insert-finder.js";
+import {
+  efficiencyCaption,
+  efficiencyFilterHelp,
+  efficiencyFinderHeading,
+  efficiencyRowView,
+  efficiencySortModes,
+  efficiencyStatusText,
+  efficiencySubtypeOptions,
+  EFFICIENCY_SORT,
+} from "../lib/efficiency-finder.js";
+
+const { rows = [], flags } = Astro.props;
+const options = efficiencySubtypeOptions(rows);
+const help = efficiencyFilterHelp(flags);
+const heading = efficiencyFinderHeading(flags);
+const caption = efficiencyCaption(EFFICIENCY_SORT);
+const status = efficiencyStatusText(rows.length, rows.length, 0);
+const emissionLabel = emissionHeader(rows);
+const modes = efficiencySortModes();
+---
+
+<section id="efficiency-finder-section" aria-labelledby="efficiency-finder-heading">
+  <h2 id="efficiency-finder-heading">{heading}</h2>
+  <p id="efficiency-finder-help">{help}</p>
+  <form id="efficiency-finder" method="get" action="/most-efficient-wood-stoves/" aria-describedby="efficiency-finder-help">
+    <div class="filters">
+      {flags?.subtype ? (
+        <label>Catalytic, non-catalytic, or hybrid
+          <select id="efficiency-subtype" name="subtype">
+            <option value="">Any</option>
+            {options.map((option) => <option value={option.value}>{option.label}</option>)}
+          </select>
+        </label>
+      ) : null}
+      {flags?.heat ? (
+        <label>Heat output minimum (BTU/hr)
+          <input id="efficiency-heat-min" name="heat-min" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      {flags?.heat ? (
+        <label>Heat output maximum (BTU/hr)
+          <input id="efficiency-heat-max" name="heat-max" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      {flags?.firebox ? (
+        <label>Firebox minimum (cu ft)
+          <input id="efficiency-firebox-min" name="firebox-min" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      {flags?.firebox ? (
+        <label>Firebox maximum (cu ft)
+          <input id="efficiency-firebox-max" name="firebox-max" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+        </label>
+      ) : null}
+      <label>Sort
+        <select id="efficiency-sort" name="sort">
+          {modes.map((mode) => <option value={mode.value} selected={mode.value === EFFICIENCY_SORT}>{mode.label}</option>)}
+        </select>
+      </label>
+    </div>
+    <div class="actions">
+      <button type="submit">Apply filters</button>
+    </div>
+  </form>
+  <p id="efficiency-finder-status" class="small" aria-live="polite">{status}</p>
+  <p id="efficiency-finder-empty" hidden={rows.length > 0}>No currently certified model line matches these filters.</p>
+  <noscript>
+    <p>The filter and the column sort run in your browser. The table lists every model line with an HHV efficiency without that script.</p>
+  </noscript>
+  <div class="table-wrap">
+    <table id="efficiency-finder-table">
+      <caption id="efficiency-finder-caption">{caption}</caption>
+      <thead>
+        <tr>
+          <th scope="col" data-sort-key="name" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="name" data-default="asc">Model line</button>
+          </th>
+          <th scope="col"><a href="/glossary/#epa-manufacturer">EPA manufacturer</a></th>
+          <th scope="col" class="num" data-sort-key="emission" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="emission" data-default="asc">{emissionLabel}</button>
+          </th>
+          <th scope="col" class="num" data-sort-key="efficiency" aria-sort="descending">
+            <button type="button" class="sort-button" data-sort="efficiency" data-default="desc">HHV efficiency</button>
+          </th>
+          <th scope="col" class="num" data-sort-key="heat" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="heat" data-default="desc">Heat output</button>
+          </th>
+          <th scope="col" class="num" data-sort-key="firebox" aria-sort="none">
+            <button type="button" class="sort-button" data-sort="firebox" data-default="asc">Firebox</button>
+          </th>
+          {flags?.subtype ? <th scope="col">Catalytic, non-catalytic, or hybrid</th> : null}
+          <th scope="col"><a href="/glossary/#certified-fuel">Fuel</a></th>
+        </tr>
+      </thead>
+      <tbody id="efficiency-finder-rows">
+        {rows.map((row) => {
+          const view = efficiencyRowView(row);
+          return (
+            <tr {...view.attrs}>
+              <th scope="row">
+                <a href={view.modelUrl}>{view.model}</a>
+                {view.insertFlag ? <div class="small">Name indicates insert</div> : null}
+              </th>
+              <td>{view.manufacturer}</td>
+              <td class="num">{view.emission}</td>
+              <td class="num">{view.efficiency}</td>
+              <td class="num">{view.heat}</td>
+              <td class="num">{view.firebox}</td>
+              {flags?.subtype ? <td>{view.subtype}</td> : null}
+              <td>{view.fuel}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+  <section id="efficiency-finder-unreported" hidden>
+    <h3>Not reported</h3>
+    <p id="efficiency-finder-unreported-note">These model lines leave a filtered heat output or firebox blank. The blank is not reported and is not zero.</p>
+    <div class="table-wrap">
+      <table id="efficiency-finder-unreported-table">
+        <caption>Model lines with a filtered field not reported</caption>
+        <thead>
+          <tr>
+            <th scope="col">Model line</th>
+            <th scope="col">EPA manufacturer</th>
+            <th scope="col" class="num">{emissionLabel}</th>
+            <th scope="col" class="num">HHV efficiency</th>
+            <th scope="col" class="num">Heat output</th>
+            <th scope="col" class="num">Firebox</th>
+            {flags?.subtype ? <th scope="col">Catalytic, non-catalytic, or hybrid</th> : null}
+            <th scope="col">Fuel</th>
+          </tr>
+        </thead>
+        <tbody id="efficiency-finder-unreported-rows"></tbody>
+      </table>
+    </div>
+  </section>
+  <p class="small">
+    Column definitions:
+    <a href="/glossary/#model-line">model line</a>,
+    <a href="/glossary/#epa-manufacturer">EPA manufacturer</a>,
+    <a href="/glossary/#g-hr">emission rate</a>,
+    <a href="/glossary/#hhv">HHV efficiency</a>,
+    <a href="/glossary/#btu-hr">heat output</a>,
+    <a href="/glossary/#firebox-volume">firebox volume</a>,
+    {flags?.subtype ? <><a href="/glossary/#epa-subtype">EPA subtype</a>,</> : null}
+    and <a href="/glossary/#certified-fuel">certified fuel</a>.
+  </p>
+</section>
+<script>
+  import { mountEfficiencyFinder } from "../lib/efficiency-finder-ui.js";
+
+  mountEfficiencyFinder(document);
+</script>

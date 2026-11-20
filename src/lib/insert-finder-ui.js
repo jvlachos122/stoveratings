@@ -31,6 +31,7 @@ export function readInsertRow(element) {
 }
 
 function inputValue(doc, id) {
+  if (!id) return "";
   const element = doc.getElementById(id);
   return element ? element.value : "";
 }
@@ -44,41 +45,57 @@ function syncAria(table, mode) {
   }
 }
 
-export function mountInsertFinder(doc) {
-  const form = doc.getElementById("insert-finder");
-  const body = doc.getElementById("insert-finder-rows");
-  const table = doc.getElementById("insert-finder-table");
-  const status = doc.getElementById("insert-finder-status");
-  const empty = doc.getElementById("insert-finder-empty");
-  const caption = doc.getElementById("insert-finder-caption");
-  const sort = doc.getElementById("insert-sort");
+export function mountFilteredTable(doc, config) {
+  const ids = config.ids;
+  const form = doc.getElementById(ids.form);
+  const body = doc.getElementById(ids.body);
+  const table = doc.getElementById(ids.table);
+  const status = doc.getElementById(ids.status);
+  const empty = doc.getElementById(ids.empty);
+  const caption = doc.getElementById(ids.caption);
+  const sort = doc.getElementById(ids.sort);
   if (!form || !body || !table || !status || !empty || !caption || !sort) return;
 
-  const rows = [...body.querySelectorAll("tr")].map((element) => readInsertRow(element));
+  const unreportedBody = ids.unreportedBody ? doc.getElementById(ids.unreportedBody) : null;
+  const unreportedSection = ids.unreportedSection ? doc.getElementById(ids.unreportedSection) : null;
+  const rows = [...body.querySelectorAll("tr")].map((element) => config.readRow(element));
 
   function apply() {
-    const filters = filtersFromInputs({
-      subtype: inputValue(doc, "insert-subtype"),
-      heatMin: inputValue(doc, "insert-heat-min"),
-      heatMax: inputValue(doc, "insert-heat-max"),
-      fireboxMin: inputValue(doc, "insert-firebox-min"),
-      fireboxMax: inputValue(doc, "insert-firebox-max"),
+    const filters = config.filtersFromInputs({
+      subtype: inputValue(doc, ids.subtype),
+      heatMin: inputValue(doc, ids.heatMin),
+      heatMax: inputValue(doc, ids.heatMax),
+      fireboxMin: inputValue(doc, ids.fireboxMin),
+      fireboxMax: inputValue(doc, ids.fireboxMax),
     });
-    const mode = sort.value || DEFAULT_SORT;
+    const mode = sort.value || config.defaultSort;
     const matched = [];
+    const unreported = [];
     for (const row of rows) {
-      const ok = matchesInsertFilters(row, filters);
-      row.element.hidden = !ok;
-      if (ok) matched.push(row);
+      const place = config.place(row, filters);
+      if (place === "unreported" && unreportedBody) {
+        row.element.hidden = false;
+        unreported.push(row);
+      } else if (place === "match") {
+        row.element.hidden = false;
+        matched.push(row);
+      } else {
+        row.element.hidden = true;
+      }
     }
-    matched.sort((left, right) => compareInsertRows(left, right, mode));
+    matched.sort((left, right) => config.compare(left, right, mode));
+    unreported.sort((left, right) => config.compare(left, right, mode));
     for (const row of rows) {
-      if (!matched.includes(row)) body.appendChild(row.element);
+      if (!matched.includes(row) && !unreported.includes(row)) body.appendChild(row.element);
     }
     for (const row of matched) body.appendChild(row.element);
-    status.textContent = finderStatusText(matched.length, rows.length);
+    if (unreportedBody) {
+      for (const row of unreported) unreportedBody.appendChild(row.element);
+    }
+    status.textContent = config.statusText(matched.length, rows.length, unreported.length);
     empty.hidden = matched.length !== 0;
-    caption.textContent = finderCaption(mode);
+    caption.textContent = config.captionText(mode);
+    if (unreportedSection) unreportedSection.hidden = unreported.length === 0;
     syncAria(table, mode);
   }
 
@@ -86,7 +103,7 @@ export function mountInsertFinder(doc) {
     event.preventDefault();
     apply();
   });
-  for (const id of ["insert-subtype", "insert-heat-min", "insert-heat-max", "insert-firebox-min", "insert-firebox-max", "insert-sort"]) {
+  for (const id of config.controls) {
     const element = doc.getElementById(id);
     if (!element) continue;
     element.addEventListener("input", apply);
@@ -104,4 +121,31 @@ export function mountInsertFinder(doc) {
     });
   }
   apply();
+}
+
+export function mountInsertFinder(doc) {
+  mountFilteredTable(doc, {
+    ids: {
+      form: "insert-finder",
+      body: "insert-finder-rows",
+      table: "insert-finder-table",
+      status: "insert-finder-status",
+      empty: "insert-finder-empty",
+      caption: "insert-finder-caption",
+      sort: "insert-sort",
+      subtype: "insert-subtype",
+      heatMin: "insert-heat-min",
+      heatMax: "insert-heat-max",
+      fireboxMin: "insert-firebox-min",
+      fireboxMax: "insert-firebox-max",
+    },
+    controls: ["insert-subtype", "insert-heat-min", "insert-heat-max", "insert-firebox-min", "insert-firebox-max", "insert-sort"],
+    defaultSort: DEFAULT_SORT,
+    readRow: readInsertRow,
+    filtersFromInputs,
+    place: (row, filters) => (matchesInsertFilters(row, filters) ? "match" : "hide"),
+    compare: compareInsertRows,
+    captionText: finderCaption,
+    statusText: (shown, total) => finderStatusText(shown, total),
+  });
 }
