@@ -392,6 +392,7 @@ export function glossaryParts(stoves, snapshotDate) {
       links: [
         { href: "/pellet-stoves/", label: "Pellet stoves" },
         { href: "/pellet-stove-vs-wood-stove/", label: "Pellet and wood figures" },
+        { href: "/pellet-fuel-grades/", label: "Pellet fuel grades" },
       ],
     }),
     term({
@@ -529,8 +530,22 @@ export function glossaryParts(stoves, snapshotDate) {
       sentences: fuelSentences,
       links: [
         { href: "/pellet-stove-vs-wood-stove/", label: "Pellet and wood figures" },
+        { href: "/pellet-fuel-grades/", label: "Pellet fuel grades" },
         { href: "/glossary/#cord-wood", label: "Cord wood" },
         { href: "/glossary/#crib-wood", label: "Crib wood" },
+      ],
+    }),
+    term({
+      id: "pellet-fuel-grade",
+      term: "Pellet fuel grade",
+      label: "A limit set published by a pellet-grading program, not an EPA column",
+      sentences: [
+        "40 CFR 60.532(e) says operators of wood heaters certified to burn pellet fuels may burn only pellets specified in the owner's manual and graded under a licensing agreement with a third-party organization approved by the EPA, and that paragraph names the Pellet Fuels Institute, ENplus, and CANplus as initially deemed approved.",
+        "40 CFR 60.531 defines pellet fuel as refined and densified fuel shaped into small pellets or briquettes that are uniform in size, shape, moisture, density and energy content, and that definition does not name a grade.",
+        "Certified Fuel Type is the fuel EPA printed for a test row, and the grade limits each program prints are on the pellet fuel grades page.",
+      ],
+      links: [
+        { href: "/pellet-fuel-grades/", label: "Pellet fuel grades" },
       ],
     }),
     term({
@@ -632,7 +647,7 @@ export function glossaryParts(stoves, snapshotDate) {
     {
       id: "standards",
       heading: "Standards and test fuel",
-      ids: ["nsps", "step-1", "step-2", "nsps-2020", "cord-wood", "crib-wood", "test-method", "certified-fuel"],
+      ids: ["nsps", "step-1", "step-2", "nsps-2020", "cord-wood", "crib-wood", "test-method", "certified-fuel", "pellet-fuel-grade"],
     },
     {
       id: "appliances",

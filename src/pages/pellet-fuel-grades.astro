@@ -1,0 +1,94 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import { catalog } from "../lib/catalog.js";
+import { metaDescription } from "../lib/format.js";
+import {
+  GRADES_PAGE,
+  GRADES_RETRIEVED,
+  assertGradeCopy,
+  gradeParts,
+  gradeVisibleText,
+} from "../lib/pellet-fuel-grades.js";
+import { articleLd, faqLd } from "../lib/schema.js";
+
+const date = catalog.meta.snapshotDate;
+const parts = gradeParts(catalog.stoves, date);
+const sentences = parts.sentences;
+const faqs = parts.faqs;
+const description = metaDescription(sentences);
+assertGradeCopy(gradeVisibleText(parts));
+---
+
+<Base title="Pellet fuel grades" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: GRADES_PAGE, label: "Pellet fuel grades" }]} jsonLd={[articleLd("Pellet fuel grades for an EPA-certified pellet stove", description, GRADES_PAGE, GRADES_RETRIEVED), faqLd(faqs)]}>
+  <div class="wrap">
+    <h1>Pellet fuel grades</h1>
+    <Answer sentences={sentences} />
+    <p>Standard and regulatory pages retrieved {GRADES_RETRIEVED}. EPA snapshot {date}. A short definition is at <a href="/glossary/#pellet-fuel-grade">pellet fuel grade</a> in the glossary.</p>
+    <h2>Grading schemes on the bag</h2>
+    {parts.schemes.map((paragraph) => <p>{paragraph}</p>)}
+    <div class="table-wrap">
+      <table>
+        <caption>{parts.caption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">Property</th>
+            <th scope="col">PFI Premium</th>
+            <th scope="col">PFI Standard</th>
+            <th scope="col">PFI Utility</th>
+            <th scope="col">ENplus A1</th>
+            <th scope="col">ENplus A2</th>
+            <th scope="col">ENplus B</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.rows.map((row) => (
+            <tr>
+              <th scope="row">{row.property}</th>
+              <td>{row.premium}</td>
+              <td>{row.standard}</td>
+              <td>{row.utility}</td>
+              <td>{row.a1}</td>
+              <td>{row.a2}</td>
+              <td>{row.b}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    {parts.limitNotes.map((paragraph) => <p>{paragraph}</p>)}
+    <h2>Pellet fuel in 40 CFR part 60 subpart AAA</h2>
+    {parts.epa.map((block) => block.quote ? (
+      <blockquote>
+        <p>{block.text}</p>
+      </blockquote>
+    ) : (
+      <p>{block.text}</p>
+    ))}
+    <h2>Certified pellet stoves in this snapshot</h2>
+    {parts.snapshot.map((paragraph) => <p>{paragraph}</p>)}
+    <p>
+      {parts.links.map((link, index) => (
+        <>
+          {index === 0 ? "" : " · "}
+          <a href={link.href}>{link.label}</a>
+        </>
+      ))}
+    </p>
+    <h2>Questions</h2>
+    {faqs.map((faq) => (
+      <section>
+        <h3>{faq.question}</h3>
+        <p>{faq.answer}</p>
+      </section>
+    ))}
+    <h2>Sources</h2>
+    <ul>
+      {parts.sources.map((item) => (
+        <li><a href={item.href}>{item.label}</a>. Retrieved {item.retrieved}.</li>
+      ))}
+    </ul>
+    <DataNote items={parts.notes} />
+  </div>
+</Base>
