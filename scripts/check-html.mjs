@@ -48,6 +48,13 @@ import {
   moistureSources,
   moistureVisibleText,
 } from "../src/lib/firewood-moisture.js";
+import {
+  GRADE_CAPTION,
+  GRADES_RETRIEVED,
+  assertGradeCopy,
+  gradeParts,
+  gradeVisibleText,
+} from "../src/lib/pellet-fuel-grades.js";
 import { catalog } from "../src/lib/catalog.js";
 import {
   currentInsertRows,
@@ -552,6 +559,95 @@ else {
   const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd).replace(/href="[^"]*"/g, "") : "";
   if (/\bbest\b/i.test(main)) errors.push("firewood moisture: banned wording");
   if (main.includes(["cf", "pub.epa.gov"].join(""))) errors.push("firewood moisture: EPA application host");
+}
+
+const gradesFile = files.find((file) => file.endsWith("/pellet-fuel-grades/index.html"));
+if (!gradesFile) errors.push("missing pellet fuel grades page");
+else {
+  const html = decodeHtml(readFileSync(gradesFile, "utf8"));
+  const meta = JSON.parse(readFileSync(join(root, "data/meta.json"), "utf8"));
+  const stoves = JSON.parse(readFileSync(join(root, "data/stoves.json"), "utf8"));
+  const parts = gradeParts(stoves, meta.snapshotDate);
+  try {
+    assertGradeCopy(gradeVisibleText(parts));
+  } catch (error) {
+    errors.push(`pellet fuel grades: ${error.message}`);
+  }
+  if (!html.includes('class="answer"')) errors.push("pellet fuel grades: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("pellet fuel grades: answer box sentences");
+  const answerAt = html.indexOf('class="answer"');
+  const tableAt = html.indexOf("<table");
+  if (answerAt < 0 || tableAt < 0 || answerAt > tableAt) errors.push("pellet fuel grades: answer box is not before the table");
+  for (const sentence of parts.sentences) {
+    if (!html.includes(sentence)) errors.push("pellet fuel grades: answer sentence missing");
+  }
+  if (!html.includes(GRADE_CAPTION)) errors.push("pellet fuel grades: caption");
+  if ((html.match(/<table\b/g) || []).length < 1) errors.push("pellet fuel grades: table");
+  if (!html.includes(`Standard and regulatory pages retrieved ${GRADES_RETRIEVED}`)) {
+    errors.push("pellet fuel grades: retrieved line");
+  }
+  for (const row of parts.rows) {
+    for (const cell of [row.property, row.premium, row.standard, row.utility, row.a1, row.a2, row.b]) {
+      if (!html.includes(cell)) errors.push(`pellet fuel grades: table cell ${row.property}`);
+    }
+  }
+  for (const faq of parts.faqs) {
+    if (!html.includes(faq.question) || !html.includes(faq.answer)) errors.push(`pellet fuel grades: FAQ missing ${faq.question}`);
+  }
+  for (const source of parts.sources) {
+    if (!html.includes(source.href) || !html.includes(`Retrieved ${source.retrieved}`)) {
+      errors.push(`pellet fuel grades: citation ${source.href}`);
+    }
+    if (source.href.includes(["cf", "pub.epa.gov"].join(""))) errors.push("pellet fuel grades: EPA application host");
+  }
+  for (const href of [
+    "/glossary/#pellet-fuel-grade",
+    "/pellet-stoves/",
+    "/most-efficient-pellet-stoves/",
+    "/cleanest-burning-pellet-stoves/",
+    "/pellet-stove-vs-wood-stove/",
+    "/tools/heating-cost-calculator/",
+  ]) {
+    if (!html.includes(`href="${href}"`)) errors.push(`pellet fuel grades: missing ${href}`);
+  }
+  if (html.includes('rel="sponsored') || html.includes("data-affiliate=")) errors.push("pellet fuel grades: affiliate link");
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`pellet fuel grades: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("pellet fuel grades: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "FAQPage"]) {
+        if (!types.has(required)) errors.push(`pellet fuel grades: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "WebApplication", "Dataset"]) {
+        if (types.has(banned)) errors.push(`pellet fuel grades: forbidden ${banned}`);
+      }
+      const questions = data["@graph"]?.find((item) => item["@type"] === "FAQPage")?.mainEntity || [];
+      if (questions.length !== parts.faqs.length) errors.push("pellet fuel grades: FAQ count");
+      for (const item of parts.faqs) {
+        const match = questions.find((question) => question.name === item.question);
+        if (!match || match.acceptedAnswer?.text !== item.answer) errors.push(`pellet fuel grades: FAQ JSON-LD ${item.question}`);
+      }
+    }
+  }
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd).replace(/href="[^"]*"/g, "") : "";
+  if (/\b(best|safe)\b/i.test(main)) errors.push("pellet fuel grades: banned wording");
+  if (main.includes(["cf", "pub.epa.gov"].join(""))) errors.push("pellet fuel grades: EPA application host");
+  if (String(parts.counts.currentRows) && !html.includes(String(parts.counts.currentRows))) {
+    errors.push("pellet fuel grades: computed row count missing");
+  }
 }
 
 const glossaryFile = files.find((file) => file.endsWith("/glossary/index.html"));
