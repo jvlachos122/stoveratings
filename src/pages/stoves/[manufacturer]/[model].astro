@@ -11,11 +11,11 @@ import {
   formatBtu,
   formatNumber,
   heatText,
-  metaDescription,
   pageTitle,
   statusLabel,
 } from "../../../lib/format.js";
 import { relatedLists } from "../../../lib/lists.js";
+import { stovePageHead } from "../../../lib/stove-page-meta.js";
 
 export function getStaticPaths() {
   return catalog.stoves.map((stove) => ({
@@ -27,7 +27,7 @@ export function getStaticPaths() {
 const { stove } = Astro.props;
 const brand = catalog.brandBySlug.get(stove.primarySlug);
 const sentences = modelSentences(stove, catalog.meta.snapshotDate);
-const description = metaDescription(sentences);
+const head = stovePageHead(stove, catalog.stoves, catalog.meta.snapshotDate);
 const siblings = stove.siblingIds.slice(0, 40).map((id) => stoveById.get(id)).filter(Boolean);
 
 function linked(ids) {
@@ -53,8 +53,8 @@ const notes = [
 ---
 
 <Base
-  title={pageTitle(stove.model)}
-  description={description}
+  title={head.title}
+  description={head.description}
   noindex={!stove.indexable}
   breadcrumbs={[
     { href: "/", label: "Home" },
