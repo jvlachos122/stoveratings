@@ -549,6 +549,19 @@ export function glossaryParts(stoves, snapshotDate) {
       ],
     }),
     term({
+      id: "burn-rules",
+      term: "Burn rules",
+      label: "State and local limits on wood burning, not an EPA column",
+      sentences: [
+        "Burn rules for wood heating, including burn bans, no-burn days, and stove change-out or sale rules, are set by states, air districts, and local governments.",
+        "EPA certification is a federal manufacturing standard for a wood heater, and it does not say whether a place allows a fire on a given day.",
+        "This site does not restate those state or local rules.",
+      ],
+      links: [
+        { href: "/burn-rules/", label: "Where to find wood-burning rules" },
+      ],
+    }),
+    term({
       id: "thermal-storage",
       term: "Thermal storage",
       label: "Thermal Storage on a central-heater row",
@@ -647,7 +660,7 @@ export function glossaryParts(stoves, snapshotDate) {
     {
       id: "standards",
       heading: "Standards and test fuel",
-      ids: ["nsps", "step-1", "step-2", "nsps-2020", "cord-wood", "crib-wood", "test-method", "certified-fuel", "pellet-fuel-grade"],
+      ids: ["nsps", "step-1", "step-2", "nsps-2020", "cord-wood", "crib-wood", "test-method", "certified-fuel", "pellet-fuel-grade", "burn-rules"],
     },
     {
       id: "appliances",
