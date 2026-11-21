@@ -1,0 +1,71 @@
+---
+import Answer from "../components/Answer.astro";
+import DataNote from "../components/DataNote.astro";
+import Base from "../layouts/Base.astro";
+import {
+  AIRNOW_URL,
+  BURN_RULES_PAGE,
+  BURN_WISE_URL,
+  LINKS_CHECKED,
+  assertBurnCopy,
+  burnRuleParts,
+  burnRuleVisibleText,
+} from "../lib/burn-rules.js";
+import { metaDescription } from "../lib/format.js";
+import { articleLd, faqLd } from "../lib/schema.js";
+
+const parts = burnRuleParts();
+const sentences = parts.sentences;
+const faqs = parts.faqs;
+const description = metaDescription(sentences);
+assertBurnCopy(burnRuleVisibleText(parts));
+---
+
+<Base title="Where to find wood-burning rules" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: BURN_RULES_PAGE, label: "Wood-burning rules" }]} jsonLd={[articleLd("Where to find wood-burning rules for your state or area", description, BURN_RULES_PAGE, LINKS_CHECKED), faqLd(faqs)]}>
+  <div class="wrap">
+    <h1>Where to find wood-burning rules for your state or area</h1>
+    <Answer sentences={sentences} />
+    <p>
+      {parts.checkedLine}
+      Federal pages: <a href={BURN_WISE_URL}>EPA Burn Wise</a> and <a href={AIRNOW_URL}>AirNow</a>.
+      EPA certification is a federal manufacturing standard, described on <a href="/certified-before-2020/">certified before 2020</a> and in the <a href="/glossary/#burn-rules">glossary</a>.
+    </p>
+    <h2>State pages</h2>
+    <p>Each row names the air agency as that agency's own site names it, and links to that site. A wood-smoke page is used when one was confirmed. Otherwise the link is the agency's air-quality home page. A row that says not verified links to EPA Burn Wise.</p>
+    <div class="table-wrap">
+      <table>
+        <caption>{parts.caption}</caption>
+        <thead>
+          <tr>
+            <th scope="col">State</th>
+            <th scope="col">Official agency</th>
+            <th scope="col">Page</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.rows.map((row) => (
+            <tr>
+              <th scope="row">{row.state}</th>
+              <td>{row.agency}</td>
+              <td><a href={row.href}>{row.linkLabel}</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h2>Questions</h2>
+    {faqs.map((faq) => (
+      <section>
+        <h3>{faq.question}</h3>
+        <p>{faq.answer}</p>
+      </section>
+    ))}
+    <h2>Sources</h2>
+    <ul>
+      {parts.sources.map((item) => (
+        <li><a href={item.href}>{item.label}</a>. Retrieved {item.retrieved}.</li>
+      ))}
+    </ul>
+    <DataNote items={parts.notes} />
+  </div>
+</Base>

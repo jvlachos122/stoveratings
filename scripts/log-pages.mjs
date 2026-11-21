@@ -59,7 +59,7 @@ const buckets = {
   calculator: count((file) => file === "/tools/stove-size-calculator/index.html"),
   heatingCost: count((file) => file === "/tools/heating-cost-calculator/index.html"),
   logLength: count((file) => file === "/tools/firebox-log-length/index.html"),
-  explainers: count((file) => ["/pellet-stove-vs-wood-stove/index.html", "/wood-stove-tax-credit/index.html", "/certified-before-2020/index.html", "/glossary/index.html", "/firewood-moisture/index.html", "/pellet-fuel-grades/index.html"].includes(file)),
+  explainers: count((file) => ["/pellet-stove-vs-wood-stove/index.html", "/wood-stove-tax-credit/index.html", "/certified-before-2020/index.html", "/glossary/index.html", "/firewood-moisture/index.html", "/pellet-fuel-grades/index.html", "/burn-rules/index.html"].includes(file)),
   changelog: count((file) => file === "/data/changelog/index.html"),
 };
 const named = Object.values(buckets).reduce((sum, value) => sum + value, 0);
@@ -108,6 +108,7 @@ if (buckets.other) {
         "/glossary/index.html",
         "/firewood-moisture/index.html",
         "/pellet-fuel-grades/index.html",
+        "/burn-rules/index.html",
         "/data/changelog/index.html",
       ].includes(file),
   );
