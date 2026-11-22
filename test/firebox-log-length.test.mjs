@@ -435,6 +435,7 @@ test("the form script rejects empty and negative sides and the sitemap gains one
 
   const current = listPages(join(root, "src/pages"));
   assert.deepEqual(current.filter((file) => !PAGES_BEFORE_LOG_LENGTH.includes(file)), [
+    "burn-rules.astro",
     "firewood-moisture.astro",
     "pellet-fuel-grades.astro",
     "tools/firebox-log-length.astro",

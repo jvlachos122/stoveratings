@@ -55,6 +55,16 @@ import {
   gradeParts,
   gradeVisibleText,
 } from "../src/lib/pellet-fuel-grades.js";
+import {
+  AIRNOW_URL,
+  BURN_RULES_CAPTION,
+  BURN_WISE_URL,
+  LINKS_CHECKED,
+  assertBurnCopy,
+  burnRuleParts,
+  burnRuleVisibleText,
+  isOfficialBurnUrl,
+} from "../src/lib/burn-rules.js";
 import { catalog } from "../src/lib/catalog.js";
 import {
   currentInsertRows,
@@ -648,6 +658,92 @@ else {
   if (String(parts.counts.currentRows) && !html.includes(String(parts.counts.currentRows))) {
     errors.push("pellet fuel grades: computed row count missing");
   }
+}
+
+const burnRulesFile = files.find((file) => file.endsWith("/burn-rules/index.html"));
+if (!burnRulesFile) errors.push("missing burn rules page");
+else {
+  const html = decodeHtml(readFileSync(burnRulesFile, "utf8"));
+  const parts = burnRuleParts();
+  try {
+    assertBurnCopy(burnRuleVisibleText(parts));
+  } catch (error) {
+    errors.push(`burn rules: ${error.message}`);
+  }
+  if (!html.includes('class="answer"')) errors.push("burn rules: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length !== 3) errors.push("burn rules: answer box sentences");
+  const answerAt = html.indexOf('class="answer"');
+  const tableAt = html.indexOf("<table");
+  const sourcesAt = html.indexOf("<h2>Sources</h2>");
+  if (answerAt < 0 || tableAt < 0 || sourcesAt < 0 || answerAt > tableAt || tableAt > sourcesAt) {
+    errors.push("burn rules: answer box, table, and sources are out of order");
+  }
+  for (const sentence of parts.sentences) {
+    if (!html.includes(sentence)) errors.push("burn rules: answer sentence missing");
+  }
+  if (!html.includes(BURN_RULES_CAPTION)) errors.push("burn rules: caption");
+  if (!html.includes(`Links checked on ${LINKS_CHECKED}`)) errors.push("burn rules: check date");
+  if ((html.match(/<tbody>[\s\S]*?<\/tbody>/g) || []).length < 1) errors.push("burn rules: table body");
+  const body = html.match(/<tbody>([\s\S]*?)<\/tbody>/);
+  const rowCount = body ? (body[1].match(/<tr>/g) || []).length : 0;
+  if (rowCount !== parts.rows.length) errors.push(`burn rules: ${rowCount} rows != ${parts.rows.length}`);
+  for (const row of parts.rows) {
+    if (!html.includes(row.state) || !html.includes(row.agency) || !html.includes(`href="${row.href}"`)) {
+      errors.push(`burn rules: row ${row.state}`);
+    }
+    if (!isOfficialBurnUrl(row.href)) errors.push(`burn rules: unofficial URL ${row.state}`);
+    if (row.href.includes(["cf", "pub.epa.gov"].join(""))) errors.push(`burn rules: EPA application host ${row.state}`);
+  }
+  if (!html.includes('href="/certified-before-2020/"') || !html.includes('href="/glossary/#burn-rules"')) {
+    errors.push("burn rules: missing certification or glossary link");
+  }
+  if (!html.includes(`href="${BURN_WISE_URL}"`) || !html.includes(`href="${AIRNOW_URL}"`)) {
+    errors.push("burn rules: missing federal pointer");
+  }
+  for (const faq of parts.faqs) {
+    if (!html.includes(faq.question) || !html.includes(faq.answer)) errors.push(`burn rules: FAQ missing ${faq.question}`);
+  }
+  for (const source of parts.sources) {
+    if (!html.includes(source.href) || !html.includes(`Retrieved ${source.retrieved}`)) {
+      errors.push(`burn rules: citation ${source.href}`);
+    }
+  }
+  if (html.includes('rel="sponsored') || html.includes("data-affiliate=")) errors.push("burn rules: affiliate link");
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`burn rules: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("burn rules: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "FAQPage"]) {
+        if (!types.has(required)) errors.push(`burn rules: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "WebApplication", "Dataset"]) {
+        if (types.has(banned)) errors.push(`burn rules: forbidden ${banned}`);
+      }
+      const questions = data["@graph"]?.find((item) => item["@type"] === "FAQPage")?.mainEntity || [];
+      if (questions.length !== parts.faqs.length) errors.push("burn rules: FAQ count");
+      for (const item of parts.faqs) {
+        const match = questions.find((question) => question.name === item.question);
+        if (!match || match.acceptedAnswer?.text !== item.answer) errors.push(`burn rules: FAQ JSON-LD ${item.question}`);
+      }
+    }
+  }
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd).replace(/href="[^"]*"/g, "") : "";
+  if (/\b(best|safe)\b/i.test(main)) errors.push("burn rules: banned wording");
+  if (main.includes(["cf", "pub.epa.gov"].join(""))) errors.push("burn rules: EPA application host");
+  if (html.includes('content="noindex"')) errors.push("burn rules: unexpected noindex");
 }
 
 const glossaryFile = files.find((file) => file.endsWith("/glossary/index.html"));

@@ -22,8 +22,7 @@ const FOOTER_COMMIT = "2026-11-08T02:24:44-06:00";
 const PAGE_COMMIT = "2026-11-21T15:00:00Z";
 const DATA_COMMIT = "2026-11-20T15:00:00Z";
 const SNAPSHOT = "2026-10-23";
-const SITEMAP_URLS = 1116;
-const SITEMAP_URL_HASH = "90100cc20d1d6045b2088974b9241c87d46f87421bfbb4d8639578dc531365f1";
+const SITEMAP_URL_HASH_BEFORE_BURN_RULES = "90100cc20d1d6045b2088974b9241c87d46f87421bfbb4d8639578dc531365f1";
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 function historyIsShallow() {
@@ -118,18 +117,20 @@ test("page lastmods follow content commits and not one shared clock", () => {
   }
 });
 
-test("sitemap URL set is the prior indexable set plus the log length, moisture, and pellet fuel grade pages", () => {
+test("sitemap URL set is the prior indexable set plus the burn-rules page", () => {
   const hidden = new Set(noindex);
   const lastmods = buildSitemapLastmods();
   const urls = [...lastmods.keys()].filter((path) => !hidden.has(path) && !path.includes("404")).sort();
-  assert.equal(urls.length, SITEMAP_URLS);
   assert.equal(urls.includes("/small-wood-stoves/"), true);
   assert.equal(urls.includes("/certified-before-2020/"), true);
   assert.equal(urls.includes("/glossary/"), true);
   assert.equal(urls.includes("/tools/firebox-log-length/"), true);
   assert.equal(urls.includes("/firewood-moisture/"), true);
   assert.equal(urls.includes("/pellet-fuel-grades/"), true);
-  assert.equal(createHash("sha256").update(urls.join("\n")).digest("hex"), SITEMAP_URL_HASH);
+  assert.equal(urls.includes("/burn-rules/"), true);
+  const prior = urls.filter((path) => path !== "/burn-rules/");
+  assert.equal(urls.length, prior.length + 1);
+  assert.equal(createHash("sha256").update(prior.join("\n")).digest("hex"), SITEMAP_URL_HASH_BEFORE_BURN_RULES);
   const now = Date.now() + 60_000;
   for (const path of urls) {
     const lastmod = lastmods.get(path);
