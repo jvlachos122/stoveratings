@@ -1,5 +1,7 @@
 ---
+import { catalog } from "../lib/catalog.js";
 import { emissionHeader } from "../lib/insert-finder.js";
+import { brandModelLabel } from "../lib/model-neighbors.js";
 import {
   efficiencyCaption,
   efficiencyFilterHelp,
@@ -97,13 +99,16 @@ const modes = efficiencySortModes();
       <tbody id="efficiency-finder-rows">
         {rows.map((row) => {
           const view = efficiencyRowView(row);
+          const brand = catalog.brandBySlug.get(row.stove.primarySlug);
+          const linkLabel = brandModelLabel(brand?.name || row.stove.manufacturer, view.model);
+          const brandUrl = brand?.url && row.stove.manufacturer ? brand.url : "";
           return (
             <tr {...view.attrs}>
               <th scope="row">
-                <a href={view.modelUrl}>{view.model}</a>
+                <a href={view.modelUrl}>{linkLabel}</a>
                 {view.insertFlag ? <div class="small">Name indicates insert</div> : null}
               </th>
-              <td>{view.manufacturer}</td>
+              <td>{brandUrl ? <a href={brandUrl}>{view.manufacturer}</a> : view.manufacturer}</td>
               <td class="num">{view.emission}</td>
               <td class="num">{view.efficiency}</td>
               <td class="num">{view.heat}</td>

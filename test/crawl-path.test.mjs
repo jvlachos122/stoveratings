@@ -134,4 +134,5 @@ test("the home page and footer link the browse path in server-rendered anchors",
   assert.match(stove, /relatedLists\(stove\)/);
   assert.match(stove, /href=\{brand\.url\}/);
   assert.match(stove, /href=\{list\.href\}/);
+  assert.match(stove, /<CurrentNeighbors stove=\{stove\} \/>/);
 });

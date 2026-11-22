@@ -1,4 +1,6 @@
 ---
+import { catalog } from "../lib/catalog.js";
+import { brandModelLabel } from "../lib/model-neighbors.js";
 import { smallWoodRowView } from "../lib/small-wood-stoves.js";
 
 const { rows = [], caption } = Astro.props;
@@ -21,13 +23,16 @@ const { rows = [], caption } = Astro.props;
     <tbody>
       {rows.map((row) => {
         const view = smallWoodRowView(row);
+        const brand = catalog.brandBySlug.get(row.stove.primarySlug);
+        const linkLabel = brandModelLabel(brand?.name || row.stove.manufacturer, view.model);
+        const brandUrl = brand?.url && row.stove.manufacturer ? brand.url : "";
         return (
           <tr>
             <th scope="row">
-              <a href={view.href}>{view.model}</a>
+              <a href={view.href}>{linkLabel}</a>
               {view.insert ? <div class="small">Name indicates insert</div> : null}
             </th>
-            <td>{view.manufacturer}</td>
+            <td>{brandUrl ? <a href={brandUrl}>{view.manufacturer}</a> : view.manufacturer}</td>
             <td class="num">{view.firebox}</td>
             <td class="num">{view.heat}</td>
             <td class="num">{view.emission}</td>

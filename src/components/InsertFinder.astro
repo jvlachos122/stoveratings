@@ -7,6 +7,7 @@ import {
   insertRowView,
   subtypeOptions,
 } from "../lib/insert-finder.js";
+import { brandModelLabel } from "../lib/model-neighbors.js";
 
 const { rows = [], flags, emissionLabel = "Emission" } = Astro.props;
 const options = subtypeOptions(rows);
@@ -90,9 +91,11 @@ const status = finderStatusText(rows.length, rows.length);
       <tbody id="insert-finder-rows">
         {rows.map((row) => {
           const view = insertRowView(row);
+          const brandName = view.brandUrl ? view.brand : (row.stove.manufacturer || "");
+          const linkLabel = brandModelLabel(brandName, view.model);
           return (
             <tr {...view.attrs}>
-              <th scope="row"><a href={view.modelUrl}>{view.model}</a></th>
+              <th scope="row"><a href={view.modelUrl}>{linkLabel}</a></th>
               <td>{view.brandUrl ? <a href={view.brandUrl}>{view.brand}</a> : view.brand}</td>
               <td class="num">{view.emission}</td>
               <td class="num">{view.efficiency}</td>

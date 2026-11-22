@@ -1,5 +1,5 @@
 ---
-import StoveTable from "./StoveTable.astro";
+import ListStoveTable from "./ListStoveTable.astro";
 
 const { sections = [] } = Astro.props;
 ---
@@ -10,7 +10,7 @@ const { sections = [] } = Astro.props;
       {section.heading ? <h2>{section.heading}</h2> : null}
       {section.intro ? <p>{section.intro}</p> : null}
       {section.stoves.length ? (
-        <StoveTable stoves={section.stoves} caption={section.caption} showManufacturer={section.showManufacturer !== false} />
+        <ListStoveTable stoves={section.stoves} caption={section.caption} showManufacturer={section.showManufacturer !== false} />
       ) : (
         <p>EPA lists no model lines in this group for the snapshot.</p>
       )}
