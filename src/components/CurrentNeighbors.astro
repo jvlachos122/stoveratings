@@ -1,0 +1,40 @@
+---
+import { catalog } from "../lib/catalog.js";
+import { neighborSections } from "../lib/model-neighbors.js";
+
+const { stove } = Astro.props;
+const sections = neighborSections(stove, catalog.stoves, catalog.brandBySlug, catalog.meta.snapshotDate);
+const date = catalog.meta.snapshotDate;
+---
+
+{
+  sections.length ? (
+    <section id="current-neighbors">
+      {sections.map((section) => (
+        <div>
+          <h2 id={section.id}>{section.heading}</h2>
+          <div class="table-wrap">
+            <table>
+              <caption>{section.caption}</caption>
+              <thead>
+                <tr>
+                  <th scope="col"><a href="/glossary/#model-line">Model line</a></th>
+                  <th scope="col" class="num"><a href="/glossary/#btu-hr">Heat output</a></th>
+                </tr>
+              </thead>
+              <tbody>
+                {section.rows.map((row) => (
+                  <tr>
+                    <th scope="row"><a href={row.href}>{row.label}</a></th>
+                    <td class="num">{row.heat}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+      <p>Source: EPA Certified Wood Heater Database, snapshot {date}.</p>
+    </section>
+  ) : null
+}

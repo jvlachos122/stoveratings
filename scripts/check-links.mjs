@@ -3,7 +3,11 @@ import { dirname, join, normalize, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homeBrandHubs } from "../src/lib/brand-hubs.js";
 import { catalog, stovesForBrand } from "../src/lib/catalog.js";
-import { relatedLists } from "../src/lib/lists.js";
+import { currentInsertRows } from "../src/lib/insert-finder.js";
+import { efficiencyRows } from "../src/lib/efficiency-finder.js";
+import { centralKind, inserts, pelletStoves, rankByEfficiency, rankByEmission, relatedLists, woodSubtype } from "../src/lib/lists.js";
+import { brandModelLabel, neighborSections } from "../src/lib/model-neighbors.js";
+import { splitSmallWoodRows } from "../src/lib/small-wood-stoves.js";
 import { isSitemapLastmod, isW3cDateTime, lastmodInstant } from "../src/lib/sitemap-lastmod.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -345,9 +349,132 @@ if (!robots.includes("User-agent: *") || !robots.includes("Allow: /")) errors.pu
 if (robots.includes("Disallow")) errors.push("robots.txt must not disallow");
 if (!robots.includes("https://stoveratings.com/sitemap-index.xml")) errors.push("robots.txt sitemap URL");
 
+const inbound = new Map();
+for (const [from, dests] of linksFrom) {
+  for (const dest of dests) {
+    if (!inbound.has(dest)) inbound.set(dest, new Set());
+    inbound.get(dest).add(from);
+  }
+}
+const neighborBanned = /\b(best|top-rated|recommend\w*|scores?|ratings?|safest|safer|popular|winners?|affiliate|sponsored|cleanest|better)\b/i;
+let currentWithoutNonBrand = 0;
+const nonBrandCounts = [];
+for (const stove of catalog.stoves) {
+  if (!stove.current || !stove.indexable || hidden.has(stove.url)) continue;
+  const sources = inbound.get(stove.url) || new Set();
+  const nonBrand = [...sources].filter((path) => !path.startsWith("/brands/"));
+  nonBrandCounts.push(nonBrand.length);
+  if (!nonBrand.length) {
+    currentWithoutNonBrand += 1;
+    if (currentWithoutNonBrand <= 15) errors.push(`current model has no non-brand inlink: ${stove.url}`);
+  }
+}
+if (currentWithoutNonBrand) errors.push(`${currentWithoutNonBrand} current models have no non-brand inlink`);
+
+function bothGroups(groups) {
+  return [...groups.current, ...groups.previous];
+}
+function anchorTexts(html) {
+  const map = new Map();
+  for (const match of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
+    const href = attrs(`<a ${match[1]}>`).href;
+    if (!href || !href.startsWith("/")) continue;
+    let path = href.split("#")[0].split("?")[0];
+    if (path !== "/" && !path.endsWith("/") && !path.includes(".")) path = `${path}/`;
+    const text = decodeAttr(match[2].replace(/<[^>]+>/g, "")).replace(/\s+/g, " ").trim();
+    if (!map.has(path)) map.set(path, []);
+    map.get(path).push(text);
+  }
+  return map;
+}
+function expectRowLinks(path, stoves) {
+  const html = htmlByFile.get(resolve(fileForPath(path))) || "";
+  if (!html) {
+    errors.push(`missing list page ${path}`);
+    return;
+  }
+  const anchors = anchorTexts(html);
+  const seenStoves = new Set();
+  const brands = new Set();
+  for (const stove of stoves) {
+    if (!stove?.url || seenStoves.has(stove.url)) continue;
+    seenStoves.add(stove.url);
+    const brand = catalog.brandBySlug.get(stove.primarySlug);
+    const label = brandModelLabel(brand?.name || stove.manufacturer, stove.model);
+    const texts = anchors.get(stove.url) || [];
+    if (!texts.includes(label)) errors.push(`${path} row for ${stove.url} is not linked as ${label}`);
+    if (brand?.url && stove.manufacturer) brands.add(brand.url);
+  }
+  for (const url of brands) {
+    if (!html.includes(`href="${url}"`)) errors.push(`${path} does not link brand hub ${url}`);
+  }
+}
+const woodInserts = inserts(catalog.stoves, "Wood Stove");
+const pelletInserts = inserts(catalog.stoves, "Pellet Stove");
+const listPages = [
+  ["/catalytic-wood-stoves/", bothGroups(woodSubtype(catalog.stoves, "Catalytic Stove"))],
+  ["/non-catalytic-wood-stoves/", bothGroups(woodSubtype(catalog.stoves, "Non-Catalytic Stove"))],
+  ["/hybrid-wood-stoves/", bothGroups(woodSubtype(catalog.stoves, "Hybrid"))],
+  ["/pellet-stoves/", bothGroups(pelletStoves(catalog.stoves))],
+  ["/most-efficient-wood-stoves/", efficiencyRows(catalog.stoves).map((row) => row.stove)],
+  ["/most-efficient-pellet-stoves/", rankByEfficiency(catalog.stoves, "Pellet Stove")],
+  ["/cleanest-burning-wood-stoves/", rankByEmission(catalog.stoves, "Wood Stove")],
+  ["/cleanest-burning-pellet-stoves/", rankByEmission(catalog.stoves, "Pellet Stove")],
+  ["/wood-stove-inserts/", [...currentInsertRows(catalog.stoves, catalog.brandBySlug).map((row) => row.stove), ...woodInserts.previous]],
+  ["/pellet-stove-inserts/", bothGroups(pelletInserts)],
+  ["/pellet-boilers/", bothGroups(centralKind(catalog.stoves, (stove) => stove.type === "Hydronic Heater" && stove.fuel === "Wood Pellets"))],
+  ["/outdoor-wood-boilers/", bothGroups(centralKind(catalog.stoves, (stove) => stove.type === "Hydronic Heater" && stove.fuel !== "Wood Pellets"))],
+  ["/wood-furnaces/", bothGroups(centralKind(catalog.stoves, (stove) => stove.type === "Forced Air Furnace"))],
+  ["/small-wood-stoves/", [...splitSmallWoodRows(catalog.stoves).current, ...splitSmallWoodRows(catalog.stoves).previous].map((row) => row.stove)],
+];
+for (const [path, stoves] of listPages) expectRowLinks(path, stoves);
+
+const stoveByUrl = new Map(catalog.stoves.map((stove) => [stove.url, stove]));
+for (const stove of catalog.stoves) {
+  const html = htmlByFile.get(resolve(fileForPath(stove.url))) || "";
+  if (!html) continue;
+  const sections = neighborSections(stove, catalog.stoves, catalog.brandBySlug, catalog.meta.snapshotDate);
+  const block = html.match(/<section id="current-neighbors"[^>]*>[\s\S]*?<\/section>/);
+  if (!sections.length) {
+    if (block) errors.push(`${stove.url} renders an empty neighbor section`);
+    continue;
+  }
+  if (!block) {
+    errors.push(`${stove.url} is missing current-neighbor links`);
+    continue;
+  }
+  if (block[0].includes("cfpub.epa.gov")) errors.push(`${stove.url} neighbor section names cfpub`);
+  const copy = [
+    ...block[0].matchAll(/<h2\b[^>]*>([\s\S]*?)<\/h2>/g),
+    ...block[0].matchAll(/<caption>([\s\S]*?)<\/caption>/g),
+  ].map((match) => decodeAttr(match[1].replace(/<[^>]+>/g, "")));
+  for (const text of copy) {
+    if (neighborBanned.test(text)) errors.push(`${stove.url} neighbor copy: ${text.match(neighborBanned)[0]}`);
+  }
+  const expected = sections.flatMap((section) => section.rows.map((row) => row.href));
+  if (expected.length > 6) errors.push(`${stove.url} has ${expected.length} neighbor links`);
+  const found = [...block[0].matchAll(/<a\b[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/g)].map((match) => ({
+    href: decodeAttr(match[1]).split("#")[0].split("?")[0],
+    text: decodeAttr(match[2].replace(/<[^>]+>/g, "")).replace(/\s+/g, " ").trim(),
+  })).filter((item) => item.href.startsWith("/stoves/"));
+  const expectedRows = sections.flatMap((section) => section.rows);
+  if (found.map((item) => item.href).join("|") !== expected.join("|")) errors.push(`${stove.url} neighbor links do not match the EPA list`);
+  for (const [index, row] of expectedRows.entries()) {
+    if (found[index] && found[index].text !== row.label) errors.push(`${stove.url} neighbor label ${found[index]?.text} != ${row.label}`);
+  }
+  for (const href of expected) {
+    const target = stoveByUrl.get(href);
+    if (!target || !target.current || !target.indexable || hidden.has(href) || !seen.has(href)) {
+      errors.push(`${stove.url} neighbor link is not a current indexable page: ${href}`);
+    }
+  }
+}
+nonBrandCounts.sort((left, right) => left - right);
+const medianNonBrand = nonBrandCounts.length ? nonBrandCounts[Math.floor(nonBrandCounts.length / 2)] : 0;
+
 if (errors.length) {
   console.error(errors.slice(0, 40).join("\n"));
   console.error(`${errors.length} link errors`);
   process.exit(1);
 }
-console.log(`Links OK across ${files.length} HTML files. Sitemap URLs: ${seen.size}. Newest lastmod: ${newestLastmod}. All sitemap URLs are within ${MAX_CLICKS} clicks of home. Heating cost HTML: ${heatingBytes} bytes.`);
+console.log(`Links OK across ${files.length} HTML files. Sitemap URLs: ${seen.size}. Newest lastmod: ${newestLastmod}. All sitemap URLs are within ${MAX_CLICKS} clicks of home. Heating cost HTML: ${heatingBytes} bytes. Current models with 0 non-brand inlinks: ${currentWithoutNonBrand}. Median non-brand inlinks: ${medianNonBrand}.`);

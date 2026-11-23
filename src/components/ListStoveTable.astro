@@ -1,0 +1,61 @@
+---
+import { catalog } from "../lib/catalog.js";
+import { emissionUnitShort, fireboxText, formatNumber, heatText, statusLabel } from "../lib/format.js";
+import { brandModelLabel } from "../lib/model-neighbors.js";
+
+const { stoves = [], caption, showManufacturer = true } = Astro.props;
+const unit = stoves[0]?.emissionUnit || "g/hr";
+const emissionHref = unit === "lb/mmBTU" ? "/glossary/#lb-mmbtu" : "/glossary/#g-hr";
+
+function label(stove) {
+  const brand = catalog.brandBySlug.get(stove.primarySlug);
+  return brandModelLabel(brand?.name || stove.manufacturer, stove.model);
+}
+
+function brandHref(stove) {
+  const brand = catalog.brandBySlug.get(stove.primarySlug);
+  if (!brand?.url || !stove.manufacturer) return "";
+  return brand.url;
+}
+---
+
+<div class="table-wrap">
+  <table>
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col"><a href="/glossary/#model-line">Model line</a></th>
+        {showManufacturer ? <th scope="col"><a href="/glossary/#epa-manufacturer">EPA manufacturer</a></th> : null}
+        <th scope="col"><a href="/glossary/#currently-certified">Status</a></th>
+        <th scope="col" class="num"><a href={emissionHref}>Emission ({emissionUnitShort(unit)})</a></th>
+        <th scope="col" class="num"><a href="/glossary/#hhv">HHV efficiency</a></th>
+        <th scope="col" class="num"><a href="/glossary/#btu-hr">Heat output</a></th>
+        <th scope="col" class="num"><a href="/glossary/#firebox-volume">Firebox</a></th>
+        <th scope="col"><a href="/glossary/#certified-fuel">Fuel</a></th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        stoves.map((stove) => (
+          <tr>
+            <th scope="row">
+              {stove.url ? <a href={stove.url}>{label(stove)}</a> : label(stove)}
+              {stove.insertFlag ? <div class="small">Name indicates insert</div> : null}
+            </th>
+            {showManufacturer ? (
+              <td>{brandHref(stove) ? <a href={brandHref(stove)}>{stove.manufacturer}</a> : (stove.manufacturer || "Not listed")}</td>
+            ) : null}
+            <td>
+              <span class:list={["pill", stove.current ? "pill-current" : "pill-previous"]}>{statusLabel(stove.current)}</span>
+            </td>
+            <td class="num">{stove.emission == null ? "Not listed" : formatNumber(stove.emission, 3)}</td>
+            <td class="num">{stove.efficiency == null ? "Not listed" : `${formatNumber(stove.efficiency, 2)}%`}</td>
+            <td class="num">{heatText(stove)}</td>
+            <td class="num">{fireboxText(stove)}</td>
+            <td>{stove.fuel || "Not listed"}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,5 +1,6 @@
 ---
 import Answer from "../../../components/Answer.astro";
+import CurrentNeighbors from "../../../components/CurrentNeighbors.astro";
 import DataNote from "../../../components/DataNote.astro";
 import Base from "../../../layouts/Base.astro";
 import { modelSentences } from "../../../lib/answers.js";
@@ -98,6 +99,7 @@ const notes = [
         </>
       ) : null
     }
+    <CurrentNeighbors stove={stove} />
     <h2 id="specs">EPA rows</h2>
     <div class="table-wrap">
       <table>
