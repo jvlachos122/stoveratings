@@ -1,9 +1,10 @@
 ---
 import Answer from "../../components/Answer.astro";
+import BrandHubTable from "../../components/BrandHubTable.astro";
 import DataNote from "../../components/DataNote.astro";
-import StoveTable from "../../components/StoveTable.astro";
 import Base from "../../layouts/Base.astro";
-import { brandAnswer, brandProse } from "../../lib/brand-copy.js";
+import { brandHubAnswer, brandHubDescription, brandHubTitle } from "../../lib/brand-hub-facts.js";
+import { brandProse } from "../../lib/brand-copy.js";
 import { catalog, stovesForBrand } from "../../lib/catalog.js";
 import { metaDescription, pageTitle } from "../../lib/format.js";
 import { datasetLd } from "../../lib/schema.js";
@@ -23,17 +24,17 @@ export function getStaticPaths() {
 const { brand, redirect } = Astro.props;
 const target = redirect ? catalog.brandBySlug.get(redirect.toSlug) : null;
 const lines = brand ? stovesForBrand(brand.slug) : [];
+const date = catalog.meta.snapshotDate;
 const sentences = redirect
   ? [
       `EPA's manufacturer string ${redirect.fromName} is grouped on the ${target.name} hub.`,
       "This address is the previous URL for that grouping.",
-      `Source: EPA Certified Wood Heater Database, snapshot ${catalog.meta.snapshotDate}.`,
+      `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
     ]
-  : brandAnswer(brand, lines, catalog.meta.snapshotDate);
+  : brandHubAnswer(brand, lines, date);
 const prose = brand ? brandProse(brand, lines) : [];
-const description = metaDescription(sentences);
-const current = lines.filter((stove) => stove.current);
-const previous = lines.filter((stove) => !stove.current);
+const description = redirect ? metaDescription(sentences) : brandHubDescription(brand, lines, date);
+const title = redirect ? pageTitle(`${redirect.fromName} moved`) : brandHubTitle(brand, lines);
 const insertLines = lines.filter((stove) => stove.insertFlag);
 const insertCurrent = insertLines.filter((stove) => stove.current).length;
 const insertWood = insertLines.some((stove) => stove.type === "Wood Stove");
@@ -54,7 +55,7 @@ const crumbs = redirect
 {
   redirect ? (
     <Base
-      title={pageTitle(`${redirect.fromName} moved`)}
+      title={title}
       description={description}
       noindex={true}
       canonicalPath={redirect.targetUrl}
@@ -75,18 +76,11 @@ const crumbs = redirect
       </div>
     </Base>
   ) : (
-    <Base title={pageTitle(brand.name)} description={description} breadcrumbs={crumbs} jsonLd={[datasetLd(catalog.meta)]}>
+    <Base title={title} description={description} breadcrumbs={crumbs} jsonLd={[datasetLd(catalog.meta)]}>
       <div class="wrap">
         <h1>{brand.name}</h1>
         <Answer sentences={sentences} />
-        {
-          prose.length ? (
-            <div class="prose">
-              <h2 id="listed-figures">Figures EPA lists</h2>
-              {prose.map((sentence) => <p>{sentence}</p>)}
-            </div>
-          ) : null
-        }
+        <BrandHubTable lines={lines} brandName={brand.name} action={brand.url} />
         <p>{brand.note}</p>
         <p class="small">Evidence used for this hub: {brand.evidence}</p>
         {
@@ -109,21 +103,13 @@ const crumbs = redirect
             </p>
           ) : null
         }
-        <h2 id="current">Currently certified</h2>
         {
-          current.length ? (
-            <StoveTable stoves={current} caption={`${brand.name}: model lines EPA lists as currently certified`} />
-          ) : (
-            <p>EPA does not list a currently certified model line on this hub in the {catalog.meta.snapshotDate} snapshot.</p>
-          )
-        }
-        <h2 id="previous">Previously certified</h2>
-        {
-          previous.length ? (
-            <StoveTable stoves={previous} caption={`${brand.name}: model lines not in the currently certified result`} />
-          ) : (
-            <p>Every model line on this hub is in the currently certified result.</p>
-          )
+          prose.length ? (
+            <div class="prose">
+              <h2 id="listed-figures">Figures EPA lists</h2>
+              {prose.map((sentence) => <p>{sentence}</p>)}
+            </div>
+          ) : null
         }
         <DataNote
           items={[

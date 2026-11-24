@@ -65,7 +65,9 @@ import {
   burnRuleVisibleText,
   isOfficialBurnUrl,
 } from "../src/lib/burn-rules.js";
-import { catalog } from "../src/lib/catalog.js";
+import { catalog, stovesForBrand } from "../src/lib/catalog.js";
+import { brandHubAnswer, brandHubDescription, brandHubTitle } from "../src/lib/brand-hub-facts.js";
+import { site as siteMeta } from "../src/lib/site.js";
 import {
   currentInsertRows,
   insertFinderSentences,
@@ -970,6 +972,70 @@ else if (files.some((file) => file.includes("/tools/efficiency-finder/") || file
   }
   if (!moduleScripts.every((src) => src.startsWith("/") && !src.startsWith("//"))) {
     errors.push("efficiency: off-site script");
+  }
+}
+
+const brandBanned = /\b(best|top-rated|recommend\w*|rankings?|scores?)\b/i;
+for (const brand of catalog.brands) {
+  const file = join(dist, brand.url.slice(1), "index.html");
+  if (!existsSync(file)) {
+    errors.push(`brand hub missing ${brand.url}`);
+    continue;
+  }
+  const html = decodeHtml(readFileSync(file, "utf8"));
+  const lines = stovesForBrand(brand.slug);
+  const sentences = brandHubAnswer(brand, lines, catalog.meta.snapshotDate);
+  const title = `${brandHubTitle(brand, lines)} · ${siteMeta.name}`;
+  const description = brandHubDescription(brand, lines, catalog.meta.snapshotDate);
+  if (!html.includes(`<title>${title}</title>`)) errors.push(`${brand.url}: title`);
+  if (!html.includes(`content="${description}"`)) errors.push(`${brand.url}: description`);
+  if (!html.includes('class="answer"')) errors.push(`${brand.url}: answer box`);
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length < 1 || paragraphs.length > 3) errors.push(`${brand.url}: answer box sentences`);
+  for (const sentence of sentences) {
+    if (!html.includes(sentence)) errors.push(`${brand.url}: answer sentence missing`);
+  }
+  if (answer && brandBanned.test(answer[1])) errors.push(`${brand.url}: banned wording`);
+  const answerAt = html.indexOf('class="answer"');
+  const tableAt = html.indexOf('id="brand-hub-finder-table"');
+  if (answerAt < 0 || tableAt < answerAt) errors.push(`${brand.url}: answer box is not before the table`);
+  const table = html.match(/<table id="brand-hub-finder-table"[\s\S]*?<\/table>/);
+  if (!table) errors.push(`${brand.url}: table missing`);
+  else if (!table[0].includes("<caption")) errors.push(`${brand.url}: caption missing`);
+  const body = html.match(/<tbody id="brand-hub-finder-rows">([\s\S]*?)<\/tbody>/);
+  const rendered = body ? body[1].match(/<tr\b/g) || [] : [];
+  if (rendered.length !== lines.length) errors.push(`${brand.url}: ${rendered.length} table rows != ${lines.length}`);
+  for (const stove of lines) {
+    if (!html.includes(`href="${stove.url}"`)) errors.push(`${brand.url}: missing ${stove.url}`);
+  }
+  const unreported = html.match(/<tbody id="brand-hub-finder-unreported-rows">([\s\S]*?)<\/tbody>/);
+  const unreportedRows = unreported ? unreported[1].match(/<tr\b/g) || [] : [];
+  if (!unreported || unreportedRows.length !== 0) errors.push(`${brand.url}: unreported table is not an empty no-JS bucket`);
+  if (!html.includes("<noscript>")) errors.push(`${brand.url}: noscript`);
+  if (!html.includes('id="brand-hub-certification"')) errors.push(`${brand.url}: certification filter`);
+  if (html.includes("cfpub.epa.gov")) errors.push(`${brand.url}: EPA application host`);
+  if (html.includes('content="noindex"')) errors.push(`${brand.url}: unexpected noindex`);
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`${brand.url}: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push(`${brand.url}: json-ld parse`);
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Dataset"]) {
+        if (!types.has(required)) errors.push(`${brand.url}: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "FAQPage"]) {
+        if (types.has(banned)) errors.push(`${brand.url}: forbidden ${banned}`);
+      }
+    }
   }
 }
 
