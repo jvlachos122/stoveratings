@@ -358,6 +358,27 @@ test("shallow history falls back to the snapshot date without inventing a newer 
   assert.equal(partial.get("/contact/"), PAGE_COMMIT);
 });
 
+test("brand hub fact and table modules move only brand template URLs", () => {
+  const baseline = buildSitemapLastmodsFromDates(new FallbackDates(BASE));
+  const edited = buildSitemapLastmodsFromDates(new FallbackDates(BASE, [
+    ["src/lib/brand-hub-facts.js", PAGE_COMMIT],
+    ["src/lib/brand-hub-table.js", PAGE_COMMIT],
+    ["src/lib/brand-hub-table-ui.js", PAGE_COMMIT],
+    ["src/components/BrandHubTable.astro", PAGE_COMMIT],
+    ["src/pages/brands/[brand].astro", PAGE_COMMIT],
+  ]));
+  const changed = changedPaths(baseline, edited);
+  assert.ok(changed.length > 0);
+  assert.ok(changed.every((path) => /^\/brands\/[^/]+\/$/.test(path)), changed.find((path) => !/^\/brands\/[^/]+\/$/.test(path)));
+  assert.ok(changed.includes("/brands/blaze-king/"));
+  assert.ok(changed.includes("/brands/hussong-manufacturing-company-inc-kozy-heat/"));
+  assert.equal(edited.get("/brands/"), baseline.get("/brands/"));
+  assert.equal(edited.get("/most-efficient-wood-stoves/"), baseline.get("/most-efficient-wood-stoves/"));
+  assert.equal(edited.get("/wood-stove-inserts/"), baseline.get("/wood-stove-inserts/"));
+  assert.equal(edited.get("/stoves/ac-component-specialists/620-9-and-620-10/"), baseline.get("/stoves/ac-component-specialists/620-9-and-620-10/"));
+  assert.equal(edited.get("/"), baseline.get("/"));
+});
+
 test("sitemap index lastmod is the newest URL in that child", () => {
   const dir = mkdtempSync(join(tmpdir(), "sitemap-lastmod-"));
   try {

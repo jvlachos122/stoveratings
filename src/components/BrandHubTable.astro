@@ -1,0 +1,183 @@
+---
+import {
+  BRAND_HUB_SORT,
+  brandEmissionHeader,
+  brandHubCaption,
+  brandHubFilterHelp,
+  brandHubFlags,
+  brandHubHeading,
+  brandHubRowView,
+  brandHubRows,
+  brandHubSortModes,
+  brandHubStatusText,
+  brandSubtypeOptions,
+} from "../lib/brand-hub-table.js";
+
+const { lines = [], brandName = "This hub", action = "" } = Astro.props;
+const rows = brandHubRows(lines);
+const flags = brandHubFlags(rows);
+const options = brandSubtypeOptions(rows);
+const help = brandHubFilterHelp(flags);
+const heading = brandHubHeading(flags);
+const caption = brandHubCaption(brandName, BRAND_HUB_SORT);
+const status = brandHubStatusText(rows.length, rows.length, 0);
+const emissionLabel = brandEmissionHeader(rows);
+const bareEmission = emissionLabel !== "Emission";
+const modes = brandHubSortModes();
+---
+
+{
+  rows.length ? (
+    <section id="brand-hub-finder-section" aria-labelledby="brand-hub-finder-heading">
+      <h2 id="brand-hub-finder-heading">{heading}</h2>
+      <p id="brand-hub-finder-help">{help}</p>
+      <form id="brand-hub-finder" method="get" action={action} aria-describedby="brand-hub-finder-help">
+        <div class="filters">
+          {flags.status ? (
+            <label>Currently certified or previously certified
+              <select id="brand-hub-certification" name="status">
+                <option value="" selected>Current and previous</option>
+                <option value="current">Currently certified</option>
+                <option value="previous">Previously certified</option>
+              </select>
+            </label>
+          ) : null}
+          {flags.subtype ? (
+            <label>Catalytic, non-catalytic, or hybrid
+              <select id="brand-hub-subtype" name="subtype">
+                <option value="">Any</option>
+                {options.map((option) => <option value={option.value}>{option.label}</option>)}
+              </select>
+            </label>
+          ) : null}
+          {flags.heat ? (
+            <label>Heat output minimum (BTU/hr)
+              <input id="brand-hub-heat-min" name="heat-min" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+            </label>
+          ) : null}
+          {flags.heat ? (
+            <label>Heat output maximum (BTU/hr)
+              <input id="brand-hub-heat-max" name="heat-max" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+            </label>
+          ) : null}
+          {flags.firebox ? (
+            <label>Firebox minimum (cu ft)
+              <input id="brand-hub-firebox-min" name="firebox-min" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+            </label>
+          ) : null}
+          {flags.firebox ? (
+            <label>Firebox maximum (cu ft)
+              <input id="brand-hub-firebox-max" name="firebox-max" type="text" inputmode="decimal" autocomplete="off" spellcheck="false">
+            </label>
+          ) : null}
+          <label>Sort
+            <select id="brand-hub-sort" name="sort">
+              {modes.map((mode) => <option value={mode.value} selected={mode.value === BRAND_HUB_SORT}>{mode.label}</option>)}
+            </select>
+          </label>
+        </div>
+        <div class="actions">
+          <button type="submit">Apply filters</button>
+        </div>
+      </form>
+      <p id="brand-hub-finder-status" class="small" aria-live="polite">{status}</p>
+      <p id="brand-hub-finder-empty" hidden={rows.length > 0}>No model line matches these filters.</p>
+      <noscript>
+        <p>The filter and the column sort run in your browser. The table lists every model line on this hub without that script.</p>
+      </noscript>
+      <div class="table-wrap">
+        <table id="brand-hub-finder-table" data-brand={brandName}>
+          <caption id="brand-hub-finder-caption">{caption}</caption>
+          <thead>
+            <tr>
+              <th scope="col" data-sort-key="name" aria-sort="none">
+                <button type="button" class="sort-button" data-sort="name" data-default="asc">Model line</button>
+              </th>
+              <th scope="col"><a href="/glossary/#epa-manufacturer">EPA manufacturer</a></th>
+              <th scope="col"><a href="/glossary/#currently-certified">Status</a></th>
+              <th scope="col" class="num" data-sort-key="emission" aria-sort="ascending">
+                <button type="button" class="sort-button" data-sort="emission" data-default="asc">{emissionLabel}</button>
+              </th>
+              <th scope="col" class="num" data-sort-key="efficiency" aria-sort="none">
+                <button type="button" class="sort-button" data-sort="efficiency" data-default="desc">HHV efficiency</button>
+              </th>
+              <th scope="col" class="num" data-sort-key="heat" aria-sort="none">
+                <button type="button" class="sort-button" data-sort="heat" data-default="desc">Heat output</button>
+              </th>
+              <th scope="col" class="num" data-sort-key="firebox" aria-sort="none">
+                <button type="button" class="sort-button" data-sort="firebox" data-default="asc">Firebox</button>
+              </th>
+              {flags.subtype ? <th scope="col">Catalytic, non-catalytic, or hybrid</th> : null}
+              <th scope="col"><a href="/glossary/#certified-fuel">Fuel</a></th>
+            </tr>
+          </thead>
+          <tbody id="brand-hub-finder-rows">
+            {rows.map((row) => {
+              const view = brandHubRowView(row, bareEmission);
+              return (
+                <tr {...view.attrs}>
+                  <th scope="row">
+                    <a href={view.modelUrl}>{view.model}</a>
+                    {view.insertFlag ? <div class="small">Name indicates insert</div> : null}
+                  </th>
+                  <td>{view.manufacturer}</td>
+                  <td>
+                    <span class:list={["pill", view.current ? "pill-current" : "pill-previous"]}>{view.status}</span>
+                  </td>
+                  <td class="num">{view.emission}</td>
+                  <td class="num">{view.efficiency}</td>
+                  <td class="num">{view.heat}</td>
+                  <td class="num">{view.firebox}</td>
+                  {flags.subtype ? <td>{view.subtype}</td> : null}
+                  <td>{view.fuel}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <section id="brand-hub-finder-unreported" hidden>
+        <h3>Not listed</h3>
+        <p id="brand-hub-finder-unreported-note">These model lines leave a filtered heat output or firebox blank. The blank is not listed by EPA and is not zero.</p>
+        <div class="table-wrap">
+          <table id="brand-hub-finder-unreported-table">
+            <caption>Model lines with a filtered field not listed</caption>
+            <thead>
+              <tr>
+                <th scope="col">Model line</th>
+                <th scope="col">EPA manufacturer</th>
+                <th scope="col">Status</th>
+                <th scope="col" class="num">{emissionLabel}</th>
+                <th scope="col" class="num">HHV efficiency</th>
+                <th scope="col" class="num">Heat output</th>
+                <th scope="col" class="num">Firebox</th>
+                {flags.subtype ? <th scope="col">Catalytic, non-catalytic, or hybrid</th> : null}
+                <th scope="col">Fuel</th>
+              </tr>
+            </thead>
+            <tbody id="brand-hub-finder-unreported-rows"></tbody>
+          </table>
+        </div>
+      </section>
+      <p class="small">
+        Column definitions:
+        <a href="/glossary/#model-line">model line</a>,
+        <a href="/glossary/#epa-manufacturer">EPA manufacturer</a>,
+        <a href="/glossary/#currently-certified">certification status</a>,
+        <a href="/glossary/#g-hr">emission rate</a>,
+        <a href="/glossary/#hhv">HHV efficiency</a>,
+        <a href="/glossary/#btu-hr">heat output</a>,
+        <a href="/glossary/#firebox-volume">firebox volume</a>,
+        {flags.subtype ? <><a href="/glossary/#epa-subtype">EPA subtype</a>,</> : null}
+        and <a href="/glossary/#certified-fuel">certified fuel</a>.
+      </p>
+    </section>
+  ) : (
+    <p>EPA lists no model line on this hub.</p>
+  )
+}
+<script>
+  import { mountBrandHubTable } from "../lib/brand-hub-table-ui.js";
+
+  mountBrandHubTable(document);
+</script>

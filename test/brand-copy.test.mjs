@@ -277,12 +277,15 @@ test("central-heater rates stay in pounds per million BTU, including a listed ze
   assert.equal(lines.some((stove) => stove.emission === 0), true);
 });
 
-test("brand hub source keeps the tables, the answer, and Dataset JSON-LD", () => {
+test("brand hub source keeps the answer, the filter table, and Dataset JSON-LD", () => {
   const source = readFileSync(join(root, "src/pages/brands/[brand].astro"), "utf8");
+  const table = readFileSync(join(root, "src/components/BrandHubTable.astro"), "utf8");
   assert.match(source, /brandProse/);
+  assert.match(source, /brandHubAnswer/);
   assert.match(source, /datasetLd/);
-  assert.match(source, /StoveTable/);
-  assert.match(source, /id="current"/);
-  assert.match(source, /id="previous"/);
+  assert.match(source, /BrandHubTable/);
+  assert.match(table, /<caption/);
+  assert.match(table, /brand-hub-certification/);
   assert.doesNotMatch(source, /AggregateRating|Product|Review/);
+  assert.doesNotMatch(table, /AggregateRating|Product|Review/);
 });
