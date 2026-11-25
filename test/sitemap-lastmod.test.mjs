@@ -323,9 +323,26 @@ test("real pages ignore chrome and a related-list edit, and follow their own dat
   const listChanges = changedPaths(baseline, lists);
   assert.ok(listChanges.includes("/pellet-stoves/"));
   assert.ok(listChanges.includes("/cleanest-burning-pellet-stoves/"));
+  assert.ok(listChanges.includes("/cleanest-burning-wood-stoves/"));
   assert.ok(!listChanges.includes(stove));
   assert.ok(!listChanges.includes("/contact/"));
   assert.ok(!listChanges.includes(brand));
+
+  const emissionModules = buildSitemapLastmodsFromDates(new FallbackDates(BASE, [
+    ["src/lib/emission-finder.js", PAGE_COMMIT],
+    ["src/lib/emission-finder-ui.js", PAGE_COMMIT],
+    ["src/components/EmissionFinder.astro", PAGE_COMMIT],
+    ["src/pages/cleanest-burning-wood-stoves.astro", PAGE_COMMIT],
+  ]));
+  assert.deepEqual(changedPaths(baseline, emissionModules), ["/cleanest-burning-wood-stoves/"]);
+
+  const efficiencyModule = buildSitemapLastmodsFromDates(new FallbackDates(BASE, [
+    ["src/lib/efficiency-finder.js", PAGE_COMMIT],
+  ]));
+  assert.deepEqual(changedPaths(baseline, efficiencyModule), [
+    "/cleanest-burning-wood-stoves/",
+    "/most-efficient-wood-stoves/",
+  ]);
 
   const lookupScript = buildSitemapLastmodsFromDates(new FallbackDates(BASE, [
     ["public/scripts/lookup.js", PAGE_COMMIT],

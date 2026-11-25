@@ -78,6 +78,12 @@ import {
   efficiencyRowView,
   efficiencyRows,
 } from "../src/lib/efficiency-finder.js";
+import {
+  emissionFinderSentences,
+  emissionListTitle,
+  emissionMetaDescription,
+  emissionRows,
+} from "../src/lib/emission-finder.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
@@ -972,6 +978,96 @@ else if (files.some((file) => file.includes("/tools/efficiency-finder/") || file
   }
   if (!moduleScripts.every((src) => src.startsWith("/") && !src.startsWith("//"))) {
     errors.push("efficiency: off-site script");
+  }
+}
+
+const emissionFile = files.find((file) => file.endsWith("/cleanest-burning-wood-stoves/index.html"));
+if (!emissionFile) errors.push("missing cleanest burning wood stoves page");
+else if (files.some((file) => file.includes("/tools/emission-finder/") || file.includes("/cleanest-burning-wood-stove-filters/"))) {
+  errors.push("emission: extra filter URL");
+} else {
+  const html = decodeHtml(readFileSync(emissionFile, "utf8"));
+  const rows = emissionRows(catalog.stoves);
+  const sentences = emissionFinderSentences(catalog.stoves, catalog.meta.snapshotDate);
+  const title = `${emissionListTitle(rows)} · ${siteMeta.name}`;
+  const description = emissionMetaDescription(catalog.stoves, catalog.meta.snapshotDate);
+  if (!html.includes(`<title>${title}</title>`)) errors.push("emission: title");
+  if (!html.includes(`content="${description}"`)) errors.push("emission: description");
+  if (title.length > 60 + ` · ${siteMeta.name}`.length) errors.push(`emission: title length ${title.length}`);
+  if (!html.includes('class="answer"')) errors.push("emission: answer box");
+  const answer = html.match(/<div class="answer">([\s\S]*?)<\/div>/);
+  const paragraphs = answer ? answer[1].match(/<p>/g) : [];
+  if (!paragraphs || paragraphs.length < 1 || paragraphs.length > 3) errors.push("emission: answer box sentences");
+  for (const sentence of sentences) {
+    if (!html.includes(sentence)) errors.push("emission: answer sentence missing");
+  }
+  const answerAt = html.indexOf('class="answer"');
+  const tableAt = html.indexOf('id="emission-finder-table"');
+  if (answerAt < 0 || tableAt < answerAt) errors.push("emission: answer box is not before the finder table");
+  const table = html.match(/<table id="emission-finder-table">[\s\S]*?<\/table>/);
+  if (!table) errors.push("emission: finder table missing");
+  else {
+    if (!table[0].includes("<caption")) errors.push("emission: caption missing");
+    const body = table[0].match(/<tbody id="emission-finder-rows">([\s\S]*?)<\/tbody>/);
+    const rendered = body ? body[1].match(/<tr\b/g) || [] : [];
+    if (rendered.length !== rows.length) errors.push(`emission: ${rendered.length} table rows != ${rows.length}`);
+    if (!rendered.length) errors.push("emission: no-JS list is empty");
+    for (const row of rows) {
+      const view = efficiencyRowView(row);
+      if (!table[0].includes(`href="${view.modelUrl}"`)) errors.push(`emission: missing stove ${view.modelUrl}`);
+      if (view.attrs["data-id"] && !table[0].includes(`data-id="${view.attrs["data-id"]}"`)) {
+        errors.push(`emission: missing row ${view.attrs["data-id"]}`);
+      }
+    }
+  }
+  const unreported = html.match(/<tbody id="emission-finder-unreported-rows">([\s\S]*?)<\/tbody>/);
+  const unreportedRows = unreported ? unreported[1].match(/<tr\b/g) || [] : [];
+  if (!unreported || unreportedRows.length !== 0) errors.push("emission: unreported table is not an empty no-JS bucket");
+  if (!html.includes(">Not reported<")) errors.push("emission: missing Not reported heading");
+  if (!html.includes("<noscript>")) errors.push("emission: noscript");
+  if (!html.includes('href="/cleanest-burning-pellet-stoves/"')) errors.push("emission: pellet list link");
+  const expectedSponsored = LOGOX.enabled
+    ? LOGOX_PLACEMENTS.filter((item) => item.path === "/cleanest-burning-wood-stoves/").length
+    : 0;
+  const sponsored = (html.match(/rel="sponsored/g) || []).length;
+  if (sponsored !== expectedSponsored) errors.push(`emission: rel=sponsored ${sponsored} != ${expectedSponsored}`);
+  if ((html.match(/data-affiliate="logox"/g) || []).length !== expectedSponsored) errors.push("emission: LogOX block count");
+  if (html.includes("cfpub.epa.gov")) errors.push("emission: EPA application host");
+  const mainStart = html.indexOf("<main");
+  const mainEnd = html.indexOf("</main>");
+  const main = mainStart >= 0 && mainEnd > mainStart ? html.slice(mainStart, mainEnd) : "";
+  const prose = main.replace(/<tbody[\s\S]*?<\/tbody>/g, "");
+  if (/\bbest\b/i.test(prose) || /\brankings?\b/i.test(prose) || /\bscores?\b/i.test(prose) || /\btop-rated\b/i.test(prose) || /\brecommend/i.test(prose)) {
+    errors.push("emission: banned wording");
+  }
+  const scripts = [...html.matchAll(/<script\b[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi)];
+  if (scripts.length !== 1) errors.push(`emission: ${scripts.length} json-ld scripts`);
+  else {
+    let data;
+    try {
+      data = JSON.parse(scripts[0][1]);
+    } catch {
+      errors.push("emission: json-ld parse");
+      data = null;
+    }
+    if (data) {
+      const types = new Set();
+      collectTypes(data, types);
+      for (const required of ["BreadcrumbList", "Article", "WebApplication"]) {
+        if (!types.has(required)) errors.push(`emission: missing ${required}`);
+      }
+      for (const banned of ["Product", "Review", "AggregateRating", "FAQPage"]) {
+        if (types.has(banned)) errors.push(`emission: forbidden ${banned}`);
+      }
+    }
+  }
+  if (html.includes('content="noindex"')) errors.push("emission: unexpected noindex");
+  const moduleScripts = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]+)"/gi)].map((match) => match[1]);
+  if (!moduleScripts.some((src) => src.startsWith("/_astro/") || src.startsWith("/scripts/"))) {
+    errors.push("emission: missing first-party script");
+  }
+  if (!moduleScripts.every((src) => src.startsWith("/") && !src.startsWith("//"))) {
+    errors.push("emission: off-site script");
   }
 }
 
