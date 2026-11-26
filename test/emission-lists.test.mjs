@@ -107,8 +107,10 @@ test("the pellet emission page states live counts, ties, blanks, and sibling lin
 
   const wood = read("src/pages/cleanest-burning-wood-stoves.astro");
   assert.match(wood, /href="\/cleanest-burning-pellet-stoves\/"/);
-  assert.match(wood, /Ties are ordered by a higher HHV efficiency, then by model name/);
-  assert.match(wood, /not listed by EPA/);
+  assert.match(wood, /emissionFinderSentences\(catalog\.stoves/);
+  assert.match(wood, /emissionListTitle\(rows\)/);
+  assert.match(wood, /emissionMetaDescription\(catalog\.stoves/);
+  assert.doesNotMatch(wood, /title="Lowest emission wood stoves"/);
   assert.match(read("src/pages/most-efficient-pellet-stoves.astro"), /href="\/cleanest-burning-pellet-stoves\/"/);
   assert.match(read("src/pages/pellet-stoves.astro"), /href="\/cleanest-burning-pellet-stoves\/"/);
   assert.match(read("src/pages/index.astro"), /href="\/cleanest-burning-pellet-stoves\/"/);

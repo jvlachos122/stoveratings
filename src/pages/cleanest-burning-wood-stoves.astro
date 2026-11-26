@@ -1,34 +1,40 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
-import ListStoveTable from "../components/ListStoveTable.astro";
+import EmissionFinder from "../components/EmissionFinder.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
-import { emissionText, metaDescription, shortModel } from "../lib/format.js";
-import { excludedEmission, rankByEmission } from "../lib/lists.js";
-import { articleLd } from "../lib/schema.js";
+import {
+  emissionFinderSentences,
+  emissionFlags,
+  emissionListNotes,
+  emissionListTitle,
+  emissionMetaDescription,
+  emissionRows,
+} from "../lib/emission-finder.js";
+import { articleLd, webAppLd } from "../lib/schema.js";
 
-const ranked = rankByEmission(catalog.stoves, "Wood Stove");
-const excluded = excludedEmission(catalog.stoves, "Wood Stove");
-const top = ranked[0];
 const date = catalog.meta.snapshotDate;
-const sentences = [
-  `The lowest emission rate EPA lists on a currently certified wood-stove model line is ${emissionText(top.emission, top.emissionUnit)}, on ${shortModel(top.model)}.`,
-  excluded === 0
-    ? `All ${ranked.length} currently certified wood-stove model lines list an emission rate, so none were left out. A blank emission rate is not listed by EPA and is not zero.`
-    : `${ranked.length} currently certified wood-stove model lines list an emission rate. ${excluded} are not listed by EPA for an emission rate, so they are left out of this order. A blank is not zero.`,
-  "The table orders that grams-per-hour figure from lowest to highest. Ties are ordered by a higher HHV efficiency, then by model name. EPA does not break those ties, and a lower test result is not a StoveRatings score.",
-  `Source: EPA Certified Wood Heater Database, snapshot ${date}.`,
-];
-const description = metaDescription(sentences);
+const rows = emissionRows(catalog.stoves);
+const flags = emissionFlags(rows);
+const sentences = emissionFinderSentences(catalog.stoves, date);
+const notes = emissionListNotes(catalog.stoves);
+const description = emissionMetaDescription(catalog.stoves, date);
+const title = emissionListTitle(rows);
+const toolName = "Wood stove emission rate filters";
 ---
 
-<Base title="Lowest emission wood stoves" description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/cleanest-burning-wood-stoves/", label: "Lowest emission rates" }]} jsonLd={[articleLd("Wood stoves ordered by EPA emission rate", description, "/cleanest-burning-wood-stoves/", date)]}>
+<Base title={title} description={description} breadcrumbs={[{ href: "/", label: "Home" }, { href: "/cleanest-burning-wood-stoves/", label: "Lowest emission rates" }]} jsonLd={[articleLd("Wood stoves ordered by EPA emission rate", description, "/cleanest-burning-wood-stoves/", date), webAppLd(toolName, description, "/cleanest-burning-wood-stoves/")]}>
   <div class="wrap">
     <h1>Wood stoves with the lowest EPA emission rates</h1>
     <Answer sentences={sentences} />
-    <ListStoveTable stoves={ranked} caption="Currently certified wood stoves ordered by emission rate, lowest first" />
+    <p>
+      <a href="/tools/stove-size-calculator/">Fits my space</a>
+      compares a planning BTU/hr range with the heat output EPA listed.
+      The <a href="/tools/firebox-log-length/">firebox and log length</a> page does not turn a cubic-foot volume into a piece length.
+    </p>
+    <EmissionFinder rows={rows} flags={flags} />
     <p>Pellet stoves are ordered separately on <a href="/cleanest-burning-pellet-stoves/">the pellet emission list</a>.</p>
-    <DataNote items={["People search this topic as cleanest-burning wood stoves. The order is EPA's grams-per-hour result only.", "A blank emission rate is not listed by EPA. It is not zero, and that model line is left out of this order.", "Pellet stoves use the same grams-per-hour unit and are not in this table."]} />
+    <DataNote items={notes} />
   </div>
 </Base>
