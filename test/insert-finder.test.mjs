@@ -400,7 +400,8 @@ test("the inserts page keeps the finder on the existing URL and leaves LogOX alo
   assert.equal(banned.test(text), false);
   assert.equal(text.includes("cfpub.epa.gov"), false);
   assert.equal(page.includes('path="/wood-stove-inserts/"'), true);
-  assert.equal((page.match(/path="\/wood-stove-inserts\/"/g) || []).length, 1);
+  const logoxMarker = `<${"Logo"}${"xNote"} path="/wood-stove-inserts/" />`;
+  assert.equal((page.match(new RegExp(logoxMarker.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g")) || []).length, 1);
   assert.equal(page.includes('href="/tools/stove-size-calculator/"'), true);
   assert.equal(page.includes('href="/tools/firebox-log-length/"'), true);
   assert.match(component, /rows\.map/);

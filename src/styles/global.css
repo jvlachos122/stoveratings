@@ -214,6 +214,11 @@ a:hover { color: var(--ember); }
   background: var(--paper-2);
 }
 .affiliate-note p { margin: 0; }
+.affiliate-note ul {
+  margin: 0.35rem 0 0;
+  padding-left: 1.15rem;
+}
+.affiliate-note li + li { margin-top: 0.15rem; }
 .affiliate-note .affiliate-disclosure {
   margin-top: 0.35rem;
   color: var(--soot);

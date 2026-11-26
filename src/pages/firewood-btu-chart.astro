@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import EtsyNote from "../components/EtsyNote.astro";
 import LogoxNote from "../components/LogoxNote.astro";
 import Base from "../layouts/Base.astro";
 import { firewoodSentences } from "../lib/answers.js";
@@ -53,6 +54,7 @@ const payload = JSON.stringify(rows).replace(/</g, "\\u003c");
     <p>How dry firewood is, and the moisture percent each cited source states, is on the <a href="/firewood-moisture/">firewood moisture</a> page.</p>
     <p>These cord values are the heat contents in the <a href="/tools/heating-cost-calculator/">heating cost calculator</a>. That page does not set a cord price.</p>
     <LogoxNote path="/firewood-btu-chart/" />
+    <EtsyNote path="/firewood-btu-chart/" />
     <p>Piece length is separate from heat per cord. The <a href="/tools/firebox-log-length/">firebox and log length</a> page uses a measured firebox side. The EPA export on this site lists firebox volume, not that length.</p>
     <h2>Compare two species</h2>
     <form id="wood-form">

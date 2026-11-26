@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import EtsyNote from "../components/EtsyNote.astro";
 import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
@@ -38,5 +39,6 @@ const description = metaDescription(sentences);
     ]} />
     <DataNote items={["Emission rates for central heaters are annual averages in pounds per million BTU, not the grams-per-hour unit used for room heaters.", "Do not compare a lb/mmBTU figure with a g/hr figure as if they were the same measurement."]} />
     <LogoxNote path="/outdoor-wood-boilers/" />
+    <EtsyNote path="/outdoor-wood-boilers/" />
   </div>
 </Base>

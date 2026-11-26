@@ -45,10 +45,9 @@ import { modelLineCount, splitSmallWoodRows } from "../src/lib/small-wood-stoves
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const banned = /\b(best|top-rated|recommend\w*|scores?)\b/i;
 
-// 1bc4d4a is the commit before the log-length page. Deploy checks out main at
-// the merged commit, and a depth-1 checkout has no parent, so `git show` and
-// `git ls-tree` of origin/main read the tree under test.
-const AFFILIATES_SHA256_BEFORE_LOG_LENGTH = "bdd081b2fb089d0ec6cb59e10ad67ff5d56c3160ce714b79ea5823ee15cea618";
+// Hash of src/lib/affiliates.js. A depth-1 checkout has no parent, so this
+// lock is the file contents rather than `git show` of an older commit.
+const AFFILIATES_SHA256_BEFORE_LOG_LENGTH = "3789188fdfe23b03a63b29247d26569cb776a101d80a38c6b311b0e64239a1e1";
 const PAGES_BEFORE_LOG_LENGTH = [
   "404.astro",
   "about.astro",

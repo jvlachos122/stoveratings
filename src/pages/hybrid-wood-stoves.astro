@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import EtsyNote from "../components/EtsyNote.astro";
 import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
@@ -33,5 +34,6 @@ const description = metaDescription(sentences);
     ]} />
     <DataNote items={["Hybrid is the EPA subtype on the row. This page does not reclassify stoves.", "Medians are for wood-stove rows only."]} />
     <LogoxNote path="/hybrid-wood-stoves/" />
+    <EtsyNote path="/hybrid-wood-stoves/" />
   </div>
 </Base>

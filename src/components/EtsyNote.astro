@@ -1,0 +1,17 @@
+---
+import { etsyNote } from "../lib/affiliates.js";
+
+const note = etsyNote(Astro.props.path);
+---
+
+{note ? (
+  <div class="affiliate-note" data-affiliate="etsy">
+    <p>{note.heading}</p>
+    <ul>
+      {note.links.map((link) => (
+        <li><a href={link.href} rel={note.rel} target={note.target}>{link.label}</a></li>
+      ))}
+    </ul>
+    <p class="affiliate-disclosure">{note.disclosure}</p>
+  </div>
+) : null}
