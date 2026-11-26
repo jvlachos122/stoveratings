@@ -1,6 +1,7 @@
 ---
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
+import EtsyNote from "../components/EtsyNote.astro";
 import LogoxNote from "../components/LogoxNote.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
@@ -116,6 +117,7 @@ const description = metaDescription(sentences);
       Last updated {comparison.lastUpdated}.
     </p>
     <LogoxNote path="/pellet-stove-vs-wood-stove/" />
+    <EtsyNote path="/pellet-stove-vs-wood-stove/" />
     <h2>Questions</h2>
     {faqs.map((faq) => (
       <section>

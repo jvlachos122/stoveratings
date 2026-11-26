@@ -2,7 +2,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { HtmlValidate } from "html-validate";
-import { LOGOX, LOGOX_DESTINATIONS, LOGOX_PLACEMENTS, affiliateMarkupProblems } from "../src/lib/affiliates.js";
+import { ETSY, ETSY_PLACEMENTS, LOGOX, LOGOX_DESTINATIONS, LOGOX_PLACEMENTS, affiliateMarkupProblems } from "../src/lib/affiliates.js";
 import { formatCount } from "../src/lib/format.js";
 import { glossaryParts, glossaryVisibleText, assertGlossaryCopy } from "../src/lib/glossary.js";
 import {
@@ -143,8 +143,14 @@ const validator = new HtmlValidate({
   },
 });
 
+function etsyLinkCount(path) {
+  if (!ETSY.enabled) return 0;
+  return ETSY_PLACEMENTS.filter((item) => !path || item.path === path).reduce((sum, item) => sum + item.searches.length, 0);
+}
+
 const files = walk(dist);
 let logoxBlocks = 0;
+let etsyBlocks = 0;
 let sponsoredRels = 0;
 for (const file of files) {
   const html = readFileSync(file, "utf8");
@@ -175,11 +181,15 @@ for (const file of files) {
   }
   for (const problem of affiliateMarkupProblems(html)) errors.push(`${rel}: ${problem}`);
   logoxBlocks += (html.match(/data-affiliate="logox"/g) || []).length;
+  etsyBlocks += (html.match(/data-affiliate="etsy"/g) || []).length;
   sponsoredRels += (html.match(/rel="sponsored/g) || []).length;
 }
 const expectedLogoxBlocks = LOGOX.enabled ? LOGOX_PLACEMENTS.length : 0;
+const expectedEtsyBlocks = ETSY.enabled ? ETSY_PLACEMENTS.length : 0;
+const expectedEtsyLinks = etsyLinkCount();
 if (logoxBlocks !== expectedLogoxBlocks) errors.push(`LogOX blocks ${logoxBlocks} != ${expectedLogoxBlocks}`);
-if (sponsoredRels !== expectedLogoxBlocks) errors.push(`rel=sponsored ${sponsoredRels} != ${expectedLogoxBlocks}`);
+if (etsyBlocks !== expectedEtsyBlocks) errors.push(`Etsy blocks ${etsyBlocks} != ${expectedEtsyBlocks}`);
+if (sponsoredRels !== expectedLogoxBlocks + expectedEtsyLinks) errors.push(`rel=sponsored ${sponsoredRels} != ${expectedLogoxBlocks + expectedEtsyLinks}`);
 if (LOGOX.enabled) {
   const disclosureHtml = readFileSync(join(dist, "disclosure/index.html"), "utf8");
   const aboutHtml = readFileSync(join(dist, "about/index.html"), "utf8");
@@ -191,6 +201,23 @@ if (LOGOX.enabled) {
     const destination = LOGOX_DESTINATIONS[placement.destinationId].url;
     if (!disclosureHtml.includes(placement.path) || !disclosureHtml.includes(destination)) {
       errors.push(`disclosure: missing ${placement.path}`);
+    }
+  }
+}
+if (ETSY.enabled) {
+  const disclosureHtml = readFileSync(join(dist, "disclosure/index.html"), "utf8");
+  const aboutHtml = readFileSync(join(dist, "about/index.html"), "utf8");
+  if (!disclosureHtml.includes("Etsy") || !disclosureHtml.includes("Rakuten Advertising") || !disclosureHtml.includes(ETSY.disclosure)) {
+    errors.push("disclosure: missing Etsy, Rakuten Advertising, or the on-page disclosure sentence");
+  }
+  if (!aboutHtml.includes("Etsy") || !aboutHtml.includes("Rakuten Advertising")) errors.push("about: missing Etsy or Rakuten Advertising");
+  for (const placement of ETSY_PLACEMENTS) {
+    if (!disclosureHtml.includes(placement.path)) errors.push(`disclosure: missing Etsy page ${placement.path}`);
+    for (const search of placement.searches) {
+      const destination = `https://www.etsy.com/search?q=${search.query}`;
+      if (!disclosureHtml.includes(destination) || !disclosureHtml.includes(search.label)) {
+        errors.push(`disclosure: missing Etsy search ${search.query}`);
+      }
     }
   }
 }
@@ -853,12 +880,14 @@ else {
     errors.push("inserts: missing calculator links");
   }
   if (!html.includes('data-affiliate="logox"')) errors.push("inserts: LogOX block missing");
-  const expectedSponsored = LOGOX.enabled
+  if (!html.includes('data-affiliate="etsy"')) errors.push("inserts: Etsy block missing");
+  const expectedLogox = LOGOX.enabled
     ? LOGOX_PLACEMENTS.filter((item) => item.path === "/wood-stove-inserts/").length
     : 0;
+  const expectedSponsored = expectedLogox + etsyLinkCount("/wood-stove-inserts/");
   const sponsored = (html.match(/rel="sponsored/g) || []).length;
   if (sponsored !== expectedSponsored) errors.push(`inserts: rel=sponsored ${sponsored} != ${expectedSponsored}`);
-  if ((html.match(/data-affiliate="logox"/g) || []).length !== expectedSponsored) {
+  if ((html.match(/data-affiliate="logox"/g) || []).length !== expectedLogox) {
     errors.push("inserts: LogOX block count");
   }
   if (html.includes("cfpub.epa.gov")) errors.push("inserts: EPA application host");

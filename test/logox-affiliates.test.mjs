@@ -81,8 +81,8 @@ test("every LogOX link is an Awin deep link beside the disclosure", () => {
 
   assert.equal(logoxNote("/pellet-stoves/"), null);
   assert.equal(logoxNote("/firewood-btu-chart/", { enabled: false }), null);
-  assert.equal(aboutAffiliateSentence({ enabled: false }), "");
-  const hidden = disclosureView({ enabled: false });
+  assert.equal(aboutAffiliateSentence({ enabled: false, etsyEnabled: false }), "");
+  const hidden = disclosureView({ enabled: false, etsyEnabled: false });
   assert.equal(hidden.placements.length, 0);
   assert.match(hidden.description, /no affiliate links/);
   assert.equal(hidden.paragraphs.some((paragraph) => /Awin|LogOX/.test(paragraph)), false);
@@ -101,7 +101,7 @@ test("LogOX merchant URLs stay in the helper, and the disclosure names Awin and 
     if (!/\.(astro|js|mjs|html|css|txt|md)$/.test(rel)) continue;
     const text = readFileSync(file, "utf8");
     assert.equal(/thelogox\.com|awin1\.com|awinmid|awinaffid/.test(text), false, rel);
-    if (rel === component || rel === "src/styles/global.css" || placed.has(rel)) continue;
+    if (rel === component || rel === "src/components/EtsyNote.astro" || rel === "src/styles/global.css" || rel === "test/etsy-affiliates.test.mjs" || placed.has(rel)) continue;
     assert.equal(text.includes("LogoxNote"), false, rel);
     assert.equal(text.includes("affiliate-note"), false, rel);
   }

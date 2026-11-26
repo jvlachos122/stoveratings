@@ -1,6 +1,7 @@
 ---
 import Answer from "../../components/Answer.astro";
 import DataNote from "../../components/DataNote.astro";
+import EtsyNote from "../../components/EtsyNote.astro";
 import LogoxNote from "../../components/LogoxNote.astro";
 import Base from "../../layouts/Base.astro";
 import { catalog } from "../../lib/catalog.js";
@@ -150,6 +151,7 @@ const woodSource = catalog.firewood[0].sourceUrl;
       <ul id="wood-matches" class="suggestions"></ul>
       <p id="wood-model-note" class="small"></p>
       <LogoxNote path="/tools/heating-cost-calculator/" />
+      <EtsyNote path="/tools/heating-cost-calculator/" />
       <h2>Pellets</h2>
       <div class="filters">
         <label>EIA region for premium/standard pellets

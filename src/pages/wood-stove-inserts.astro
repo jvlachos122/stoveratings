@@ -2,6 +2,7 @@
 import Answer from "../components/Answer.astro";
 import DataNote from "../components/DataNote.astro";
 import InsertFinder from "../components/InsertFinder.astro";
+import EtsyNote from "../components/EtsyNote.astro";
 import LogoxNote from "../components/LogoxNote.astro";
 import Sections from "../components/Sections.astro";
 import Base from "../layouts/Base.astro";
@@ -44,5 +45,6 @@ const lead = previousSectionLead(catalog.stoves);
     ]} />
     <DataNote items={notes} />
     <LogoxNote path="/wood-stove-inserts/" />
+    <EtsyNote path="/wood-stove-inserts/" />
   </div>
 </Base>

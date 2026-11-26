@@ -19,5 +19,12 @@ const description = view.description;
         ))}
       </ul>
     ) : null}
+    {view.etsyPlacements.length ? (
+      <ul>
+        {view.etsyPlacements.map((item) => (
+          <li><a href={item.path}>{item.label}</a>{` links to ${item.destination} (${item.linkLabel}).`}</li>
+        ))}
+      </ul>
+    ) : null}
   </div>
 </Base>
