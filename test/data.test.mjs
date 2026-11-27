@@ -3,7 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
-import { modelSentences } from "../src/lib/answers.js";
+import { modelCertificationSentences } from "../src/lib/model-certification.js";
 import { datasetIssues } from "../scripts/check-dataset.mjs";
 import { faqLd } from "../src/lib/schema.js";
 
@@ -71,12 +71,17 @@ test("the 1.4 Series Osburn answer uses EPA numbers and the snapshot date", () =
   const stoves = readJson("stoves.json");
   const stove = stoves.find((item) => item.model.startsWith("1.4 Series (Osburn 950"));
   assert.ok(stove);
-  const text = modelSentences(stove, "2026-10-23").join(" ");
-  assert.match(text, /1\.8 grams per hour/);
-  assert.match(text, /74 percent/);
+  const text = modelCertificationSentences(stove, "2026-10-23").join(" ");
+  const emission = String(Number(Number(stove.emission).toFixed(3)));
+  const efficiency = String(Number(Number(stove.efficiency).toFixed(2)));
+  assert.ok(text.includes(`${emission} grams per hour`), text);
+  assert.ok(text.includes(`${efficiency} percent HHV`), text);
+  assert.ok(text.includes(Math.round(stove.btuLow).toLocaleString("en-US")), text);
+  assert.ok(text.includes(Math.round(stove.btuHigh).toLocaleString("en-US")), text);
   assert.match(text, /currently certified/);
   assert.match(text, /Stove Builder International, Inc\./);
   assert.match(text, /snapshot 2026-10-23/);
+  assert.match(text, /^As of 2026-10-23,/);
   assert.doesNotMatch(text, /\bstar\b|best stove|our score/i);
 });
 

@@ -3,7 +3,6 @@ import Answer from "../../../components/Answer.astro";
 import CurrentNeighbors from "../../../components/CurrentNeighbors.astro";
 import DataNote from "../../../components/DataNote.astro";
 import Base from "../../../layouts/Base.astro";
-import { modelSentences } from "../../../lib/answers.js";
 import { catalog, stoveById } from "../../../lib/catalog.js";
 import {
   emissionText,
@@ -16,6 +15,7 @@ import {
   statusLabel,
 } from "../../../lib/format.js";
 import { relatedLists } from "../../../lib/lists.js";
+import { modelCertificationSentences } from "../../../lib/model-certification.js";
 import { stovePageHead } from "../../../lib/stove-page-meta.js";
 
 export function getStaticPaths() {
@@ -27,7 +27,7 @@ export function getStaticPaths() {
 
 const { stove } = Astro.props;
 const brand = catalog.brandBySlug.get(stove.primarySlug);
-const sentences = modelSentences(stove, catalog.meta.snapshotDate);
+const sentences = modelCertificationSentences(stove, catalog.meta.snapshotDate);
 const head = stovePageHead(stove, catalog.stoves, catalog.meta.snapshotDate);
 const siblings = stove.siblingIds.slice(0, 40).map((id) => stoveById.get(id)).filter(Boolean);
 
@@ -66,11 +66,11 @@ const notes = [
 >
   <div class="wrap">
     <h1>{stove.model}</h1>
+    <Answer sentences={sentences} />
     <p>
       <span class:list={["pill", stove.current ? "pill-current" : "pill-previous"]}>{statusLabel(stove.current)}</span>
       {stove.isNew ? <span class="pill pill-previous">EPA marked New</span> : null}
     </p>
-    <Answer sentences={sentences} />
     {
       stove.insertFlag ? (
         <p>

@@ -396,6 +396,22 @@ test("brand hub fact and table modules move only brand template URLs", () => {
   assert.equal(edited.get("/"), baseline.get("/"));
 });
 
+test("model certification copy moves only stove model URLs", () => {
+  const baseline = buildSitemapLastmodsFromDates(new FallbackDates(BASE));
+  const edited = buildSitemapLastmodsFromDates(new FallbackDates(BASE, [
+    ["src/lib/model-certification.js", PAGE_COMMIT],
+    ["src/lib/stove-page-meta.js", PAGE_COMMIT],
+    ["src/pages/stoves/[manufacturer]/[model].astro", PAGE_COMMIT],
+  ]));
+  const changed = changedPaths(baseline, edited);
+  assert.ok(changed.length > 0);
+  assert.ok(changed.every((path) => /^\/stoves\/[^/]+\/[^/]+\/$/.test(path)), changed.find((path) => !/^\/stoves\/[^/]+\/[^/]+\/$/.test(path)));
+  assert.ok(changed.includes("/stoves/ac-component-specialists/620-9-and-620-10/"));
+  for (const path of ["/", "/finder/", "/firewood-btu-chart/", "/wood-stove-inserts/", "/pellet-stove-inserts/", "/cleanest-burning-wood-stoves/", "/brands/blaze-king/"]) {
+    assert.equal(edited.get(path), baseline.get(path), path);
+  }
+});
+
 test("sitemap index lastmod is the newest URL in that child", () => {
   const dir = mkdtempSync(join(tmpdir(), "sitemap-lastmod-"));
   try {
