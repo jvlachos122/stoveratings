@@ -345,7 +345,7 @@ test("real pages ignore chrome and a related-list edit, and follow their own dat
   ]);
 
   const lookupScript = buildSitemapLastmodsFromDates(new FallbackDates(BASE, [
-    ["public/scripts/lookup.js", PAGE_COMMIT],
+    ["src/lib/lookup-client.js", PAGE_COMMIT],
   ]));
   assert.deepEqual(changedPaths(baseline, lookupScript), ["/lookup/"]);
 });

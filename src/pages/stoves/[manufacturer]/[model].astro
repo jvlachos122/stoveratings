@@ -16,6 +16,7 @@ import {
 } from "../../../lib/format.js";
 import { relatedLists } from "../../../lib/lists.js";
 import { modelCertificationSentences } from "../../../lib/model-certification.js";
+import { modelNumberLabels } from "../../../lib/model-number-aliases.js";
 import { stovePageHead } from "../../../lib/stove-page-meta.js";
 
 export function getStaticPaths() {
@@ -28,6 +29,7 @@ export function getStaticPaths() {
 const { stove } = Astro.props;
 const brand = catalog.brandBySlug.get(stove.primarySlug);
 const sentences = modelCertificationSentences(stove, catalog.meta.snapshotDate);
+const modelNumbers = modelNumberLabels(stove.model);
 const head = stovePageHead(stove, catalog.stoves, catalog.meta.snapshotDate);
 const siblings = stove.siblingIds.slice(0, 40).map((id) => stoveById.get(id)).filter(Boolean);
 
@@ -175,6 +177,31 @@ const notes = [
     <ul>
       {stove.retailNames.map((name) => <li>{name}</li>)}
     </ul>
+    {
+      modelNumbers.length ? (
+        <>
+          <h2 id="model-numbers">Model numbers in this EPA cell</h2>
+          <p>These strings are copied from the model cell. The lookup matches a typed code when spaces, dots, dashes, and slashes are removed.</p>
+          <div class="table-wrap">
+            <table>
+              <caption>Model numbers copied from this EPA model cell</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Model number</th>
+                </tr>
+              </thead>
+              <tbody>
+                {modelNumbers.map((label) => (
+                  <tr>
+                    <td>{label}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      ) : null
+    }
     <h2 id="siblings">Other model lines from this manufacturer</h2>
     {
       siblings.length ? (
