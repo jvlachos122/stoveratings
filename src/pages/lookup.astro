@@ -4,16 +4,18 @@ import DataNote from "../components/DataNote.astro";
 import Base from "../layouts/Base.astro";
 import { catalog } from "../lib/catalog.js";
 import { formatCount, metaDescription, shortModel, statusLabel } from "../lib/format.js";
+import { buildModelNumberIndex } from "../lib/model-number-aliases.js";
 import { aliasSentences, selectRetailAliases } from "../lib/retail-aliases.js";
 import { webAppLd } from "../lib/schema.js";
 
 const names = catalog.stats.retailNames.roomDistinct;
 const aliases = selectRetailAliases(catalog.stoves, catalog.brands);
+const modelTokenCount = buildModelNumberIndex(catalog.stoves, catalog.brands).tokenCount;
 const exampleAliases = aliases.filter((alias) => alias.source === "example");
 const frequencyAliases = aliases.filter((alias) => alias.source === "frequency");
 const sentences = [
-  `This lookup searches ${formatCount(catalog.stats.retailNames.roomTokens)} retail names split from ${formatCount(catalog.stats.modelLines.room)} room-heater model lines, ${formatCount(names)} of them distinct, plus central-heater names.`,
-  "EPA publishes a model line, often with several retail names in one cell. A name that is not in that cell will not match, even if a dealer sells it.",
+  `This lookup searches ${formatCount(catalog.stats.retailNames.roomTokens)} retail names split from ${formatCount(catalog.stats.modelLines.room)} room-heater model lines, ${formatCount(names)} of them distinct, plus central-heater names, and ${formatCount(modelTokenCount)} model-number tokens printed in the EPA model strings, with spaces, dots, dashes, and slashes ignored.`,
+  "EPA publishes a model line, often with several retail names in one cell. A name or model number that is not in that cell will not match, even if a dealer sells it.",
   `Source: EPA Certified Wood Heater Database, snapshot ${catalog.meta.snapshotDate}.`,
 ];
 const description = metaDescription(sentences);
@@ -32,7 +34,7 @@ const description = metaDescription(sentences);
     <h1>Is my stove EPA certified?</h1>
     <Answer sentences={sentences} />
     <label>Stove name
-      <input id="lookup-q" type="search" placeholder="Escape 1500, HP22, Ashford">
+      <input id="lookup-q" type="search" placeholder="Escape 1500, HP21, Ashford">
     </label>
     <p id="lookup-status" class="small" aria-live="polite">Loading names…</p>
     <ul id="lookup-results" class="stack"></ul>
@@ -98,7 +100,7 @@ const description = metaDescription(sentences);
     ))}
     <h2>If the name is not found</h2>
     <p>
-      EPA's field is a model line, not a catalog number from a store. Search a shorter token, then open the model line and read the retail names.
+      EPA's field is a model line, not a catalog number from a store. A model number matches only when those letters and digits are printed in that cell. Spaces, dots, dashes, and slashes are ignored. Search a shorter token, then open the model line and read the retail names.
       You can also use the <a href="/">finder</a> or the <a href={catalog.meta.sourceUrl}>EPA Certified Wood Heater Database</a>.
     </p>
     <DataNote
@@ -107,8 +109,13 @@ const description = metaDescription(sentences);
         "Currently certified means that model line was in EPA's in-production result on the snapshot date.",
         "Names are split on a colon, then on commas and semicolons. Parentheses are removed. Text EPA joined with a slash may stay one name.",
         "A linked name points only at model lines whose retail names contain it. When a phrase names a brand EPA did not print on those lines, the line is still listed and the missing word is stated.",
+        "A model number matches a token printed in the model cell. Spaces, dots, dashes, and slashes are ignored. A number that is not in the cell is not listed.",
       ]}
     />
   </div>
 </Base>
-<script src="/scripts/lookup.js" defer></script>
+<script>
+  import { mountLookup } from "../lib/lookup-client.js";
+
+  mountLookup(document);
+</script>

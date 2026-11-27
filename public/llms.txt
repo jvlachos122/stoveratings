@@ -20,6 +20,7 @@ The build does not fetch cfpub.epa.gov. That host asks automated clients not to 
 
 - Finder: https://stoveratings.com/
 - Name lookup: https://stoveratings.com/lookup/
+- Model numbers typed with spaces, dots, dashes, or slashes match the same letters and digits in an EPA model cell on that lookup. A number that is not in the cell is not listed.
 - Retail-name aliases (forty names linked to the EPA model line that lists them): https://stoveratings.com/lookup/#name-aliases
 - Brands: https://stoveratings.com/brands/
 - Model lines: https://stoveratings.com/stoves/{manufacturer}/{model}/

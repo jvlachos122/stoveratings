@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { compareRedirects, selectComparePairs } from "../src/lib/compare-pairs.js";
 import { heatingCostPayload } from "../src/lib/heating-cost.js";
 import { sizeOverlapPayload } from "../src/lib/stove-size.js";
+import { buildModelNumberIndex } from "../src/lib/model-number-aliases.js";
 import { aliasSearchEntries, selectRetailAliases } from "../src/lib/retail-aliases.js";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -60,7 +61,8 @@ mkdirSync(dir, { recursive: true });
 const snapshot = meta.snapshotDate;
 writeFileSync(join(dir, "current.json"), JSON.stringify({ snapshot, stoves: current }));
 writeFileSync(join(dir, "historical.json"), JSON.stringify({ snapshot, stoves: historical }));
-writeFileSync(join(dir, "names.json"), JSON.stringify({ snapshot, names }));
+const modelNumbers = buildModelNumberIndex(stoves, brands);
+writeFileSync(join(dir, "names.json"), JSON.stringify({ snapshot, names, modelNumbers }));
 const firewood = JSON.parse(readFileSync(join(root, "data/firewood.json"), "utf8"));
 const fuelHeat = JSON.parse(readFileSync(join(root, "data/fuel-heat.json"), "utf8"));
 writeFileSync(join(dir, "heating-cost.json"), JSON.stringify(heatingCostPayload({
@@ -86,4 +88,4 @@ for (const row of redirects) {
 }
 for (const target of targets) noindex.delete(target);
 writeFileSync(noindexPath, `${JSON.stringify([...noindex].sort(), null, 2)}\n`);
-console.log(`Public data: ${current.length} current, ${historical.length} historical, ${names.length} names. Compare redirects: ${redirects.length}.`);
+console.log(`Public data: ${current.length} current, ${historical.length} historical, ${names.length} names. Model-number tokens: ${modelNumbers.tokenCount}. Compare redirects: ${redirects.length}.`);

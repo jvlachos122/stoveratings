@@ -219,7 +219,7 @@ test("alias search entries hit the full phrase and ignore a filler word", () => 
   assert.equal(aliasQueryHit(ashley, "wood stove"), false);
   assert.equal(aliasQueryHit({ alias: false, q: "ashley" }, "ashley"), false);
 
-  const script = readFileSync(join(root, "public/scripts/lookup.js"), "utf8");
+  const script = readFileSync(join(root, "src/lib/lookup-client.js"), "utf8");
   for (const token of ALIAS_FILLER) assert.match(script, new RegExp(`"${token}"`));
   assert.match(script, /entry\.alias/);
 });
